@@ -384,7 +384,7 @@ export class ResidentComponent implements OnInit, OnDestroy {
 				})
 
 				
-				// let king = Array.from(new Set(this.appliedFilters));
+			
 				this.cleared = false;
 				this.filteredList = this.filterAccordingToExisted();
 				this.residentList = this.filteredList;
@@ -401,9 +401,9 @@ export class ResidentComponent implements OnInit, OnDestroy {
 				// console.log(this.appliedFilters)
 			
 			}
-            // console.log (this.appliedFilters)
+    
 			this.king = this.appliedFilters
-			// console.log(this.king)
+	
 			this.uniqueData = [];
 			this.uniqueData = [...this.king.reduce((map, obj) => map.set(obj.key, obj), new Map()).values()];
              
