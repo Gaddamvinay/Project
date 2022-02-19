@@ -1,0 +1,51 @@
+<div class="popover__wrapper">
+	<span class="second-title m-l-15 m-r-5">KPI summary  <span style="font-size:12px;">(all customers)</span></span> 
+	<mat-icon class="absolute help-text-hover-cont popover__title" (click)="titleShow = !titleShow" style="color: #D3CDC6;cursor: pointer;">help_outline</mat-icon>
+	<div class="popover__content">
+		<h4 class="second-title popover__heading m-b-10">KPI summary</h4>
+		<div class="popover__message">
+            <span>All parameters are computed as a percentage increase or decrease of the average across all customers. Number followed by '+' sign indicates a positive trend and '-' sign indicates a negative trend</span>
+			<p><strong>Resident profiles viewed (per caregiver)</strong><br/>Indicates the percentage increase or decrease in the average number of resident profiles viewed by caregivers across all customers.</p>
+            <p><strong>Screen time usage (per caregiver)</strong><br/>Indicates the percentage increase or decrease in the average time spent in the dashboard by caregivers across all customers.</p>
+            <p><strong>Falls activity (per 1000 steps)</strong><br/>Indicates the percentage increase or decrease in the average number of falls for all residents across all customers.</p>
+            <p><strong>Night walk activity (per caregiver)</strong><br/>Indicate the percentage increase or decrease in the average number of night walk alerts received from all the wearables used by the residents across all customers.</p>
+            <p><strong>Critically low battery avoidance (per caregiver)</strong><br/>Indicate the percentage increase or decrease in the average number of critical low battery alerts avoided across all customers.</p>
+            <p><strong>Notification response time (per caregiver)</strong><br/>Indicate the percentage increase or decrease in the average response time for critical alerts across all customers represented.</p> 
+		</div>
+	</div>
+</div>
+<mat-card class="kpi-card" style="margin: 15px !important">
+	<mat-card-content style="padding: 0!important;margin-bottom: 0;">
+		<div id="visitor-chart">
+            <app-table class="class-table kpi-table"
+                [widths]="widths"
+                [displayedColumns]="displayedColumns"
+                [tableData]="tableData"
+                [tableType]="'KPI data'"
+                [isLoading]="isLoading"
+				[actionEnable]="false"
+                [link]="false"
+            ></app-table>
+        </div>
+    </mat-card-content>
+    <mat-card-actions fxLayoutAlign="start center" style="height: 56px;padding: 0px 24px;background-color: #f6f4f2;">
+		<div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+			<div class="" fxFlex="70" fxFlex.gt-md="70" fxFlex.gt-lg="70" fxLayoutAlign="start center">
+				
+			</div>
+			<div fxFlex="30" fxFlex.gt-md="30" fxFlex.gt-lg="30" fxLayoutAlign="start center"
+				style="padding-bottom: 10px;">
+				<div class="date-filter cursor-pointer" [matMenuTriggerFor]="intervals">
+					<span class="font-14">{{selectedInterval}} </span>
+					<mat-icon class="absolute viewAllicon">arrow_drop_down</mat-icon>
+				</div>
+			</div>
+		</div>
+	</mat-card-actions>
+</mat-card>
+<mat-menu #intervals="matMenu" class="mymegamenu">
+	<button mat-menu-item (click)="selectedInterval = 'Last 7 days';changeSeriesData(7)">Last 7 days</button>
+    <button mat-menu-item (click)="selectedInterval = 'Last 1 month';changeSeriesData(4)">Last 1 month</button>
+    <button mat-menu-item (click)="selectedInterval = 'Last 3 months';changeSeriesData(3)">Last 3 months</button>
+    <button mat-menu-item (click)="selectedInterval = 'Last 6 months';changeSeriesData(6)">Last 6 months</button>
+</mat-menu>

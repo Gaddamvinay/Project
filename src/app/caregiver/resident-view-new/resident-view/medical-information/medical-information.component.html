@@ -1,0 +1,19 @@
+<div fxLayout="row wrap" class="m-t-20">
+    <div fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex="100" class="text-left">
+      <span class="second-title">Medical history</span>
+    </div>
+    <div fxFlex.gt-md="75" fxFlex.gt-lg="75" fxFlex="100" class="text-right">
+      <div fxLayout="row wrap" fxLayoutGap="0.8em" fxLayoutAlign="end center">
+        <button mat-raised-button color="accent" class="add-button" (click)="openDialog()">
+          Edit medications
+        </button>
+      </div>
+    </div>
+</div>
+<div fxLayout="row wrap" fxLayoutAlign="space-between center">
+    <div class="m-t-15 medical-card" *ngFor="let medic of medicalHistory">
+        <p class="title">{{medic.heading}}</p>
+        <p class="med-list" *ngFor="let subMedic of medic.list">{{medic.heading !== 'Poly pharmacy' ? subMedic.question : subMedic}}</p>
+        <p class="med-list" *ngIf="medic.list.length < 1">No related data available</p>
+    </div>
+</div>

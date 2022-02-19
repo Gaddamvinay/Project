@@ -1,0 +1,10 @@
+.help-text-hover-cont {
+    .help-text-hover {
+        display: none;
+    }
+    &:hover {
+        .help-text-hover {
+            display: block;
+        }  
+    }
+}

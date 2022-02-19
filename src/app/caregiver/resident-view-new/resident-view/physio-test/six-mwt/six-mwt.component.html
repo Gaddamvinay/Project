@@ -1,0 +1,132 @@
+<mat-card class="model arjomodal">
+    <mat-card-header>
+        <div fxLayout="row wrap">
+            <div fxFlex.gt-lg="65" fxFlex.gt-md="65" fxFlex="100">
+                <mat-card-title>
+                    <span class="m-r-5 arjomodal-title">Perform 6MWT test</span>
+                </mat-card-title>
+            </div>
+            <div fxFlex.gt-lg="35" fxFlex.gt-md="35" fxFlex="100" class="text-right">
+                <mat-icon class="cursor-pointer" mat-dialog-close>close</mat-icon>
+            </div>
+        </div>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-horizontal-stepper (selectionChange)="event($event)" labelPosition="bottom" #stepper [linear]="false">
+            <mat-step  [stepControl]="true">
+                <ng-template matStepLabel>Introduction</ng-template>
+                <div fxLayout="row wrap">
+                    <div fxFlex.gt-md="50">
+                        <h4 class="arjoform-label">Purpose</h4>
+                        <p class="arjoform-value">The 6 minute walk test (6MWT) assesses distance walked over 6 minutes as a sub-maximal test of aerobic capacity/endurance.</p>
+                        <div class="field">
+                            <h4 class="arjoform-label">Area of Assessment</h4>
+                            <span class="arjoform-value">Aerobic Capacity</span><br />
+                            <span class="arjoform-value">Gait</span><br />
+                        </div>
+                    </div>
+                    <div fxFlex.gt-md="50" fxLayoutAlign="end center">
+						<iframe width="423" height="270" src="https://www.youtube.com/embed/Ng-UOHjTejY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="m-t-10"></iframe>
+                    </div>
+                </div>
+            </mat-step>
+            <mat-step  [stepControl]="true">
+                <ng-template matStepLabel>Pre-requisites</ng-template>
+                <ul class="m-l-0 p-l-20">
+                    <li class="item">Stop watch</li>
+                    <li class="item">Measuring wheel to measure distance (recommended)</li>
+                    <li class="item">Chair</li>
+                    <li class="item">12-m long hallway</li>
+                    <li class="item">Markings (such as cones) to indicate where to turn around</li>
+                </ul>
+            </mat-step>
+            <mat-step  [stepControl]="true">
+                <ng-template matStepLabel>Instruction</ng-template>
+                <ul class="m-l-0 p-l-20">
+                    <li class="item">The score of the test is the distance a patient walks in 6 minutes.</li>
+                    <li class="item">The patient may take as many standing rests as they like, but the timer should keep going and record the number of rests taken and the total rest time.</li>
+                    <li class="item">Assistive devices can be used&nbsp;but must be documented.</li>
+                    <li class="item">
+                        If a patient requires assistance, only the minimum amount of assistance required for a patient to complete the task should be provided. The level of assistance documented, however, should reflect the greatest amount of assistance provided during the test.
+                    </li>
+                    <li class="item">When administering the test, do not walk in front of or directly beside the patient, as this may “pace” the patient and influence the speed and distance they walk. Instead, walk at least a half step behind the patient.</li>
+                </ul>
+            </mat-step>
+            <mat-step  [stepControl]="true">
+                <ng-template matStepLabel>Results</ng-template>
+                <h4 class="m-t-20 m-b-5 arjoform-label">Distance covered in 6 minutes (in meters)</h4>
+                <div fxLayout="row wrap" fxLayoutGap.gt-md="1em">
+                    <div class="form-field" fxLayout.gt-md="50">
+                        <mat-form-field appearance="outline">
+                            <input matInput placeholder="Enter distance covered" [formControl]="distance_covered_in_6_minutes_in_meters" required ngDefaultControl/>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout.gt-md="25"></div>
+                    <div fxLayout.gt-md="25"></div>
+                </div>
+                <h4 class="arjoform-label">Did the elderly use an assistive device to perform the test?</h4>
+                <div fxLayout="row wrap" fxLayoutGap.gt-md="1em">
+                    <div fxLayout.gt-md="33.33" class="m-b-30">
+                        <mat-radio-group aria-label="device" fxLayoutAlign="start center" fxLayoutGap="0.8em">
+                            <mat-radio-button [formControl]="elderly_used_assistive_devise" value="yes" ngDefaultControl>Yes</mat-radio-button>
+                            <mat-radio-button [formControl]="elderly_used_assistive_devise" value="no" ngDefaultControl>No</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <div fxLayout.gt-md="33.33"></div>
+                    <div fxLayout.gt-md="33.33"></div>
+                </div>
+                <h4 class="arjoform-label">How does the elderly feel?</h4>
+                <div fxLayout="row wrap" fxLayoutGap.gt-md="1em">
+                    <div fxLayoutAlign="start center"  class="m-b-30">
+                        <span class="m-r-15">Completely Exhausted</span>
+                        <mat-radio-group aria-label="feel" fxLayoutAlign="start center" fxLayoutGap="0.8em">
+                            <mat-radio-button  [formControl]="how_did_the_elderly_feel_rating_scale_1_5" value="1" ngDefaultControl>1</mat-radio-button>
+                            <mat-radio-button  [formControl]="how_did_the_elderly_feel_rating_scale_1_5" value="2" ngDefaultControl>2</mat-radio-button>
+                            <mat-radio-button  [formControl]="how_did_the_elderly_feel_rating_scale_1_5" value="3" ngDefaultControl>3</mat-radio-button>
+                            <mat-radio-button  [formControl]="how_did_the_elderly_feel_rating_scale_1_5"value="4" ngDefaultControl>4</mat-radio-button>
+                            <mat-radio-button  [formControl]="how_did_the_elderly_feel_rating_scale_1_5"value="5" ngDefaultControl>5</mat-radio-button>
+                        </mat-radio-group>
+                        <span class="m-l-15">Very Good</span>
+                    </div>
+                    <div fxLayout.gt-md="33.33"></div>
+                    <div fxLayout.gt-md="33.33"></div>
+                </div>
+                <h4 class="arjoform-label">How much effort did it take for the elderly to perform the test?</h4>
+                <div fxLayout="row wrap" fxLayoutGap.gt-md="1em">
+                    <div fxLayout.gt-md="100" class="m-b-30">
+                        <span class="m-r-15">Completely Exhausted</span>
+                        <mat-radio-group aria-label="effort" fxLayoutAlign="start center" fxLayoutGap="0.8em">
+                            <mat-radio-button  [formControl]="effort_taken_scale_1_10" value="1" ngDefaultControl>1</mat-radio-button>
+                            <mat-radio-button  [formControl]="effort_taken_scale_1_10" value="2" ngDefaultControl>2</mat-radio-button>
+                            <mat-radio-button	[formControl]="effort_taken_scale_1_10"  value="3" ngDefaultControl>3</mat-radio-button>
+                            <mat-radio-button [formControl]="effort_taken_scale_1_10"  value="4" ngDefaultControl>4</mat-radio-button>
+                            <mat-radio-button [formControl]="effort_taken_scale_1_10" value="5"ngDefaultControl>5</mat-radio-button>
+                        </mat-radio-group>
+                        <span class="m-l-15">Very Good</span>
+                    </div>
+                </div>
+                <h4 class="arjoform-label">Comments/Observations</h4>
+                <div fxLayout="row wrap">
+                    <div fxFlex="100">
+                        <mat-form-field appearance="outline">
+                            <textarea placeholder="comments" [formControl]="comments_observations"  matInput placeholder="About ex..." ngDefaultControl></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </mat-step>
+          </mat-horizontal-stepper>
+    </mat-card-content>
+    <mat-card-actions fxLayoutAlign="start center">
+        <div fxFlex="100" class="form-actions" fxLayoutAlign="end center">
+            <div class="" fxFlex="50" fxFlex.gt-md="50" fxFlex.gt-lg="50" fxLayoutAlign="start center">
+            </div>
+            <div fxFlex="50" fxFlex.gt-md="50" fxFlex.gt-lg="50" fxLayoutAlign="end center">
+                <div class="text-right">
+                    <button mat-button mat-dialog-close class="cancel m-r-10">Cancel</button>
+                    <button mat-flat-button color="accent" *ngIf="selectedIndex < 3" (click)="stepper.next()" class="submit">Next</button>
+                    <button mat-flat-button color="accent" [disabled]="validate()" *ngIf="selectedIndex === 3" (click)="post6MWT()" type="submit" class="submit">Add</button>
+                </div>
+            </div>
+        </div>
+    </mat-card-actions>
+</mat-card>

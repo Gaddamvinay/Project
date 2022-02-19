@@ -1,0 +1,123 @@
+<div class="filter_residents_dialog">
+    <h2 mat-dialog-title class="m-b-0">Filter Residents</h2>
+    <div fxLayout="row wrap">
+        <div fxFlex="30" class="m-r-15" *ngIf="showRegisterStatus">
+            <p class="m-b-0">Registration status</p>
+            <mat-form-field appearance="outline">
+                <mat-select [(ngModel)]="filterTypes.filterResident" (selectionChange)="ddlChange($event.value, 'resident')">
+                    <mat-option value="All" selected>All</mat-option>
+                    <mat-option value="Active">Complete</mat-option>
+                    <mat-option value="In-Active">Incomplete</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div fxFlex="30" class="m-r-15">
+            <p class="m-b-0">Questionnaire name</p>
+            <mat-form-field appearance="outline">
+                <mat-select [(ngModel)]="filterTypes.filterStatus" (selectionChange)="ddlChange($event.value, 'downton')">
+                    <mat-option value="All" selected>All</mat-option>
+                    <mat-option value="Downton Fall Risk Index">Downton Fall Risk Index</mat-option>
+                    <mat-option value="Stay Independent">Stay Independent</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div fxFlex="30" class="m-r-15">
+            <p class="m-b-0">Risk of falls</p>
+            <mat-form-field appearance="outline">
+                <mat-select [(ngModel)]="filterTypes.filterBalance" (selectionChange)="ddlChange($event.value, 'fallsRisk')">
+                    <mat-option value="All" selected>All</mat-option>
+                    <mat-option value="High">High</mat-option>
+                    <mat-option value="Normal">Normal</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div fxFlex="30" class="m-r-15">
+            <p class="m-b-0">Walking ability</p>
+            <mat-form-field appearance="outline">
+                <mat-select [(ngModel)]="filterTypes.filterStrength" (selectionChange)="ddlChange($event.value, 'walkingAbility')">
+                    <mat-option value="All" selected>All</mat-option>
+                    <mat-option value="Safe">Safe</mat-option>
+                    <mat-option value="Unsafe">Unsafe</mat-option>
+                    <mat-option value="Normal">Normal</mat-option>
+                    <mat-option value="Unable">Unable</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div fxFlex="30" class="m-r-15">
+            <p class="m-b-0">Cognitive ability</p>
+            <mat-form-field appearance="outline">
+                <mat-select  [(ngModel)]="filterTypes.filterSleep" (selectionChange)="ddlChange($event.value, 'cognitiveAbility')">
+                    <mat-option value="All" selected>All</mat-option>
+                    <mat-option value="Oriented">Oriented</mat-option>
+                    <mat-option value="Confused">Confused</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+      <div fxFlex="30" class="m-r-15">
+            <p class="m-b-0">Medication</p>
+            <mat-form-field appearance="outline">
+                <mat-select [(ngModel)]="filterTypes.filterBattery" (selectionChange)="ddlChange($event.value, 'medication')">
+                    <mat-option value="All" selected>All</mat-option>
+                    <mat-option value="0 out of 5">0 out of 5</mat-option>
+                    <mat-option value="1 out of 5">1 out of 5</mat-option>
+                    <mat-option value="2 out of 5">2 out of 5</mat-option>
+                    <mat-option value="3 out of 5">3 out of 5</mat-option>
+                    <mat-option value="4 out of 5">4 out of 5</mat-option>
+                    <mat-option value="5 out of 5">5 out of 5</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+      <!--  <ng-container *ngIf="!showRegisterStatus">
+            <div fxFlex="30" class="m-r-15">
+                <p class="m-b-0">Ward</p>
+                <mat-form-field appearance="outline">
+                    <mat-select value="" multiple (selectionChange)="getRoomValues()" [(ngModel)]="filterTypes.filterWards">
+                        <input matInput class="select-search" type="text" placeholder="Search ward" [(ngModel)]="wardSearch" />
+                        <mat-select-trigger>
+                            <ng-container *ngIf="getFormWards().length < 2 && getFormWards().length > 0">
+                                <span>{{getFormWards()? (getFormWards()[0]=== '' ? 'Select ward' : getWardByID(getFormWards()[0])) : ''}}</span>
+                            </ng-container>
+                            <ng-container *ngIf="getFormWards().length > 1">
+                                <ng-container *ngFor="let ward of getFormWards();let i =index">
+                                    <span class="selected" *ngIf="i < 2">{{getWardByID(ward)}}</span>
+                                </ng-container>
+                            </ng-container>
+                            <span *ngIf="getFormWards()?.length > 2" class="selected">
+                            (+{{getFormWards().length - 2}} {{getFormWards()?.length === 3 ? 'other' : 'others'}})
+                            </span>
+                          </mat-select-trigger>
+                        <mat-option disabled value="">Select ward</mat-option>
+                        <mat-option [value]="ward.ward_id" *ngFor="let ward of getFilterWards()">{{ward.ward_name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div fxFlex="30" class="m-r-15">
+                <p class="m-b-0">Rooms</p>
+                <mat-form-field appearance="outline">
+                    <mat-select value="" multiple [(ngModel)]="filterTypes.filterRooms">
+                        <input matInput class="select-search" type="text" placeholder="Search room" [(ngModel)]="roomSearch" />
+                        <mat-select-trigger>
+                            <ng-container *ngIf="getFormRooms().length < 2 && getFormRooms().length > 0">
+                                <span>{{getFormRooms()? (getFormRooms()[0]=== '' ? 'Select room' : getRoomByID(getFormRooms()[0])) : ''}}</span>
+                            </ng-container>
+                            <ng-container *ngIf="getFormRooms().length > 1">
+                                <ng-container *ngFor="let ward of getFormRooms();let i =index">
+                                    <span class="selected" *ngIf="i < 2">{{getRoomByID(ward)}}</span>
+                                </ng-container>
+                            </ng-container>
+                            <span *ngIf="getFormRooms()?.length > 2" class="selected">
+                            (+{{getFormRooms().length - 2}} {{getFormRooms()?.length === 3 ? 'other' : 'others'}})
+                            </span>
+                          </mat-select-trigger>
+                        <mat-option disabled value="">Select room</mat-option>
+                        <mat-option [value]="room.details.room_id" *ngFor="let room of getFilterRooms()">{{room.details.room_name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </ng-container>-->
+    </div>
+    <div mat-dialog-actions fxLayoutAlign="end center">
+        <button mat-button mat-dialog-close>Cancel</button>
+        <button mat-raised-button color="accent" (click)="apply()">Apply</button>
+    </div>
+</div>

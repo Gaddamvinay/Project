@@ -1,0 +1,57 @@
+.notification-list-item{
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    position: relative;
+    &.info{
+        background-color: #F89406;
+        color: white;
+    }
+    &.Critical{
+        background-color: #BD362F;
+        color: white;
+    }
+    &.Warning{
+        background-color: #F89406;
+        color: white;
+    }
+    &.Success{
+        background-color: #51A351;
+        color: white;
+    }
+    .notification-icon {
+        mat-icon {
+            font-size: 24px;
+            margin-right: 5px;
+        }
+    }
+    .notification-action {
+        .action-btn {
+            box-shadow: none;
+            border: none;
+            padding: 5px 15px;
+            margin-left: 10px;
+            /* margin-right: 10px; */
+            border-radius: 5px;
+        }
+    }
+    .close {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+    }
+}
+.push-notification{
+    position: fixed;
+    right: 0;
+    top: 60px;
+    max-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+.attended{
+    background-color: #fff;
+    color: green !important;
+    border: 2px solid green !important;
+}

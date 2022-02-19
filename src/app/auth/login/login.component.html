@@ -1,0 +1,113 @@
+<div fxLayout="row nowrap">
+	<div fxFlex="60" style="height: calc(100vh - 144px);">
+        <img src="/assets/images/login.jpg" alt="Login page" width="100%" height="100%">
+	</div>
+	<div fxFlex="40" fxLayout="row wrap" fxLayoutAlign="center center">
+		<div class="login" fxFlex="75">
+			<form [formGroup]="form" *ngIf="!emailVerify && !activateUser" (ngSubmit)="loggedInAlready ? logout() : onSubmit()">
+				<div class="text-left">
+                    <p class="main-heading">Login</p>
+                    <p class="title-desc">Please enter your credentials to proceed</p>
+                </div>
+				<div fxLayout="row wrap">
+					<div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+						<p class="form-label">Username</p>
+						<mat-form-field appearance="outline" class="m-b-10">
+							<input required matInput placeholder="Username" formControlName="uname" />
+							<mat-hint *ngIf="!validateUser(this.form.value.uname)" class="text-danger">User doesn't exists</mat-hint>
+							<mat-hint *ngIf="form.controls['uname'].hasError('required') && form.controls['uname'].touched" class="text-danger">Username is required.</mat-hint>
+						</mat-form-field>
+					</div>
+					<div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+						<p class="form-label">Password</p>
+						<mat-form-field appearance="outline" class="m-b-10">
+							<input required matInput type="password" placeholder="Password" formControlName="password" />
+							<mat-hint *ngIf="form.controls['password'].hasError('required') && form.controls['password'].touched" class="text-danger">Password is required.</mat-hint>
+						</mat-form-field>
+					</div>
+					<div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
+						<mat-checkbox color="warn" formControlName="rememberMe" [checked]="checked">Remember me</mat-checkbox>
+					</div>
+					<div class="loading-button" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+						<button mat-raised-button color="primary" class="login-btn btn-block btn-lg" type="submit" [disabled]="!form.valid || isLoading || !validateUser(this.form.value.uname)">{{loggedInAlready ? "Logout from other devices": "Login"}}</button>
+						<div class="loading" *ngIf="isLoading">
+							<mat-spinner [diameter]="40"></mat-spinner>
+						</div>
+					</div>
+					<button color="accent" [routerLink]="['/auth/forgot']" mat-button class="btn-block btn-lg forgotpassword m-b-20">Forgot your password?</button>
+                    <p class="text-center brownish-grey">By using Arjo you will agree <strong>terms of service</strong> and <strong>privacy policy</strong>.</p>
+				</div>
+			</form>
+			<form [formGroup]="emailForm" *ngIf="emailVerify" (ngSubmit)="emailVerification()">
+				<div class="text-left">
+                    <h1>Email verification</h1>
+                    <p class="title-desc">Please enter your credentials to proceed</p>
+                </div>
+				<div fxLayout="row wrap">
+					<div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+						<p class="form-label">Username</p>
+						<mat-form-field appearance="outline" class="m-b-20">
+							<input required matInput placeholder="Username" formControlName="uname" />
+							<mat-hint *ngIf="form.controls['uname'].hasError('required') && form.controls['uname'].touched" class="text-danger">Username is required.</mat-hint>
+							<mat-hint *ngIf="!validateUser(this.emailForm.value.uname)" class="text-danger">User doesn't exists</mat-hint>
+						</mat-form-field>
+					</div>
+					<div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+						<p class="form-label">Email</p>
+						<mat-form-field appearance="outline">
+							<input required matInput type="password" placeholder="Email" formControlName="email" />
+						</mat-form-field>
+						<small *ngIf="form.controls['password'].hasError('required') && form.controls['password'].touched" class="text-danger">Email is required.</small>
+					</div>
+					<div class="loading-button" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+						<button mat-raised-button color="primary" class="login-btn btn-block btn-lg" type="submit" [disabled]="!emailForm.valid || isLoading || !validateUser(this.emailForm.value.uname)">{{"Send"}}</button>
+						<div class="loading" *ngIf="isLoading">
+							<mat-spinner [diameter]="40"></mat-spinner>
+						</div>
+					</div>
+                    <p class="text-center brownish-grey">By using Arjo you will agree <strong>terms of service</strong> and <strong>privacy policy</strong>.</p>
+				</div>
+			</form>
+			<form [formGroup]="activeForm" *ngIf="activateUser" (ngSubmit)="changePassword()">
+				<div class="text-left">
+					<!-- <h1>Please change the default password</h1> -->
+					<p class="main-heading">Reset default password</p>
+                    <p class="title-desc" style="line-height:20px;">You have successfully logged in. Please change the default password.</p>
+                </div>
+				<div fxLayout="row wrap">
+					<div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+						<p class="form-label">Username</p>
+						<mat-form-field appearance="outline" class="m-b-10">
+							<input required matInput placeholder="Username" formControlName="uname" readonly/>
+							<mat-hint *ngIf="activeForm.controls['uname'].hasError('required') && activeForm.controls['uname'].touched" class="text-danger">Username is required.</mat-hint>
+							<mat-hint *ngIf="!validateUser(this.activeForm.value.uname)" class="text-danger">User doesn't exists</mat-hint>
+						</mat-form-field>
+					</div>
+					<div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+						<p class="form-label">Password</p>
+						<mat-form-field appearance="outline" class="m-b-10">
+							<input required matInput type="password" placeholder="Password" formControlName="password" />
+							<mat-hint *ngIf="activeForm.controls['password'].hasError('required') && activeForm.controls['password'].touched" class="text-danger">Password is required.</mat-hint>
+						</mat-form-field>
+					</div>
+					<div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+						<p class="form-label">Confirm Password</p>
+						<mat-form-field appearance="outline" class="m-b-10">
+							<input required matInput type="password" placeholder="Password" formControlName="cpassword" />
+							<mat-hint *ngIf="activeForm.controls['password'].hasError('required') && activeForm.controls['password'].touched" class="text-danger">Confirm password is required.</mat-hint>
+							<mat-hint *ngIf="validate()" class="text-danger">Confirm password should be same as password.</mat-hint>
+						</mat-form-field>
+						
+					</div>
+					<div class="loading-button" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+						<button mat-raised-button color="primary" class="login-btn btn-block btn-lg" type="submit" [disabled]="!activeForm.valid || isLoading || validate() || !validateUser(this.activeForm.value.uname)">{{"Update password"}}</button>
+						<div class="loading" *ngIf="isLoading">
+							<mat-spinner [diameter]="40"></mat-spinner>
+						</div>
+					</div>
+                    <p class="text-center brownish-grey">By using Arjo you will agree <strong>terms of service</strong> and <strong>privacy policy</strong>.</p>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

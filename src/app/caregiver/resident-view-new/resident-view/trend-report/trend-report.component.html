@@ -1,0 +1,198 @@
+<div fxLayout="row wrap" class="m-t-5">
+    <div fxFlex.gt-lg="50" fxFlex.gt-md="50" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+
+        <mat-card class="section-title no-shadow m-l-0" style="box-shadow: none !important; margin-bottom: 0 !important;">
+            <mat-card-content class="p-0">
+                <div fxLayout="row wrap">
+                    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex="100">
+                        <mat-card-title style="font-size:20px;" class="help-text-hover-cont">
+                            <div class="popover__wrapper">
+                                <span class="second-title m-r-5">Activity reports </span> 
+                                <mat-icon class="absolute help-text-hover-cont popover__title" (click)="titleShow = !titleShow" style="color: #D3CDC6;cursor: pointer;">help_outline</mat-icon>
+                                <div class="popover__content">
+                                    <h4 class="second-title popover__heading">Activity reports</h4>
+                                    <p class="popover__message">Represents the trend of the active and inactive time of the resident. The graph can be used to ensure that the active time of the resident is in the right level (same or upward trend) to ensure healthy aging. Active time is based on the times the resident has been active and walking where as inactive time is based on sitting and sleeping.</p>
+                                </div>
+                            </div>
+                        </mat-card-title>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="halfbox m-l-1">
+            <mat-card-header>
+              <div fxLayout="row wrap">
+                <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100" fxLayoutAlign="end center">
+                </div>
+              </div>
+            </mat-card-header>
+            <mat-card-content style="padding: 0 24px !important">
+              <div id="visitor-chart">
+                <div id="activeGraph" *ngIf="showActiveGraph">
+                    <apx-chart
+                      [series]="activeGraphOptions.series"
+                      [chart]="activeGraphOptions.chart"
+                      [xaxis]="activeGraphOptions.xaxis"
+                      [stroke]="activeGraphOptions.stroke"
+                      [colors]="activeGraphOptions.colors"
+                      [dataLabels]="activeGraphOptions.dataLabels"
+                      [legend]="activeGraphOptions.legend"
+                      [markers]="activeGraphOptions.markers"
+                      [grid]="activeGraphOptions.grid"
+                      [yaxis]="activeGraphOptions.yaxis"
+                      [tooltip]="activeGraphOptions?.tooltip"
+                      [title]="activeGraphOptions.title"
+                    ></apx-chart>
+                </div>
+                <div class="preloader" *ngIf="!showActiveGraph && !noActiveData" fxLayoutAlign="center center" [ngStyle]="{'background-color': 'unset', position: 'unset', height: '350px'}">
+                    <div class="spinner" [ngStyle]="{margin: 'unset', top: 'unset'}">
+                      <img alt="loading.." src="assets/images/loading.gif" width="40px" height="40px" />
+                    </div>
+                </div>
+                <div *ngIf="noActiveData && !showActiveGraph" fxLayout="column" fxLayoutGap="0.2em" fxLayoutAlign="center center" [ngStyle]="{width: '100%',height: '350px', background: 'transparent'}">
+                    <mat-icon class="no-data-icon">info</mat-icon>
+                    <p>No data available</p>
+                </div>
+              </div>
+            </mat-card-content>
+            <mat-card-actions fxLayoutAlign="start center">
+                <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                    <div class="" fxFlex="25" fxFlex.gt-md="25" fxFlex.gt-lg="25" fxLayoutAlign="start center">
+                        <div class="date-filter cursor-pointer" [matMenuTriggerFor]="intervalsActivity">
+                            <span class="font-14">{{activityFilter}} </span>
+                            <mat-icon class="absolute viewAllicon">arrow_drop_down</mat-icon>
+                        </div>
+                    </div>
+                    <div fxFlex="45" fxFlex.gt-md="45" fxFlex.gt-lg="45" fxLayoutAlign="end center">
+                        <div fxFlex="100" class="date-filter cursor-pointer" (click)="activity.click()" fxLayoutAlign="space-between center" *ngIf="activityFilter === 'Custom range'">
+                            <span class="font-14">{{initialDates?.startDate | date: getFilterFormat()}} - {{initialDates?.endDate | date : getFilterFormat()}}</span>
+                            <mat-icon class="absolute viewAllicon">arrow_drop_down</mat-icon>
+                            <div class="font-14" style="visibility: hidden;position: absolute;">
+                                <div>
+                                    <input #activity
+                                        type="text"
+                                        ngxDaterangepickerMd
+                                        [(ngModel)]="initialDates"
+                                        [locale]="{ applyLabel: 'Done', firstDay: 1 }"
+                                        [maxDate]="momentToday"
+                                        (change)="change($event,'activity')"
+                                        [showDropdowns]="true"
+                                        [lockStartDate]="false"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+    <div fxFlex.gt-lg="50" fxFlex.gt-md="50" fxFlex.gt-sm="50" fxFlex.gt-xs="100" fxFlex="100">
+        <mat-card class="section-title no-shadow m-l-0" style="box-shadow: none !important; margin-bottom: 0 !important;">
+            <mat-card-content class="p-0">
+                <div fxLayout="row wrap">
+                    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex="100">
+                        <mat-card-title style="font-size:20px;">
+                            <div class="popover__wrapper">
+                                <span class="second-title m-r-5">Risk reports </span> 
+                                <mat-icon class="absolute help-text-hover-cont popover__title" (click)="titleShow = !titleShow" style="color: #D3CDC6;cursor: pointer;">help_outline</mat-icon>
+                                <div class="popover__content">
+                                    <h4 class="second-title popover__heading">Risk reports</h4>
+                                    <p class="popover__message">
+                                        Represents the percentage of maximum this week when compared to the previous week. Balance is based on their walking pattern, strength is based on their sedentary time and sleep is based on total sleep time.
+                                        <br/><span style="font-size:10px;">*Custom date range can be selected</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </mat-card-title>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="halfbox m-l-1 m-r-1">
+            <mat-card-header>
+              <div fxLayout="row wrap">
+                <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100" fxLayoutAlign="end center" fxLayoutGap="0.8em">
+                    <div class="balance" style="width: fit-content">
+                        <mat-icon class="{{ residentData?.Balance }}" style="font-size: 30px;" title="Balance risk - {{ residentData?.Balance }}">directions_walk</mat-icon>
+                    </div>
+                    <div class="strength" style="width: fit-content">
+                        <mat-icon class="{{ residentData?.Strength }}" style="font-size: 30px;" title="Strength risk - {{ residentData?.Strength }}">airline_seat_recline_normal</mat-icon>
+                    </div>
+                    <div class="sleep" style="width: fit-content">
+                        <mat-icon class="{{ residentData?.Sleep }}" style="font-size: 30px;" title="Sleep risk - {{ residentData?.Sleep }}">hotel</mat-icon>
+                    </div>
+                </div>
+              </div>
+            </mat-card-header>
+            <mat-card-content style="padding: 0 24px !important">
+              <div id="visitor-chart">
+                <div id="bsschart" *ngIf="showRiskGraph">
+                    <apx-chart
+                      [series]="bssChartOptions.series"
+                      [chart]="bssChartOptions.chart"
+                      [xaxis]="bssChartOptions.xaxis"
+                      [stroke]="bssChartOptions.stroke"
+                      [colors]="bssChartOptions.colors"
+                      [dataLabels]="bssChartOptions.dataLabels"
+                      [legend]="bssChartOptions.legend"
+                      [markers]="bssChartOptions.markers"
+                      [grid]="bssChartOptions.grid"
+                      [yaxis]="bssChartOptions.yaxis"
+                      [tooltip]="bssChartOptions?.tooltip"
+                      [title]="bssChartOptions.title"
+                    ></apx-chart>
+                </div>
+                <div class="preloader" *ngIf="!showRiskGraph && !noRiskData" fxLayoutAlign="center center" [ngStyle]="{'background-color': 'unset', position: 'unset', height: '350px'}">
+                    <div class="spinner" [ngStyle]="{margin: 'unset', top: 'unset'}">
+                      <img alt="loading.." src="assets/images/loading.gif" width="40px" height="40px" />
+                    </div>
+                </div>
+                <div *ngIf="noRiskData && !showRiskGraph" fxLayout="column" fxLayoutGap="0.2em" fxLayoutAlign="center center" [ngStyle]="{width: '100%',height: '350px', background: 'transparent'}">
+                    <mat-icon class="no-data-icon">info</mat-icon>
+                    <p>No data available</p>
+                </div>
+              </div>
+            </mat-card-content>
+            <mat-card-actions fxLayoutAlign="start center">
+                <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                    <div class="" fxFlex="25" fxFlex.gt-md="25" fxFlex.gt-lg="25" fxLayoutAlign="start center">
+                        <div class="date-filter cursor-pointer" [matMenuTriggerFor]="intervals">
+                            <span class="font-14">{{riskFilter}} </span>
+                            <mat-icon class="absolute viewAllicon">arrow_drop_down</mat-icon>
+                        </div>
+                    </div>
+                    <div fxFlex="45" fxFlex.gt-md="45" fxFlex.gt-lg="45" fxLayoutAlign="end center" >
+                        <div fxFlex="100" class="date-filter cursor-pointer" (click)="risk.click()" fxLayoutAlign="space-between center" *ngIf="riskFilter === 'Custom range'">
+                            <span class="font-14">{{initialRiskDates?.startDate | date: getFilterFormat()}} - {{initialRiskDates?.endDate | date : getFilterFormat()}}</span>
+                            <mat-icon class="absolute viewAllicon">arrow_drop_down</mat-icon>
+                            <div class="font-14" style="visibility: hidden;position: absolute;">
+                                <div>
+                                    <input #risk
+                                        type="text"
+                                        ngxDaterangepickerMd
+                                        [(ngModel)]="initialRiskDates"
+                                        [locale]="{ applyLabel: 'Done', firstDay: 1 }"
+                                        [maxDate]="momentToday"
+                                        (change)="change($event,'risk')"
+                                        [showDropdowns]="true"
+                                        [lockStartDate]="false"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>
+<mat-menu #intervalsActivity="matMenu" class="mymegamenu">
+    <button mat-menu-item (click)="updateFilter('Last 7 days')">Last 7 days</button>
+    <button mat-menu-item (click)="updateFilter('Custom range')">Custom Range</button>
+</mat-menu>
+<mat-menu #intervals="matMenu" class="mymegamenu">
+    <button mat-menu-item (click)="updateRisk('Last 7 days')">Last 7 days</button>
+    <button mat-menu-item (click)="updateRisk('Custom range')">Custom Range</button>
+</mat-menu>

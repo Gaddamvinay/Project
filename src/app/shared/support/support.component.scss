@@ -1,0 +1,65 @@
+.support-tags {
+	padding-top: 0 !important;
+	margin-top: 0 !important;
+	.tag-menu {
+		border-bottom: 1px solid #ddd;
+		padding: 10px;
+		.menu-head {
+			margin-bottom: 5px;
+			display: block;
+		}
+		a {
+			font-size: 15px;
+			padding: 6px 0 4px 5px;
+			color: #434342;
+			width: 100%;
+			&:hover {
+				background: rgba(0, 0, 0, 0.04);
+			}
+		}
+		
+		.tag-sub-menu {
+			a {
+				display: block;
+				width: 100%;
+				padding: 6px 0 4px 30px;
+				&:hover {
+					background: rgba(0, 0, 0, 0.04);
+				}
+				&:focus {
+					background: rgba(0, 0, 0, 0.04);
+				}
+			}
+			
+		}
+		&:last-child {
+			border-bottom: none;
+		}
+	}
+}
+.display0.active-0,
+.display1.active-1,
+.display2.active-2,
+.display3.active-3,
+.display4.active-4,
+.display5.active-5,
+.display6.active-6,
+.display7.active-7,
+.display8.active-8,
+.display9.active-9,
+.display10.active-10,
+.display11.active-11,
+.display12.active-12,
+.display13.active-13, 
+.display14.active-14, 
+.displayA.active-A,
+.displayB.active-B,
+.displayC.active-C {
+	color: #434342 !important;
+	/* font-weight: 700; */
+	background: rgba(0, 0, 0, 0.04);
+}
+.disable2.active-2 {
+	background-color: #fff;
+	color: #015174;
+}

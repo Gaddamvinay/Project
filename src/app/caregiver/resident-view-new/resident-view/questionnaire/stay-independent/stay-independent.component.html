@@ -1,0 +1,66 @@
+<div fxLayout="row wrap" fxLayoutAlign="start center" *ngIf="!loading">
+    <diV class="m-t-10" fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="40px">
+        <div class="form-field exceptional-select2">
+            <p class="arjoform-label">Questionnaire score</p>
+            <mat-form-field appearance="outline" class="m-r-10">
+                <input matInput type="text" [disabled]="disableForm" #count [value]="getRisk()" readonly />
+            </mat-form-field>
+        </div>
+        <div class="form-field exceptional-select2">
+            <p class="arjoform-label">Have you fallen at some point in the past year? <span class="required">*</span></p>
+            <mat-form-field appearance="outline" class="m-r-10">
+                <mat-select [value]="getFallenValue(10101)" [disabled]="disableForm" (selectionChange)="changeFallen($event.value,10101)">
+                  <mat-option [value]="true">Yes</mat-option>
+                  <mat-option [value]="false">No</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="form-field exceptional-select2" *ngIf="getFallenValue(10101)">
+            <p class="arjoform-label">How many times have you fallen? <span class="required">*</span></p>
+            <mat-form-field appearance="outline" class="m-r-10">
+                <input matInput type="text" #count [disabled]="disableForm" (change)="changeFallCount(count.value,'10102')" [value]="getFallCount('10102')" />
+            </mat-form-field>
+        </div>
+        <div class="form-field exceptional-select2">
+            <p class="arjoform-label">Any injuries?</p>
+            <mat-form-field appearance="outline" class="m-r-10">
+                <mat-select [value]="false" [disabled]="disableForm" (selectionChange)="changeInjury($event.value,10103)">
+                  <mat-option [value]="true">Yes</mat-option>
+                  <mat-option [value]="false">No</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="form-field exceptional-select2" *ngIf="getInjuryValue(10103)">
+            <p class="arjoform-label">Optional comments</p>
+            <mat-form-field appearance="outline" class="m-0">
+                <textarea cdkTextareaAutosize [disabled]="disableForm" cdkAutosizeMinRows="4" #medic (keyup)="changeInjuryDetails(medic.value)" matInput placeholder="About ex..."></textarea>
+            </mat-form-field>
+        </div>
+    </diV>
+    <div class="m-t-10" fxFlex="100" fxLayout="column" fxLayoutGap="0.8em">
+        <p class="arjoform-title">Questionnaire</p>
+        <div fxLayout="row wrap" style="width: 100%;">
+            <ng-container *ngFor="let question of questionnaire">
+                <div class="m-t-5" fxFlex="50">
+                    <mat-checkbox [disabled]="disableForm" [checked]="getValue(question.questionID)" (change)="changeStay($event.checked, question.questionID)">{{question.label}}</mat-checkbox>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+    <div class="form-field exceptional-select2 m-t-10">
+        <p class="arjoform-label">Walking ability <span class="required">*</span></p>
+        <mat-form-field appearance="outline" class="m-r-10">
+            <mat-select [disabled]="disableForm" [value]="getWalkingValue()" (selectionChange)="changeWalking($event.value)">
+                <mat-option disabled value=""> Select option</mat-option>
+                <mat-option [value]="value.answerID" *ngFor="let value of getWalking()">{{value.answer}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
+<div *ngIf="loading">
+    <div class="preloader" fxLayoutAlign="center center" [ngStyle]="{'background-color': 'unset', position: 'unset', height: '300px'}">
+        <div class="spinner" [ngStyle]="{margin: 'unset', top: 'unset'}">
+            <img alt="loading.." src="assets/images/loading.gif" width="40px" height="40px" />
+          </div>
+    </div>
+</div>

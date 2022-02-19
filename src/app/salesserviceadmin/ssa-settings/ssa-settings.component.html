@@ -1,0 +1,160 @@
+<div class="relative">
+    <div style="width: 100%;">
+        <mat-card class="section-title no-shadow" style="box-shadow: none !important; margin: 0 !important;">
+            <mat-card-content class="p-b-0">
+                <div fxFlex.gt-lg="70" fxFlex.gt-md="70" fxFlex="100">
+					<mat-card-title>
+						<div class="popover__wrapper">
+							<span class="second-title m-r-5">Settings</span> 
+							<mat-icon class="absolute help-text-hover-cont popover__title" style="color: #D3CDC6;cursor: pointer;">help_outline</mat-icon>
+							<div class="popover__content">
+								<h4 class="second-title popover__heading">Settings</h4>
+								<div class="popover__message">
+									<span>Settings to turn on or off</span>
+								</div>
+							</div>
+						</div>
+					</mat-card-title>
+				</div>
+				<div fxFlex.gt-lg="30" fxFlex.gt-md="30" fxFlex="100" class="text-right"></div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <mat-card class="model" style="box-shadow: none !important; margin: 0 !important;">
+        <mat-card-content>
+            <div class="">
+				<div fxLayout="row wrap" class="p-10" style="border-bottom: 1px solid #d3cdc6;">
+					<div class="noti-text" fxFlex.gt-lg="60" fxFlex.gt-md="70">
+						<span class="font-14" style="font-weight: 900;">Tabs</span>
+					</div>
+					<div class="custom-setting text-center" fxFlex.gt-lg="20" fxFlex.gt-md="15">
+						<span class="font-14" style="font-weight: 900;">SSA</span>
+					</div>
+					<div class="facility-setting text-center" fxFlex.gt-lg="20" fxFlex.gt-md="15">
+						<span class="font-14" style="font-weight: 900;">CHQ</span>
+					</div>
+                </div>
+                <div fxLayout="row wrap" class="p-10" style="border-bottom: 1px solid #d3cdc6;">
+					<div class="noti-text" fxFlex.gt-lg="60" fxFlex.gt-md="70">
+						<span class="font-14" style="font-weight: 900;">Customers</span>
+					</div>
+					<div class="custom-setting text-center" fxFlex.gt-lg="20" fxFlex.gt-md="15">
+						<mat-checkbox color="accent"></mat-checkbox>
+					</div>
+					<div class="facility-setting text-center" fxFlex.gt-lg="20" fxFlex.gt-md="15">
+                        <mat-checkbox disabled color="accent"></mat-checkbox>
+					</div>
+                </div>
+                <div fxLayout="row wrap" class="p-10" style="border-bottom: 1px solid #d3cdc6;">
+					<div class="noti-text" fxFlex.gt-lg="60" fxFlex.gt-md="70">
+						<span class="font-14" style="font-weight: 900;">Facility</span>
+					</div>
+					<div class="custom-setting text-center" fxFlex.gt-lg="20" fxFlex.gt-md="15">
+                        <mat-checkbox color="accent"></mat-checkbox>
+					</div>
+					<div class="facility-setting text-center" fxFlex.gt-lg="20" fxFlex.gt-md="15">
+                        <mat-checkbox color="accent"></mat-checkbox>
+					</div>
+                </div>
+                <div fxLayout="row wrap" class="p-10" style="border-bottom: 1px solid #d3cdc6;">
+					<div class="noti-text" fxFlex.gt-lg="60" fxFlex.gt-md="70">
+						<span class="font-14" style="font-weight: 900;">Wards</span>
+					</div>
+					<div class="custom-setting text-center" fxFlex.gt-lg="20" fxFlex.gt-md="15">
+                        <mat-checkbox color="accent"></mat-checkbox>
+					</div>
+					<div class="facility-setting text-center" fxFlex.gt-lg="20" fxFlex.gt-md="15">
+                        <mat-checkbox color="accent"></mat-checkbox>
+					</div>
+                </div>
+                <div fxLayout="row wrap" class="p-10" style="border-bottom: 1px solid #d3cdc6;">
+					<div class="noti-text" fxFlex.gt-lg="60" fxFlex.gt-md="70">
+						<span class="font-14" style="font-weight: 900;">Access control</span>
+					</div>
+					<div class="custom-setting text-center" fxFlex.gt-lg="20" fxFlex.gt-md="15">
+                        <mat-checkbox [(ngModel)]="access" color="accent"></mat-checkbox>
+					</div>
+					<div class="facility-setting text-center" fxFlex.gt-lg="20" fxFlex.gt-md="15">
+                        <mat-checkbox disabled color="accent"></mat-checkbox>
+					</div>
+				</div>
+				<ng-container *ngIf="access">
+					<div fxLayout="row wrap" class="p-10" style="border-bottom: 1px solid #d3cdc6;">
+						<div class="noti-text" fxFlex.gt-lg="60" fxFlex.gt-md="70">
+							<span class="font-14" style="font-weight: 900;">Customer admin</span>
+						</div>
+						<div class="custom-setting text-center" fxFlex.gt-lg="20" fxFlex.gt-md="15">
+							<mat-checkbox color="accent"></mat-checkbox>
+						</div>
+						<div class="facility-setting text-center" fxFlex.gt-lg="20" fxFlex.gt-md="15">
+							<mat-checkbox disabled color="accent"></mat-checkbox>
+						</div>
+					</div>
+					<div fxLayout="row wrap" class="p-10" style="border-bottom: 1px solid #d3cdc6;">
+						<div class="noti-text" fxFlex.gt-lg="60" fxFlex.gt-md="70">
+							<span class="font-14" style="font-weight: 900;">Facility admin</span>
+						</div>
+						<div class="custom-setting text-center" fxFlex.gt-lg="20" fxFlex.gt-md="15">
+							<mat-checkbox color="accent"></mat-checkbox>
+						</div>
+						<div class="facility-setting text-center" fxFlex.gt-lg="20" fxFlex.gt-md="15">
+							<mat-checkbox disabled color="accent"></mat-checkbox>
+						</div>
+					</div>
+					<div fxLayout="row wrap" class="p-10" style="border-bottom: 1px solid #d3cdc6;">
+						<div class="noti-text" fxFlex.gt-lg="60" fxFlex.gt-md="70">
+							<span class="font-14" style="font-weight: 900;">Ward admin</span>
+						</div>
+						<div class="custom-setting text-center" fxFlex.gt-lg="20" fxFlex.gt-md="15">
+							<mat-checkbox color="accent"></mat-checkbox>
+						</div>
+						<div class="facility-setting text-center" fxFlex.gt-lg="20" fxFlex.gt-md="15">
+							<mat-checkbox disabled color="accent"></mat-checkbox>
+						</div>
+					</div>
+					<div fxLayout="row wrap" class="p-10" style="border-bottom: 1px solid #d3cdc6;">
+						<div class="noti-text" fxFlex.gt-lg="60" fxFlex.gt-md="70">
+							<span class="font-14" style="font-weight: 900;">Caregiver</span>
+						</div>
+						<div class="custom-setting text-center" fxFlex.gt-lg="20" fxFlex.gt-md="15">
+							<mat-checkbox color="accent"></mat-checkbox>
+						</div>
+						<div class="facility-setting text-center" fxFlex.gt-lg="20" fxFlex.gt-md="15">
+							<mat-checkbox disabled color="accent"></mat-checkbox>
+						</div>
+					</div>
+				</ng-container>
+            </div>
+        </mat-card-content>
+        <mat-card-actions fxLayoutAlign="start center">
+            <div fxLayout="row wrap" fxFlex="100">
+				<div fxFlex.gt-lg="50" fxFlex="50" class="text-left">
+					
+				</div>
+				<div fxFlex.gt-lg="50" fxFlex="50" class="text-right">
+					<button mat-button type="submit" class="cancel m-r-10" mat-dialog-close>
+						Cancel
+					</button>
+					<button mat-raised-button color="accent" [disabled]="checkChangeMade()" type="submit">
+						Save
+					</button>
+				</div>
+			</div>
+        </mat-card-actions>
+	</mat-card>
+	<div class="absolute" style="bottom: 0;z-index: 999;width: 100%; height: 100%;backdrop-filter: blur(2px);" *ngIf="showWarning" fxLayoutAlign="center center">
+		<div class="warning" fxLayoutAlign="center center" fxLayout="column">
+			<p class="m-0" style="font-weight: 600; font-size: 20px">Change settings</p>
+			<p class="m-0 text-muted" style="font-size: 14px">Are you sure you want to change settings?</p>
+			<div style="margin: 20px 0">
+				<button mat-button type="submit" class="m-r-10" (click)="reverseChange()">
+					Cancel
+				</button>
+				<button mat-raised-button color="accent" (click)="makeChange()">
+					Change
+				</button>
+			</div>
+		</div>
+	</div>
+    <mat-icon class="absolute cursor-pointer" style="top: 16px; right: 16px" mat-dialog-close>close</mat-icon>
+</div>

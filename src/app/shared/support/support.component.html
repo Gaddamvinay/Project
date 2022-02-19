@@ -1,0 +1,237 @@
+<div class="page-breadcrumb">
+	<div fxLayout="row wrap" fxLayoutAlign="space-between center">
+		<div fxFlex.gt-sm="60" fxFlex.gt-xs="60" fxFlex="100" class="align-self-center">
+			<div class="breadcrumb d-flex align-items-left float-left float-sm-left">
+				<ul class="list-style-none d-flex align-items-left">
+					<li class="breadcrumb-item cursor-pointer" (click)="navigate()">
+						<span class="text-muted">Home</span>
+					</li>
+					<li class="breadcrumb-item active">Support</li>
+				</ul>
+			</div>
+		</div>
+		 <button mat-button class="m-r-10" [matMenuTriggerFor]="dateFormats">{{ today | date: getFormat() }}</button>
+	</div>
+</div>
+<mat-menu #dateFormats="matMenu" class="mymegamenu">
+	<button mat-menu-item (click)="changeFormat('MM/dd/yyyy')">{{ today | date:'MM/dd/yyyy' }}</button>
+	<button mat-menu-item (click)="changeFormat('M/dd/yyyy')">{{ today | date:'M/dd/yyyy' }}</button>
+	<button mat-menu-item (click)="changeFormat('dd/MM/yyyy')">{{ today | date:'dd/MM/yyyy' }}</button>
+	<button mat-menu-item (click)="changeFormat('d/MM/yyyy')">{{ today | date:'d/MM/yyyy' }}</button>
+	<button mat-menu-item (click)="changeFormat('yyyy/dd/MM')">{{ today | date:'yyyy/dd/MM' }}</button>
+	<button mat-menu-item (click)="changeFormat('yyyy/d/M')">{{ today | date:'yyyy/d/M' }}</button>
+	<button mat-menu-item (click)="changeFormat('MMM d, y')">{{ today | date:'MMM d, y' }}</button>
+	<button mat-menu-item (click)="changeFormat('d MMM, y')">{{ today | date:'d MMM, y' }}</button>
+	<button mat-menu-item (click)="changeFormat('y MMM, d')">{{ today | date:'y MMM, d' }}</button>
+	<button mat-menu-item (click)="changeFormat('EEEE, MMMM d, y')">{{ today | date:'EEEE, MMMM d, y' }}</button>
+	<button mat-menu-item (click)="changeFormat('MMMM d, y, EEEE')">{{ today | date:'MMMM d, y, EEEE' }}</button>
+</mat-menu>
+<div class="page-content">
+	<mat-card style="background-color: transparent !important; box-shadow: none !important;">
+		<div style="margin-left: -15px; margin-right: -15px; display: block !important;">
+			<mat-accordion class="support-panel">
+				<div fxFlex.gt-md="18" fxFlex="100">
+					<mat-card style="padding-top: 0 !important; margin-top: 0 !important;background-color: transparent !important; box-shadow: none !important;">
+						<mat-card-content class="support-tags p-0">
+							<div class="tag-menu">
+								<a (click)="viewType(0)" class="cursor-pointer display0 active-{{ displayviewType }} menu-head"> <mat-icon class="font-16 relative" style="top: 3px;">format_list_bulleted</mat-icon>All</a>
+							</div>
+							<ng-container *ngFor="let faq of supportFaq">
+								<div class="tag-menu">
+									<a (click)="viewType(faq.label)" class="cursor-pointer menu-head display{{faq.label}} active-{{ displayviewType }}"> <mat-icon class="font-16 relative" style="top: 3px;">{{faq.icon}}</mat-icon>{{faq.group}}</a>
+									<div class="tag-sub-menu" *ngFor="let question of faq.questionType">
+										<a (click)="viewType(question.label)" class="cursor-pointer display{{question.label}} active-{{ displayviewType }}">{{question.type}}</a>
+									</div>
+								</div>
+							</ng-container>
+						</mat-card-content>
+					</mat-card>
+				</div>
+				<div fxFlex.gt-md="2" fxFlex="100"></div>
+				<div fxFlex.gt-md="80" fxFlex="100">
+					<div [ngSwitch]="displayviewType">
+						<ng-container *ngFor="let faq of supportFaq">
+							<ng-container *ngSwitchCase="faq.label">
+								<ng-container *ngFor="let question of faq.questionType">
+									<ng-container *ngFor="let ques of question.questions">
+										<mat-expansion-panel hideToggle="true">
+											<mat-expansion-panel-header>
+												<mat-panel-title> {{ques.question}} </mat-panel-title>
+												<mat-panel-description>
+													<mat-icon>keyboard_arrow_down</mat-icon>
+												</mat-panel-description>
+											</mat-expansion-panel-header>
+											<div fxLayout="column">
+												<span style="width: 100%;" [innerHTML]="ques.answer"></span>
+												<div style="width: 100%;" fxLayoutAlign="end center" fxLayoutGap="0.8em">
+													<div class="m-t-20">
+														<span>Not helpful.? <span class="cursor-pointer" (click)="viewType(-1, question)" style="text-decoration: underline;"> Contact us </span></span>
+													</div>
+												</div>
+											</div>
+										</mat-expansion-panel>
+									</ng-container>
+								</ng-container>
+							</ng-container>
+						</ng-container>
+						<ng-container *ngFor="let faq of supportFaq; let i = index">
+							<ng-container *ngFor="let question of supportFaq[i].questionType">
+								<ng-container *ngSwitchCase="question.label">
+									<ng-container *ngFor="let ques of question.questions">
+										<mat-expansion-panel hideToggle="true">
+											<mat-expansion-panel-header>
+												<mat-panel-title> {{ques.question}} </mat-panel-title>
+												<mat-panel-description>
+													<mat-icon>keyboard_arrow_down</mat-icon>
+												</mat-panel-description>
+											</mat-expansion-panel-header>
+											<div fxLayout="column">
+												<span style="width: 100%;" [innerHTML]="ques.answer"></span>
+												<div style="width: 100%;" fxLayoutAlign="end center" fxLayoutGap="0.8em">
+													<div class="m-t-20">
+														<span>Not helpful.? <span class="cursor-pointer" (click)="viewType(-1, question)" style="text-decoration: underline;"> Contact us </span></span>
+													</div>
+												</div>
+											</div>
+										</mat-expansion-panel>
+									</ng-container>
+								</ng-container>
+							</ng-container>
+						</ng-container>
+						<ng-container *ngSwitchDefault>
+							<ng-container *ngFor="let faq of faqs">
+								<mat-expansion-panel hideToggle="true">
+									<mat-expansion-panel-header>
+										<mat-panel-title> {{faq.question}} </mat-panel-title>
+										<mat-panel-description>
+											<mat-icon>keyboard_arrow_down</mat-icon>
+										</mat-panel-description>
+									</mat-expansion-panel-header>
+									<div fxLayout="column">
+										<span style="width: 100%;" [innerHTML]="faq.answer"></span>
+										<div style="width: 100%;" fxLayoutAlign="end center" fxLayoutGap="0.8em">
+											<div class="m-t-20">
+												<span>Not helpful.? <span class="cursor-pointer" (click)="viewType(-1, faq)" style="text-decoration: underline;"> Contact us </span></span>
+											</div>
+										</div>
+									</div>
+								</mat-expansion-panel>
+							</ng-container>
+						</ng-container>
+						<ng-container *ngSwitchCase="0">
+							<ng-container *ngFor="let faq of faqs">
+								<mat-expansion-panel hideToggle="true">
+									<mat-expansion-panel-header>
+										<mat-panel-title> {{faq.question}} </mat-panel-title>
+										<mat-panel-description>
+											<mat-icon>keyboard_arrow_down</mat-icon>
+										</mat-panel-description>
+									</mat-expansion-panel-header>
+									<div fxLayout="column">
+										<span style="width: 100%;" [innerHTML]="faq.answer"></span>
+										<div style="width: 100%;" fxLayoutAlign="start center" fxLayoutGap="0.8em">
+											<div class="m-t-20">
+												<span>Not helpful.? <span class="cursor-pointer" (click)="viewType(-1, faq)" style="text-decoration: underline;"> Contact us </span></span>
+											</div>
+										</div>
+									</div>
+								</mat-expansion-panel>
+							</ng-container>
+						</ng-container>
+						<ng-container *ngSwitchCase="-1">
+							<div style="width: 100%;">
+								<mat-card class="section-title no-shadow" style="box-shadow: none !important; margin-bottom: 0 !important;">
+									<mat-card-content class="p-0">
+										<div fxLayout="row wrap">
+											<div fxFlex.gt-lg="65" fxFlex.gt-md="55" fxFlex="100">
+												<mat-card-title style="font-size:20px;"><span class="m-r-5">Contact us form </span> <mat-icon class="absolute" (click)="titleShow = !titleShow" style="color: #D3CDC6;cursor: pointer;" title="Please fill the details to contact us">help_outline</mat-icon> </mat-card-title>
+												
+												<mat-card-subtitle *ngIf="titleShow" style="margin-bottom: 0 !important;">Please fill the details to contact us</mat-card-subtitle>
+											</div>
+										</div>
+									</mat-card-content>
+								</mat-card>
+							</div>
+							<mat-card class="graph-section">
+								<mat-card-content >
+									<form class="font-14" [formGroup]="contactForm" (ngSubmit)="sendQuestion()">
+										<div fxLayout="row wrap">
+											<div fxFlex.gt-md="33.33" fxFlex="100" class="p-r-10">
+												<p class="m-b-0">Select country</p>
+												<mat-form-field appearance="outline">
+													<mat-select formControlName="country">
+														<mat-option [value]="country.value" *ngFor="let country of countries">{{country.label}}</mat-option>
+													</mat-select>
+												</mat-form-field>
+											</div>
+											<div fxFlex.gt-md="33.33" fxFlex="100" class="p-r-10">
+												<p class="m-b-0">First name</p>
+												<mat-form-field appearance="outline">
+													<input placeholder="first name" type="text" matInput required formControlName="firstName" />
+												</mat-form-field>
+											</div>
+											<div fxFlex.gt-md="33.33" fxFlex="100" class="p-r-10">
+												<p class="m-b-0">Last name</p>
+												<mat-form-field appearance="outline">
+													<input placeholder="last name" type="text" matInput required formControlName="lastName"/>
+												</mat-form-field>
+											</div>
+										</div>
+										<div fxLayout="row wrap">
+											<div fxFlex.gt-md="33.33" fxFlex="100" class="p-r-10">
+												<p class="m-b-0">Email</p>
+												<mat-form-field appearance="outline">
+													<input placeholder="Email" type="text" matInput required formControlName="email"/>
+												</mat-form-field>
+											</div>
+											<div fxFlex.gt-md="66.66" fxFlex="100" class="p-r-10">
+												<p class="m-b-0">What is your enquiry about?</p>
+												<mat-form-field appearance="outline">
+													<mat-select required formControlName="question">
+														<mat-optgroup label="wearable">
+															<mat-option value="Physical damage">Physical damage</mat-option>
+															<mat-option value="Lost wearable">Lost wearable</mat-option>
+															<mat-option value="Wearable data">Wearable data</mat-option>
+															<mat-option value="Performance issues">Performance Issues</mat-option>
+														</mat-optgroup>
+														<mat-optgroup label="Charging station">
+															<mat-option value="Charge wearable">Charge wearable</mat-option>
+															<mat-option value="Physical Damage">Physical damage</mat-option>
+															<mat-option value="Lost charging station">Lost charging station</mat-option>
+															<mat-option value="Performance Issues">Performance Issues</mat-option>
+														</mat-optgroup>
+														<mat-optgroup label="Dashboard">
+															<mat-option value="Dashboard questions">Dashboard questions</mat-option>
+														</mat-optgroup>
+														<mat-optgroup label="--">
+															<mat-option value="Others">Other</mat-option>
+														</mat-optgroup>
+													</mat-select>
+												</mat-form-field>
+											</div>
+										</div>
+										<div fxLayout="row wrap">
+											<div fxFlex.gt-md="100" fxFlex="100" class="p-r-10">
+												<p class="m-b-0">Message</p>
+												<mat-form-field appearance="outline">
+													<textarea placeholder="Message" matInput formControlName="message" required matTextareaAutosize style="min-height: 35px;"></textarea>
+												</mat-form-field>
+											</div>
+										</div>
+									</form>
+								</mat-card-content>
+								<mat-card-actions>
+									<div fxLayout="row wrap">
+										<div fxFlex.gt-md="100" fxFlex="100" fxLayoutAlign="end center">
+											<button mat-raised-button type="submit" [disabled]="contactForm.invalid || !contactForm.dirty" color="primary">Submit</button>
+										</div>
+									</div>
+								</mat-card-actions>
+							</mat-card>
+						</ng-container>
+					</div>
+				</div>
+			</mat-accordion>
+		</div>
+	</mat-card>
+</div>

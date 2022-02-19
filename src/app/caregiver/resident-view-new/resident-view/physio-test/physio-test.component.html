@@ -1,0 +1,153 @@
+<div fxLayout="row wrap" class="m-t-5" *ngIf="!physioTestsLoading">
+    <!-- <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+        <mat-card class="section-title m-l-0" style="box-shadow: none !important;margin-bottom: 0 !important;">
+            <mat-card-content class="p-0">
+                <div fxLayout="row wrap">
+                    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex="100">
+                        <mat-card-title style="font-size:20px;">
+                            <div class="popover__wrapper">
+                                <span class="second-title m-r-5">Physio test summary</span> 
+                                <mat-icon class="absolute help-text-hover-cont popover__title" (click)="titleShow = !titleShow" style="color: #D3CDC6;cursor: pointer;">help_outline</mat-icon>
+                                <div class="popover__content">
+                                    <h4 class="second-title popover__heading">Physio test summary</h4>
+                                    <div class="popover__message">
+                                        <span>Represents the risk assessment from the physio tests performed by the resident over a period of time. </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-card-title>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="halfbox m-l-1 m-r-1">
+            <mat-card-header>
+                <div fxLayout="row wrap">
+                  <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100" fxLayoutAlign="end center">
+                  </div>
+                </div>
+            </mat-card-header>
+            <mat-card-content style="padding: 0 24px !important">
+                <div id="visitor-chart" *ngIf="!physioTestsLoading && !noData">
+                    <div id="loa-graph">
+                       <apx-chart
+                        #chart
+                        [series]="chartOptions?.series"
+                        [chart]="chartOptions?.chart"
+                        [colors]="chartOptions?.colors"
+                        [yaxis]="chartOptions?.yaxis"
+                        [dataLabels]="chartOptions?.dataLabels"
+                        [markers]="chartOptions?.markers"
+                        [legend]="chartOptions?.legend"
+                        [stroke]="chartOptions?.stroke"
+                        [grid]="chartOptions?.grid"
+                        [title]="chartOptions?.title"
+                        [xaxis]="chartOptions?.xaxis"
+                        [tooltip]="chartOptions?.tooltip"
+                        [annotations]="chartOptions?.annotations"
+                        [plotOptions]="chartOptions?.plotOptions"
+                        ></apx-chart> 
+                    </div>
+                </div>
+                <div class="preloader" *ngIf="physioTestsLoading && !noData" fxLayoutAlign="center center" [ngStyle]="{'background-color': 'unset', position: 'unset', height: '320px'}">
+                    <div class="spinner" [ngStyle]="{margin: 'unset', top: 'unset'}">
+                        <img alt="loading.." src="assets/images/loading.gif" width="40px" height="40px" />
+                    </div>
+                </div>
+                <div *ngIf="!physioTestsLoading && noData" fxLayout="column" fxLayoutGap="0.2em"
+                    fxLayoutAlign="center center"
+                    [ngStyle]="{width: '100%',height: '350px', background: 'transparent'}">
+                    <mat-icon class="no-data-icon">info</mat-icon>
+                    <p>No data available</p>
+                </div>
+            </mat-card-content>
+            <mat-card-actions fxLayoutAlign="start center">
+                <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                    <div class="" fxFlex="12" fxFlex.gt-md="12" fxFlex.gt-lg="12" fxLayoutAlign="start center">
+                        <div class="date-filter cursor-pointer" [matMenuTriggerFor]="intervals">
+                            <span class="font-14">{{selectedFilter}} </span>
+                            <mat-icon class="absolute viewAllicon">arrow_drop_down</mat-icon>
+                        </div>
+                        <mat-menu #intervals="matMenu">
+                            <button mat-menu-item (click)="specificInterval = 6;updateOptions()">Last 6 months</button>
+                            <button mat-menu-item (click)="specificInterval = 12;updateOptions()">Last 12 months</button>
+                        </mat-menu>
+                    </div>
+                    <div class="relative" fxFlex="30" fxFlex.gt-md="30" fxFlex.gt-lg="30" fxLayoutAlign="end center">
+                        <div fxFlex="100" class="date-filter cursor-pointer" (click)="activity.click()" fxLayoutAlign="space-between center" *ngIf="selectedFilter === 'Custom range'">
+                            <span class="font-14" *ngIf="physioDates?.startDate">{{physioDates?.startDate | date: getFilterFormat()}} - {{physioDates?.endDate | date : getFilterFormat()}}</span>
+                            <span class="font-14" *ngIf="!physioDates?.startDate">Choose dates</span>
+                            <mat-icon class="absolute viewAllicon">arrow_drop_down</mat-icon>
+                            <div fxFlex.gt-lg="30" fxFlex.gt-md="30" fxFlex="100" class="font-14" style="visibility: hidden;position: absolute;">
+                                <div>
+                                    <input #activity
+                                        type="text"
+                                        ngxDaterangepickerMd
+                                        [locale]="{ applyLabel: 'Done', firstDay: 1 }"
+                                        [maxDate]="momentToday"
+                                        (change)="change($event)"
+                                        [showDropdowns]="true"
+                                        [lockStartDate]="false"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-actions>
+        </mat-card>
+
+    </div> -->
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+        <mat-card class="section-title no-shadow m-l-0 m-r-0" style="box-shadow: none !important; margin-bottom: 0 !important;">
+            <mat-card-content class="p-0">
+                <div fxLayout="row wrap">
+                    <div fxFlex.gt-lg="75" fxFlex.gt-md="75" fxFlex="100">
+                        <mat-card-title style="font-size:20px;">
+                            <div class="popover__wrapper">
+                                <span class="second-title m-r-5">Physio test history</span> 
+                                <mat-icon class="absolute help-text-hover-cont popover__title" (click)="titleShow = !titleShow" style="color: #D3CDC6;cursor: pointer;">help_outline</mat-icon>
+                                <div class="popover__content lg_popover">
+                                    <h4 class="second-title popover__heading">Physio test history</h4>
+                                    <div class="popover__message">
+                                        All the physio tests performed by the resident can be seen in chronological order below. Please look at the "Interpretations" column below to get an understanding of the physio tests assessment.<br/>
+                                        <ul>
+                                            <li>6MWT - 6 Minute Walking Test is conducted to assess the balance and is dependent on the following factors - height, weight, age and gender</li>
+                                            <li>30SCS - 30 Second Chair Stand test is conducted to assess the lower body strength and is dependent on the following factors - age and gender. </li>
+                                            <li>TUG - Timed Up and Go test is conducted to assess the mobility level and is dependent on the following factors - age and gender.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-card-title>
+                    </div>
+                    <div fxFlex.gt-lg="25" fxFlex.gt-md="25" fxFlex="100" fxLayoutAlign="end center">
+                        <button [matMenuTriggerFor]="physioTest" class="add-button m-l-15 p-l-20" mat-raised-button color="accent">
+                            Add new physio test
+                            <mat-icon>arrow_drop_down</mat-icon>
+                        </button>
+                        <mat-menu #physioTest>
+                            <button (click)="openDialog('6MWT')" style="padding: 0 120px 0 16px;" mat-menu-item>6MWT</button>
+                            <button (click)="openDialog('TUG')" style="padding: 0 120px 0 16px;" mat-menu-item>TUG</button>
+                            <button (click)="openDialog('30SCS')" style="padding: 0 120px 0 16px;" mat-menu-item>30SCS</button>
+                        </mat-menu>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <div style="margin: 0;">
+            <app-table
+                [widths]="widths"
+                [displayedColumns]="displayedColumns"
+                [tableData]="tableData"
+                [actionEnable]="false"
+                [link]="false"
+            ></app-table>
+        </div>
+    </div>
+</div>
+<div *ngIf="physioTestsLoading" class="preloader" fxLayoutAlign="center center" [ngStyle]="{'background-color': 'unset', position: 'unset', height: '300px'}">
+    <div class="spinner" [ngStyle]="{margin: 'unset', top: 'unset'}">
+        <img alt="loading.." src="assets/images/loading.gif" width="40px" height="40px" />
+      </div>
+</div>

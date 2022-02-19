@@ -1,0 +1,979 @@
+<mat-card class="model arjomodal commonaddpage">
+    <mat-card-header>
+        <div fxLayout="row wrap">
+            <div fxFlex.gt-lg="65" fxFlex.gt-md="65" fxFlex="100">
+                <mat-card-title>
+                    <span class="m-r-5 arjomodal-title">{{dialogType}}</span>
+                </mat-card-title>
+            </div>
+            <div fxFlex.gt-lg="35" fxFlex.gt-md="35" fxFlex="100" class="text-right" style="z-index:99;">
+                <mat-icon class="cursor-pointer" mat-dialog-close>close</mat-icon>
+            </div>
+        </div>
+    </mat-card-header>
+    <mat-card-content style="padding: 0 24px !important;">
+        <ng-container *ngIf="dialogType === 'Add downton fall risk index'">
+            <app-down-fall-risk (downFallValues)="getDownFallValues($event, 'down fall')"></app-down-fall-risk>
+        </ng-container>
+        <ng-container *ngIf="dialogType === 'Add stay independent'">
+            <app-stay-independent (stayIndependentValues)="getDownFallValues($event, 'stay')"></app-stay-independent>
+        </ng-container>
+        <ng-container *ngIf="dialogType === 'View downton fall risk index'">
+            <app-down-fall-risk></app-down-fall-risk>
+        </ng-container>
+        <ng-container *ngIf="dialogType === 'View stay independent'">
+            <app-stay-independent></app-stay-independent>
+        </ng-container>
+        <ng-container *ngIf="dialogType === 'Edit medications'">
+            <app-medical-form (medicationData)="getMedication($event)"></app-medical-form>
+        </ng-container>
+        <ng-container *ngIf="dialogType === 'Change password'">
+            <app-change-password (password)="getPassword($event)"></app-change-password>
+        </ng-container>
+        <form [formGroup]="addWardForm" *ngIf="dialogType === 'Add new ward'">
+            <div fxLayout="row nowrap" fxLayoutAlign="space-between start">
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%;" *ngIf="extraFields">
+                        <p class="arjoform-label">Customer name<span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <mat-select formControlName="customer_name"
+                                (selectionChange)="enableFacility($event.value)">
+                                <input matInput class="select-search" type="text" placeholder="Search customer"
+                                    formControlName="customerSearch" />
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option [value]="customer.customer_id"
+                                    *ngFor="let customer of getWFilterCustomer()">{{customer.customer_name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field" style="width: 90%;" *ngIf="!extraFields">
+                        <p class="arjoform-label">Facility name <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <mat-select formControlName="facilityName"
+                                (selectionChange)="enableCaregivers($event.value)">
+                                <input matInput class="select-search" type="text" placeholder="Search facility"
+                                    formControlName="facilitySearch" />
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option [value]="facility.facilityId"
+                                    *ngFor="let facility of getFilterFacilities()">{{facility.facilityName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field" style="width: 90%;" *ngIf="extraFields">
+                        <p class="arjoform-label">Ward name<span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="Ward Name" matInput type="text" formControlName="name" />
+                            <mat-hint *ngIf="checkWardExists()" class="text-danger support-text">Ward name exists
+                            </mat-hint>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field" style="width: 90%;"
+                        [ngStyle]="{'margin-top': (caregiverUserIds.length > 1 && extraFields) ? '30px': ''}">
+                        <p class="arjoform-label">Ward manager</p>
+                        <mat-form-field appearance="outline">
+                            <mat-select value="select" formControlName="wardManager">
+                                <input matInput class="select-search" type="text" placeholder="Search manager"
+                                    formControlName="managerSearch" />
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option *ngFor="let wards of getWardFilterManager()" [value]="wards.managerid">
+                                    {{ wards.managername }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field" *ngIf="!extraFields">
+                        <p class="arjoform-label">Ward telephone number<span class="required">*</span></p>
+                        <div fxLayout="column" fxLayoutGap="0.8em">
+                            <div fxLayoutAlign="start center" fxLayoutGap="0.8em" formArrayName="contactPhone"
+                                *ngFor="let phoneNumber of contactPhone.controls; let i =index">
+                                <div [formGroupName]="i" [fxFlex]="getNum(i) ? 85 : i > 0 ? 80 : 90">
+                                    <mat-form-field appearance="outline" class="unit-entry" [ngStyle]="{width: '30%'}"
+                                        style="margin: 0!important">
+                                        <mat-select matInput required name="ext" formControlName="ext">
+                                            <mat-option value="+1">+1</mat-option>
+                                            <mat-option value="+46">+46</mat-option>
+                                            <mat-option value="+44">+44</mat-option>
+                                            <mat-option value="+91">+91</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" class="unit-select" [ngStyle]="{width: '70%'}"
+                                        style="margin: 0!important">
+                                        <input type="text" required matInput id="phoneNumber" name="phoneNumber"
+                                            formControlName="phone" placeholder="Phone number" pattern="^[0-9]*$"
+                                            minlength="9" maxlength="15" />
+                                        <mat-icon color="warn" class="cursor-pointer relative"
+                                            (click)="removePhoneNumber(i)" matSuffix *ngIf="i !== 0">delete</mat-icon>
+                                    </mat-form-field>
+                                </div>
+                                <!-- <p fxFlex="15" class="cursor-pointer add-text relative" *ngIf="getNum(i)" (click)="verifyOpen(i)">Verify</p> -->
+                            </div>
+                        </div>
+                        <p class="cursor-pointer add-text" (click)="addPhoneNumber()">Add another telephone number</p>
+                    </div>
+                </div>
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%;" *ngIf="extraFields">
+                        <p class="arjoform-label">Facility name <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <mat-select formControlName="facilityName"
+                                (selectionChange)="enableCaregivers($event.value)">
+                                <input matInput class="select-search" type="text" placeholder="Search facility"
+                                    formControlName="facilitySearch" />
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option [value]="facility.facilityId"
+                                    *ngFor="let facility of getFilterFacilities()">{{facility.facilityName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field" style="width: 90%;" *ngIf="!extraFields">
+                        <p class="arjoform-label">Ward name<span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="Ward Name" matInput type="text" formControlName="name" />
+                            <mat-hint *ngIf="checkWardExists()" class="text-danger support-text">Ward name exists
+                            </mat-hint>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field" style="width: 90%;">
+                        <p class="arjoform-label">Caregiver name </p>
+                        <mat-form-field appearance="outline">
+                            <mat-select value="select" formControlName="caregiverUserid" multiple #select>
+                                <input matInput class="select-search" type="text" placeholder="Search caregiver"
+                                    formControlName="caregiverSearch" />
+                                <mat-select-trigger>
+                                    <ng-container *ngIf="caregiverUserIds.length < 2 && caregiverUserIds.length > 0">
+                                        <span>{{caregiverUserIds? (caregiverUserIds[0]=== 'select' ? 'Select' :
+                                            getName(caregiverUserIds[0])) : ''}}</span>
+                                    </ng-container>
+                                    <ng-container *ngIf="caregiverUserIds.length >  1">
+                                        <ng-container *ngFor="let caregiver of caregiverUserIds;let i =index">
+                                            <span class="selected" *ngIf="i < 2">{{getName(caregiver)}}</span>
+                                        </ng-container>
+                                    </ng-container>
+                                    <span *ngIf="caregiverUserIds?.length > 2" class="selected">
+                                        (+{{caregiverUserIds.length - 2}} {{caregiverUserIds?.length === 3 ? 'other' :
+                                        'others'}})
+                                    </span>
+                                </mat-select-trigger>
+                                <mat-option disabled value="select">Select</mat-option>
+                                <mat-option *ngFor="let careGiver of getCaregivers()" [value]="careGiver.id">
+                                    {{ careGiver.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field" [ngStyle]="{marginTop: caregiverUserIds.length > 1 ? '20px': ''}"
+                        *ngIf="extraFields">
+                        <p class="arjoform-label">Ward telephone number<span class="required">*</span></p>
+                        <div fxLayout="column" fxLayoutGap="0.8em">
+                            <div fxLayoutAlign="start center" fxLayoutGap="0.8em" formArrayName="contactPhone"
+                                *ngFor="let phoneNumber of contactPhone.controls; let i =index">
+                                <div [formGroupName]="i" [fxFlex]="getNum(i) ? 85 : i > 0 ? 80 : 90">
+                                    <mat-form-field appearance="outline" class="unit-entry" [ngStyle]="{width: '30%'}"
+                                        style="margin: 0!important">
+                                        <mat-select matInput required name="ext" formControlName="ext">
+                                            <mat-option value="+1">+1</mat-option>
+                                            <mat-option value="+46">+46</mat-option>
+                                            <mat-option value="+44">+44</mat-option>
+                                            <mat-option value="+91">+91</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" class="unit-select" [ngStyle]="{width: '70%'}"
+                                        style="margin: 0!important">
+                                        <input type="text" required matInput id="phoneNumber" name="phoneNumber"
+                                            formControlName="phone" placeholder="Phone number" pattern="^[0-9]*$"
+                                            minlength="9" maxlength="15" />
+                                        <mat-icon color="warn" class="cursor-pointer relative"
+                                            (click)="removePhoneNumber(i)" matSuffix *ngIf="i !== 0">delete</mat-icon>
+                                    </mat-form-field>
+                                </div>
+                                <!-- <p fxFlex="15" class="cursor-pointer add-text relative" *ngIf="getNum(i)" (click)="verifyOpen(i)">Verify</p> -->
+                            </div>
+                        </div>
+                        <p class="cursor-pointer add-text" (click)="addPhoneNumber()">Add another telephone number</p>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="absolute"
+            style="bottom: 0;left: 0;z-index: 999;width: 100%; height: 100%;backdrop-filter: blur(2px);"
+            *ngIf="showVerifyNum" fxLayoutAlign="center end">
+            <div class="warning" fxLayoutAlign="center center" fxLayout="column">
+                <p class="m-0" style="font-weight: 600; font-size: 20px">Verify telephone number</p>
+                <p class="m-0 text-muted" style="font-size: 14px">Did you get the OTP for your number? Please enter the
+                    OTP</p>
+                <div class="m-t-5 m-b-5">
+                    <ng-otp-input (onInputChange)="onOtpChange($event)" [config]="{length : otpLength}"></ng-otp-input>
+                </div>
+                <div style="margin: 20px 0">
+                    <button mat-button type="submit" class="m-r-10" (click)="showVerifyNum = false">
+                        Cancel
+                    </button>
+                    <button mat-raised-button color="primary" (click)="verify()">
+                        Verify
+                    </button>
+                </div>
+            </div>
+        </div>
+        <form [formGroup]="customerHqForm" *ngIf="dialogType === 'Add new customer admin'">
+            <div fxLayout="row nowrap" fxLayoutAlign="space-between start">
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%">
+                        <p class="arjoform-label">Customer <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <mat-select formControlName="customer">
+                                <input matInput class="select-search" type="text" placeholder="Search customer"
+                                    formControlName="customerSearch" />
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option [value]="customer.customer_id" *ngFor="let customer of getHQCustomers()">
+                                    {{customer.customer_name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+
+                </div>
+            </div>
+            <div fxLayout="row nowrap" fxLayoutAlign="space-between start">
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%;">
+                        <p class="arjoform-label">First name <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="First name" (keyup)="changeUsername(customerHqForm)" matInput
+                                type="text" formControlName="firstName" />
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%;">
+                        <p class="arjoform-label">Last name <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="Last name" (keyup)="changeUsername(customerHqForm)" matInput type="text"
+                                formControlName="lastName" />
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%;">
+                        <p class="arjoform-label">User name <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="User name" formControlName="username" matInput type="text" />
+                            <mat-hint *ngIf="checkUserName(customerHqForm.value.username)"
+                                class="text-danger support-text">Email already exists</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%;">
+                        <p class="arjoform-label">Email <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="Email" formControlName="email" matInput type="text" />
+                            <mat-hint *ngIf="checkEmails(customerHqForm.value.email)" class="text-danger support-text">
+                                Email already exists</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%;">
+                        <p class="arjoform-label">Phone number <span class="required">*</span></p>
+                        <div fxLayout="row nowrap" style="margin-bottom: 40px;">
+                            <mat-form-field appearance="outline" class="unit-entry" [ngStyle]="{width: '30%'}"
+                                style="margin: 0!important">
+                                <mat-select matInput required name="ext" formControlName="ext">
+                                    <mat-option value="+1">+1</mat-option>
+                                    <mat-option value="+46">+46</mat-option>
+                                    <mat-option value="+44">+44</mat-option>
+                                    <mat-option value="+91">+91</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" class="unit-select" [ngStyle]="{width: '70%'}"
+                                style="margin: 0!important">
+                                <input type="text" required matInput id="phoneNumber" name="phoneNumber"
+                                    formControlName="phoneNumber" placeholder="Phone number" pattern="^[0-9]*$"
+                                    minlength="9" maxlength="15" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form [formGroup]="facilityAdminForm" *ngIf="dialogType === 'Add new facility admin'">
+            <div fxLayout="row nowrap" fxLayoutAlign="space-between start">
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%">
+                        <p class="arjoform-label">Customer <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <mat-select formControlName="customer" (selectionChange)="enableFacilityUser('fwa')">
+                                <input matInput class="select-search" type="text" placeholder="Search customer"
+                                    formControlName="customerSearch" />
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option [value]="customer.customer_id" *ngFor="let customer of getFACustomers()">
+                                    {{customer.customer_name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field" style="width: 90%;">
+                        <p class="arjoform-label">First name <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="First name" (keyup)="changeUsername(facilityAdminForm)" matInput
+                                type="text" formControlName="firstName" />
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                        <div class="form-field" style="width: 90%;">
+                            <p class="arjoform-label">User name <span class="required">*</span></p>
+                            <mat-form-field appearance="outline">
+                                <input placeholder="User name" formControlName="username" matInput type="text" />
+                                <mat-hint *ngIf="checkUserName(facilityAdminForm.value.username)"
+                                    class="text-danger support-text">Email already exists</mat-hint>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="form-field" style="width: 90%;">
+                        <p class="arjoform-label">Email <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="Email" formControlName="email" matInput type="text" />
+                            <mat-hint *ngIf="checkEmails(facilityAdminForm.value.email)"
+                                class="text-danger support-text">Email already exists</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%;">
+                        <p class="arjoform-label">Facility <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <mat-select formControlName="facility">
+                                <input matInput class="select-search" type="text" placeholder="Search facility"
+                                    formControlName="facilitySearch" />
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option [value]="facility.facilityId"
+                                    *ngFor="let facility of getFilterFacilities()">{{facility.facilityName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field" style="width: 90%;">
+                        <p class="arjoform-label">Last name <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="Last name" (keyup)="changeUsername(facilityAdminForm)" matInput
+                                type="text" formControlName="lastName" />
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field" style="width: 90%;">
+                        <p class="arjoform-label">Phone number <span class="required">*</span></p>
+                        <div fxLayout="row nowrap">
+                            <mat-form-field appearance="outline" class="unit-entry" [ngStyle]="{width: '30%'}"
+                                style="margin: 0!important">
+                                <mat-select matInput required name="ext" formControlName="ext">
+                                    <mat-option value="+1">+1</mat-option>
+                                    <mat-option value="+46">+46</mat-option>
+                                    <mat-option value="+44">+44</mat-option>
+                                    <mat-option value="+91">+91</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" class="unit-select" [ngStyle]="{width: '70%'}"
+                                style="margin: 0!important">
+                                <input type="text" required matInput id="phoneNumber" name="phoneNumber"
+                                    formControlName="phoneNumber" placeholder="Phone number" pattern="^[0-9]*$"
+                                    minlength="9" maxlength="15" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form [formGroup]="wardAdminForm" *ngIf="dialogType === 'Add new ward admin'">
+            <div fxLayout="row nowrap" fxLayoutAlign="space-between start">
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%">
+                        <p class="arjoform-label">Customer <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <mat-select formControlName="customer" (selectionChange)="enableFacilityUser('wa')">
+                                <input matInput class="select-search" type="text" placeholder="Search customer"
+                                    formControlName="customerSearch" />
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option [value]="customer.customer_id" *ngFor="let customer of getWACustomers()">
+                                    {{customer.customer_name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%">
+                        <p class="arjoform-label">Facility <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <mat-select formControlName="facility" (selectionChange)="enableWardUser('wa')">
+                                <input matInput class="select-search" type="text" placeholder="Search facility"
+                                    formControlName="facilitySearch" />
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option [value]="facility.facilityId"
+                                    *ngFor="let facility of getFilterFacilities()">{{facility.facilityName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row nowrap" fxLayoutAlign="space-between start">
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%">
+                        <p class="arjoform-label">Ward <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <mat-select value="select" formControlName="ward">
+                                <input matInput class="select-search" type="text" placeholder="Search ward"
+                                    formControlName="wardSearch" />
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option *ngFor="let ward of getFilterWards('wardAdmin')" [value]="ward.ward_number">
+                                    {{ ward.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%">
+
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%">
+                        <p class="arjoform-label">First name <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="First name" (keyup)="changeUsername(wardAdminForm)" matInput type="text"
+                                formControlName="firstName" />
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%">
+                        <p class="arjoform-label">Last name <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="Last name" (keyup)="changeUsername(wardAdminForm)" matInput type="text"
+                                formControlName="lastName" />
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%;">
+                        <p class="arjoform-label">User name <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="User name" formControlName="username" matInput type="text" />
+                            <mat-hint *ngIf="checkUserName(wardAdminForm.value.username)"
+                                class="text-danger support-text">Email already exists</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%">
+                        <p class="arjoform-label">Email <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="Email" formControlName="email" matInput type="text" />
+                            <mat-hint *ngIf="checkEmails(wardAdminForm.value.email)" class="text-danger support-text">
+                                Email already exists</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%">
+                        <p class="arjoform-label">Phone number <span class="required">*</span></p>
+                        <div fxLayout="row nowrap">
+                            <mat-form-field appearance="outline" class="unit-entry" [ngStyle]="{width: '30%'}"
+                                style="margin: 0!important">
+                                <mat-select matInput required name="ext" formControlName="ext">
+                                    <mat-option value="+1">+1</mat-option>
+                                    <mat-option value="+46">+46</mat-option>
+                                    <mat-option value="+44">+44</mat-option>
+                                    <mat-option value="+91">+91</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" class="unit-select" [ngStyle]="{width: '70%'}"
+                                style="margin: 0!important">
+                                <input type="text" required matInput id="phoneNumber" name="phoneNumber"
+                                    formControlName="phoneNumber" placeholder="Phone number" pattern="^[0-9]*$"
+                                    minlength="9" maxlength="15" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form [formGroup]="caregiverForm" *ngIf="dialogType === 'Add new caregiver user'">
+            <div fxLayout="row nowrap" fxLayoutAlign="space-between start">
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%">
+                        <p class="arjoform-label">Customer <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <mat-select formControlName="customer" (selectionChange)="enableFacilityUser('ca')">
+                                <input matInput class="select-search" type="text" placeholder="Search customer"
+                                    formControlName="customerSearch" />
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option [value]="customer.customer_id" *ngFor="let customer of getCACustomers()">
+                                    {{customer.customer_name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%;">
+                        <p class="arjoform-label">Facility <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <mat-select formControlName="facility" (selectionChange)="enableWardUser('ca')">
+                                <input matInput class="select-search" type="text" placeholder="Search facility"
+                                    formControlName="facilitySearch" />
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option [value]="facility.facilityId"
+                                    *ngFor="let facility of getFilterFacilities()">{{facility.facilityName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row nowrap" fxLayoutAlign="space-between start">
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%;">
+                        <p class="arjoform-label">Ward <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <mat-select value="select" formControlName="ward" multiple #careSelect>
+                                <input matInput class="select-search" type="text" placeholder="Search ward"
+                                    formControlName="wardSearch" />
+                                <mat-select-trigger>
+                                    <ng-container *ngIf="userWardIds.length < 2 && userWardIds.length > 0">
+                                        <span>{{userWardIds? (userWardIds[0]=== '' ? 'Select' :
+                                            getWard(userWardIds[0]).name) : ''}}</span>
+                                    </ng-container>
+                                    <ng-container *ngIf="userWardIds.length > 1">
+                                        <ng-container *ngFor="let ward of userWardIds;let i =index">
+                                            <span class="selected" *ngIf="i < 2">{{getWard(ward).name}}</span>
+                                        </ng-container>
+                                    </ng-container>
+                                    <span *ngIf="userWardIds?.length > 2" class="selected">
+                                        (+{{userWardIds.length - 2}} {{userWardIds?.length === 3 ? 'other' : 'others'}})
+                                    </span>
+                                </mat-select-trigger>
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option *ngFor="let ward of getWards()" [value]="ward.ward_number">
+                                    {{ ward.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+
+                </div>
+            </div>
+            <div fxLayout="row nowrap" fxLayoutAlign="space-between start">
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%;">
+                        <p class="arjoform-label">First name <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="First name" (keyup)="changeUsername(caregiverForm)" matInput type="text"
+                                formControlName="firstName" />
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%;">
+                        <p class="arjoform-label">Last name <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="Last name" (keyup)="changeUsername(caregiverForm)" matInput type="text"
+                                formControlName="lastName" />
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%;">
+                        <p class="arjoform-label">User name <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="User name" formControlName="username" matInput type="text" />
+                            <mat-hint *ngIf="checkUserName(caregiverForm.value.username)"
+                                class="text-danger support-text">Email already exists</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field"
+                        [ngStyle]="{width: '90%', 'margin-top': userWardIds.length > 1 ? '20px': ''}">
+                        <p class="arjoform-label">Email <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="Email" formControlName="email" matInput type="text" />
+                            <mat-hint *ngIf="checkEmails(caregiverForm.value.email)" class="text-danger support-text">
+                                Email already exists</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%;">
+                        <p class="arjoform-label">Phone number <span class="required">*</span></p>
+                        <div fxLayout="row nowrap">
+                            <mat-form-field appearance="outline" class="unit-entry" [ngStyle]="{width: '30%'}"
+                                style="margin: 0!important">
+                                <mat-select matInput required name="ext" formControlName="ext">
+                                    <mat-option value="+1">+1</mat-option>
+                                    <mat-option value="+46">+46</mat-option>
+                                    <mat-option value="+44">+44</mat-option>
+                                    <mat-option value="+91">+91</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" class="unit-select" [ngStyle]="{width: '70%'}"
+                                style="margin: 0!important">
+                                <input type="text" required matInput id="phoneNumber" name="phoneNumber"
+                                    formControlName="phoneNumber" placeholder="Phone number" pattern="^[0-9]*$"
+                                    minlength="9" maxlength="15" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form [formGroup]="addCaregiverForm" *ngIf="dialogType === 'Add new caregiver'">
+            <div fxLayout="row nowrap" fxLayoutAlign="space-between start">
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%;">
+                        <p class="arjoform-label">First name</p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="First name" (keyup)="changeUsername(addCaregiverForm)" matInput
+                                type="text" formControlName="firstName" />
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field" style="width: 90%;">
+                        <p class="arjoform-label">User name <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="User name" formControlName="username" matInput type="text" />
+                            <mat-hint *ngIf="checkUserName(addCaregiverForm.value.username)"
+                                class="text-danger support-text">Email already exists</mat-hint>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field" style="width: 90%;">
+                        <p class="arjoform-label">Phone number</p>
+                        <div fxLayout="row nowrap" style="margin-bottom: 40px;">
+                            <mat-form-field appearance="outline" class="unit-entry" [ngStyle]="{width: '30%'}"
+                                style="margin: 0!important">
+                                <mat-select matInput required name="ext" formControlName="ext">
+                                    <mat-option value="+1">+1</mat-option>
+                                    <mat-option value="+46">+46</mat-option>
+                                    <mat-option value="+44">+44</mat-option>
+                                    <mat-option value="+91">+91</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" class="unit-select" [ngStyle]="{width: '70%'}"
+                                style="margin: 0!important">
+                                <input type="text" required matInput id="phoneNumber" name="phoneNumber"
+                                    formControlName="caregiverPhoneNumber" placeholder="Phone number" pattern="^[0-9]*$"
+                                    minlength="9" maxlength="15" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="form-field" style="width: 90%;">
+                        <p class="arjoform-label">Assign ward</p>
+                        <mat-form-field appearance="outline">
+                            <mat-select value="select" formControlName="assignWard" multiple #wadAdSelect>
+                                <input matInput class="select-search" type="text" placeholder="Search ward"
+                                    formControlName="wardSearch" />
+                                <mat-select-trigger>
+                                    <ng-container *ngIf="wardIds.length < 2 && wardIds.length > 0">
+                                        <span>{{wardIds? (wardIds[0]=== '' ? 'Select' : getWard(wardIds[0]).name) :
+                                            ''}}</span>
+                                    </ng-container>
+                                    <ng-container *ngIf="wardIds.length > 1">
+                                        <ng-container *ngFor="let ward of wardIds;let i =index">
+                                            <span class="selected" *ngIf="i < 2">{{getWard(ward).name}}</span>
+                                        </ng-container>
+                                    </ng-container>
+                                    <span *ngIf="wardIds?.length > 2" class="selected">
+                                        (+{{wardIds.length - 2}} {{wardIds?.length === 3 ? 'other' : 'others'}})
+                                    </span>
+                                </mat-select-trigger>
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option *ngFor="let ward of getWards()" [value]="ward.ward_number">
+                                    {{ ward.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%;">
+                        <p class="arjoform-label">Last name</p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="Last name" (keyup)="changeUsername(addCaregiverForm)" matInput
+                                type="text" formControlName="lastName" />
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field" style="width: 90%;">
+                        <p class="arjoform-label">Email</p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="Caregiver email" matInput type="text"
+                                formControlName="caregiverEmail" />
+                            <mat-hint *ngIf="checkEmails(addCaregiverForm.value.caregiverEmail)"
+                                class="text-danger support-text">Email already exists</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form [formGroup]="addRoomForm" *ngIf="dialogType === 'Import rooms'">
+            <div class="text-center">
+                <p class="font-16 font-600">Choose file to import rooms</p>
+                <p style="color: #b4aeae;">Import .csv file only</p>
+                <p class="m-t-15"></p>
+                <input type="file" class="custom-file-input" #inputFileReader accept=".csv"
+                    (change)="importRoom($event)">
+            </div>
+        </form>
+        <form [formGroup]="addRoomForm" *ngIf="dialogType === 'Add new room'">
+            <div formArrayName="rooms" *ngFor="let room of rooms.controls; let i =index" class="m-t-10">
+                <div fxLayout="row wrap" fxLayoutAlign="space-between start" [formGroupName]="i">
+                    <div class="form-field" fxFlex="95">
+                        <p class="arjoform-label">Room name <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="Room name" matInput type="text" formControlName="roomNumber" />
+
+                        </mat-form-field>
+                    </div>
+                    <!-- <div class="form-field" fxFlex="95">
+                        <p class="arjoform-label">Total beds available <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="Total beds available" matInput type="text" formControlName="totalBedsAvailable" />
+                        </mat-form-field>
+                    </div> -->
+                    <mat-icon class="cursor-pointer" *ngIf="i !== 0" (click)="removeRoom(i)" color="accent">delete
+                    </mat-icon>
+                </div>
+            </div>
+            <p class="cursor-pointer add-text" (click)="addRoom()">Add another room</p>
+        </form>
+
+        <form [formGroup]="addCustomerForm" *ngIf="dialogType === 'Add new customer'">
+            <div fxLayout="column nowrap" fxLayoutAlign="space-between start">
+                <p class="arjoform-title">Customer details</p>
+                <div fxLayout="row wrap" fxLayoutGap="0.8em" style="width: 100%;">
+                    <div class="form-field" fxFlex="45">
+                        <p class="arjoform-label">Customer name <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="Customer name" matInput type="text" formControlName="customer_name" />
+                            <mat-hint *ngIf="checkCustomerExists()" class="text-danger support-text">Customer name
+                                exists</mat-hint>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field" fxFlex="45">
+                        <p class="arjoform-label">Customer status <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <mat-select value="select" formControlName="customer_status">
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option value="Demo">Demo</mat-option>
+                                <mat-option value="Contract signed">Contract signed</mat-option>
+                                <mat-option value="Active">Active</mat-option>
+                                <mat-option value="Inactive">Inactive</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field" fxFlex="45">
+                        <p class="arjoform-label">Customer address <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <textarea ngx-google-places-autocomplete (onAddressChange)="handleCAddressChange($event)"
+                                formControlName="customerAddress" cdkTextareaAutosize cdkAutosizeMinRows="4" matInput
+                                placeholder="Customer address"></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <p class="arjoform-title">Contact person details</p>
+                <div fxLayout="row wrap" fxLayoutGap="0.8em" style="width: 100%;">
+                    <div class="form-field" fxFlex="45">
+                        <p class="arjoform-label">First name <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="First name" (keyup)="changeUsername(addCustomerForm)" matInput
+                                type="text" formControlName="firstName" />
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field" fxFlex="45">
+                        <p class="arjoform-label">Last name <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="Last name" (keyup)="changeUsername(addCustomerForm)" matInput
+                                type="text" formControlName="lastName" />
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field" fxFlex="45">
+                        <p class="arjoform-label">User name <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="User name" formControlName="username" matInput type="text" />
+                            <mat-hint *ngIf="checkUserName(addCustomerForm.value.username)"
+                                class="text-danger support-text">Email already exists</mat-hint>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field" fxFlex="45">
+                        <p class="arjoform-label">Email <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="Email" matInput type="text" formControlName="email" />
+                            <mat-hint *ngIf="checkEmails(addCustomerForm.value.email)" class="text-danger support-text">
+                                Email already exists</mat-hint>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field" fxFlex="45">
+                        <p class="arjoform-label">Phone number <span class="required">*</span></p>
+                        <div fxLayout="row nowrap" style="margin-bottom: 40px;">
+                            <mat-form-field appearance="outline" class="unit-entry" [ngStyle]="{width: '30%'}"
+                                style="margin: 0!important">
+                                <mat-select matInput required name="ext" formControlName="ext">
+                                    <mat-option value="+1">+1</mat-option>
+                                    <mat-option value="+46">+46</mat-option>
+                                    <mat-option value="+44">+44</mat-option>
+                                    <mat-option value="+91">+91</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" class="unit-select" [ngStyle]="{width: '70%'}"
+                                style="margin: 0!important">
+                                <input type="text" required matInput id="phoneNumber" name="phoneNumber"
+                                    formControlName="phoneNumber" placeholder="Phone number" pattern="^[0-9]*$"
+                                    minlength="9" maxlength="15" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+
+        <form [formGroup]="addWearableForm" *ngIf="dialogType === 'Add new wearable'">
+            <div fxLayout="row nowrap" fxLayoutAlign="space-between start">
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%;">
+                        <p class="arjoform-label">Customer name <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <mat-select formControlName="customer_id">
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option [value]="customer.customer_id" *ngFor="let customer of customerList">
+                                    {{customer.customer_name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field" style="width: 90%;">
+                        <p class="arjoform-label">Ward <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <mat-select value="select" formControlName="ward_id">
+                                <input matInput class="select-search" type="text" placeholder="Search ward"
+                                    formControlName="wardSearch" />
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option *ngFor="let ward of getFilterWard()" [value]="ward.ward_number">
+                                    {{ ward.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="0.8em">
+                    <div class="form-field" style="width: 90%;">
+                        <p class="arjoform-label">Facility name <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <mat-select formControlName="facility_id" (selectionChange)="enableWardW()">
+                                <input matInput class="select-search" type="text" placeholder="Search facility"
+                                    formControlName="facilitySearch" />
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option [value]="facility.facilityId"
+                                    *ngFor="let facility of getFilterFacilities()">{{facility.facilityName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field" style="width: 90%;">
+                        <p class="arjoform-label">Wearable serial number <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="Wearable serial number" pattern="^[A-Z_]*$" maxlength="5" matInput
+                                type="text" formControlName="wearable_sno" />
+                            <mat-hint *ngIf="checkWearableExists()" class="text-danger support-text">Wearable name
+                                exists</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form [formGroup]="addFacilityForm" *ngIf="dialogType === 'Add new facility'">
+            <div fxLayout="column nowrap" fxLayoutAlign="space-between start">
+                <p class="arjoform-title">Facility details</p>
+                <div fxLayout="row wrap" fxLayoutGap="0.8em" style="width: 100%;">
+                    <div class="form-field" fxFlex="45">
+                        <p class="arjoform-label">Customer name <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <mat-select formControlName="customer_name">
+                                <input matInput class="select-search" type="text" placeholder="Search customer"
+                                    formControlName="customerSearch" />
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option [value]="customer.customer_id"
+                                    *ngFor="let customer of getFFilterCustomer()">{{customer.customer_name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field" fxFlex="45">
+                        <p class="arjoform-label">Facility name <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input placeholder="Facility name" matInput type="text" formControlName="facilityName" />
+                            <mat-hint *ngIf="checkFacilityExists()" class="text-danger support-text">Facility name
+                                exists</mat-hint>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field" fxFlex="45">
+                        <p class="arjoform-label">Facility address <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <textarea ngx-google-places-autocomplete (onAddressChange)="handleFAddressChange($event)"
+                                formControlName="facilityAddress" cdkTextareaAutosize cdkAutosizeMinRows="4" matInput
+                                placeholder="Facility address"></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <p class="arjoform-title">Facility contact details</p>
+                <div fxLayout="row wrap" fxLayoutGap="0.8em" style="width: 100%;">
+                    <div class="form-field" fxFlex="45">
+                        <p class="arjoform-label">Facility admin</p>
+                        <mat-form-field appearance="outline" style="margin: 0 !important;">
+                            <mat-select formControlName="facilityAdmin">
+                                <input matInput class="select-search" type="text" placeholder="Search facility admin"
+                                    formControlName="caregiverSearch" />
+                                <mat-option disabled value="">Select</mat-option>
+                                <!-- <mat-option *ngFor="let person of getFFilterCaregiver()"  [value]="person.id">
+                                  {{ person.name }}
+                                  </mat-option>-->
+                                <mat-option *ngFor="let person of getFFilterFacilityAdmin()"
+                                    [value]="person.facilityAdminid">
+                                    {{ person.facilityAdmin }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field" fxFlex="45">
+                        <p class="arjoform-label">Total number of wards <span class="required">*</span></p>
+                        <mat-form-field appearance="outline" style="margin: 0 !important;">
+                            <input placeholder="Total no of wards" matInput type="number" formControlName="wardCount" />
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </mat-card-content>
+    <mat-card-actions fxLayoutAlign="start center"
+        *ngIf="dialogType !== 'View downton fall risk index' && dialogType !== 'View stay independent'">
+        <div fxFlex="100" class="form-actions" fxLayoutAlign="end center">
+            <button mat-button (click)="close()" class="cancel m-r-10">Cancel</button>
+            <button mat-raised-button color="accent" type="submit" class="submit"
+                [disabled]="validate() || !emailCheck || !usernameCheck" (click)="doAction()">
+                {{dialogType === 'Add downton fall risk index' || dialogType === 'Add stay independent' ? 'Add' :
+                'Save'}}
+            </button>
+        </div>
+    </mat-card-actions>
+</mat-card>

@@ -1,0 +1,269 @@
+<div style="margin-top: 15px;" fxLayout="row wrap" fxLayoutAlign="space-between center" class="quick-box-container">
+    <div class="quick-box" fxFlex.gt-lg="19" fxFlex.gt-md="19" fxFlex.gt-xs="100" fxFlex="100">
+        <p class="sub-title">Activity status</p>
+        <p class="sub-text">Last updated: {{(activityUpdated ? activityUpdated : updatedAt) | timeAgo }}</p>
+        <div class="bss-icon" style="margin: 4px 0;" fxLayoutAlign="start center">
+            <div fxFlex="80" fxLayoutgap="1.5em" fxLayoutAlign="space-between center">
+                <div class="balance" style="width: fit-content">
+                    <mat-icon class="{{ residentData?.Balance }}" style="font-size: 30px;"
+                        title="Balance risk - {{ residentData?.Balance }}">directions_walk</mat-icon>
+                </div>
+                <div class="strength" style="width: fit-content">
+                    <mat-icon class="{{ residentData?.Strength }}" style="font-size: 30px;"
+                        title="Strength risk - {{ residentData?.Strength }}">airline_seat_recline_normal</mat-icon>
+                </div>
+                <div class="sleep" style="width: fit-content">
+                    <mat-icon class="{{ residentData?.Sleep }}" style="font-size: 30px;"
+                        title="Sleep risk - {{ residentData?.Sleep }}">hotel</mat-icon>
+                </div>
+            </div>
+        </div>
+        <p class="view-link"><a class="link" href="javascript:void(0)" (click)="gotoTab('trend')">View report</a></p>
+    </div>
+    <div class="quick-box" fxFlex.gt-lg="19" fxFlex.gt-md="19" fxFlex.gt-xs="100" fxFlex="100">
+        <p class="sub-title">Number of falls</p>
+        <p class="sub-text">Last updated: {{(getLatest(fallUpdatedAt)? getLatest(fallUpdatedAt) : null) | timeAgo}}</p>
+        <p class="main-heading">{{fallCount}} Falls</p>
+        <p class="view-link"><a class="link" href="javascript:void(0)"  (click)="gotoTab('notifications')">View report</a></p>
+    </div>
+    <div class="quick-box" fxFlex.gt-lg="19" fxFlex.gt-md="19" fxFlex.gt-xs="100" fxFlex="100">
+        <p class="sub-title">Walking Ability</p>
+        <p class="sub-text">Last updated: {{(questionnaire?.Date_taken_on ? questionnaire?.Date_taken_on : updatedAt) | timeAgo}}
+        </p>
+        <p class="main-heading">{{getWalkAbility() | titlecase}}</p>
+        <p class="view-link"><a class="link" href="javascript:void(0)" (click)="gotoTab('questionnaire')">View all</a></p>
+    </div>
+    <div class="quick-box" fxFlex.gt-lg="19" fxFlex.gt-md="19" fxFlex.gt-xs="100" fxFlex="100">
+        <p class="sub-title">Polypharmacy</p>
+        <p class="sub-text">Last updated:
+            {{updatedAt | timeAgo}}</p>
+        <p class="main-heading" title="{{getMedication().length > 12 ? getMedication() : ''}}">{{getMedication()}}</p>
+        <p class="view-link"><a class="link" href="javascript:void(0)" (click)="gotoTab('medication')">View medication</a></p>
+    </div>
+    <div class="quick-box" fxFlex.gt-lg="19" fxFlex.gt-md="19" fxFlex.gt-xs="100" fxFlex="100">
+        <p class="sub-title">{{getQuestionnaire() ? questionnaire?.Questionnaire_type : 'No questionnaires'}}</p>
+        <p class="sub-text">Last updated: {{(questionnaire?.Date_taken_on ? questionnaire?.Date_taken_on : updatedAt) | timeAgo}}
+        </p>
+        <p class="main-heading">{{getQuestionnaire() ? (calculateQues(questionnaire?.Questionnaire_score) | titlecase) : 'No data'}}<span
+                class="" style="font-size: 12px;" *ngIf="getQuestionnaire()">({{questionnaire?.Questionnaire_score}} points)</span></p>
+        <p class="view-link" style="margin-bottom: 10px;"><a class="link" href="javascript:void(0)" (click)="gotoTab('questionnaire')">View all questionnaire</a></p>
+    </div>
+</div>
+
+<div class="ssa-flow" fxLayout="row nowrap">
+    <div fxFlex.gt-lg="50" fxFlex.gt-md="50" fxFlex.gt-xs="100" fxFlex="100">
+        <mat-card class="section-title m-l-0"
+            style="box-shadow: none !important;margin-bottom: 0 !important;border-radius:none !important;">
+            <mat-card-content class="p-0">
+                <div fxLayout="row wrap">
+                    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex="100">
+                        <mat-card-title style="font-size:20px;">
+                            <div class="popover__wrapper">
+                                <span class="second-title m-r-5">Activity feed for {{graphFor}} </span> 
+                                <mat-icon class="absolute help-text-hover-cont popover__title" (click)="titleShow = !titleShow" style="color: #D3CDC6;cursor: pointer;">help_outline</mat-icon>
+                                <div class="popover__content">
+                                    <h4 class="second-title popover__heading">Activity feed for {{graphFor}} </h4>
+                                    <p class="popover__message">
+                                        Below graph represents all the different activities performed by the resident during the day.<br/><span
+                                        class="m-r-30">Last updated: {{ lastUpdatedAt? lastUpdatedAt :'Not available' }}
+                                        ago</span>Next update in: {{nextUpdatedAt ? nextUpdatedAt : 'Not Available'}}
+                                        <br/><span style="font-size:10px;">&nbsp;</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </mat-card-title>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="halfbox m-l-1">
+            <mat-card-header>
+                <div fxLayout="row wrap" *ngIf="showLoaGraph == loadingStateType.LOADED">
+                    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100"
+                        fxLayoutAlign="end center">
+                    </div>
+                </div>
+            </mat-card-header>
+            <mat-card-content style="padding: 0 24px !important">
+                <div id="visitor-chart">
+                    <div id="loa-graph" *ngIf="showLoaGraph == loadingStateType.LOADED">
+                        <apx-chart #chart [series]="chartOptions?.series" [chart]="chartOptions?.chart"
+                            [colors]="chartOptions?.colors" [yaxis]="chartOptions?.yaxis"
+                            [dataLabels]="chartOptions?.dataLabels" [markers]="chartOptions?.markers"
+                            [legend]="chartOptions?.legend" [stroke]="chartOptions?.stroke" [grid]="chartOptions?.grid"
+                            [title]="chartOptions?.title" [xaxis]="chartOptions?.xaxis"
+                            [tooltip]="chartOptions?.tooltip" [annotations]="chartOptions?.annotations"
+                            [plotOptions]="chartOptions?.plotOptions"></apx-chart>
+                    </div>
+                    <div class="preloader" *ngIf="showLoaGraph == loadingStateType.LOADING"
+                        fxLayoutAlign="center center"
+                        [ngStyle]="{'background-color': 'unset', position: 'unset', height: '320px'}">
+                        <div class="spinner" [ngStyle]="{margin: 'unset', top: 'unset'}">
+                            <img alt="loading.." src="assets/images/loading.gif" width="40px" height="40px" />
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="showLoaGraph == loadingStateType.NODATA" fxLayout="column" fxLayoutGap="0.2em"
+                    fxLayoutAlign="center center"
+                    [ngStyle]="{width: '100%',height: '350px', background: 'transparent'}">
+                    <mat-icon class="no-data-icon">info</mat-icon>
+                    <p>No data available</p>
+                </div>
+
+            </mat-card-content>
+            <mat-card-actions fxLayoutAlign="start center">
+                <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                    <div class="" fxFlex="25" fxFlex.gt-md="25" fxFlex.gt-lg="25" fxLayoutAlign="start center">
+                        <div class="date-filter cursor-pointer" [matMenuTriggerFor]="intervals">
+                            <span class="font-14">Last {{graphFor}}</span>
+                            <mat-icon class="absolute viewAllicon">arrow_drop_down</mat-icon>
+                        </div>
+                    </div>
+                    <div fxFlex="50" fxFlex.gt-md="50" fxFlex.gt-lg="50" fxLayoutAlign="end center">
+                    </div>
+                </div>
+            </mat-card-actions>
+        </mat-card>
+        <mat-menu #intervals="matMenu" class="mymegamenu">
+            <button mat-menu-item (click)="updateOptions('6hr')">Last 6 hours</button>
+            <button mat-menu-item (click)="updateOptions('12hr')">Last 12 hours</button>
+            <button mat-menu-item (click)="updateOptions('24hrs')">Last 24 hours</button>
+            <button mat-menu-item (click)="updateOptions('7 days')">Last 7 days</button>
+        </mat-menu>
+    </div>
+    <div fxFlex.gt-lg="50" fxFlex.gt-md="50" fxFlex.gt-xs="100" fxFlex="100">
+        <mat-card class="section-title m-l-0 no-shadow"
+            style="box-shadow: none !important; margin-bottom: 0 !important;margin-right:0!important;">
+            <mat-card-content class="p-0">
+                <div fxLayout="row wrap">
+                    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex="100">
+                        <mat-card-title style="font-size:20px;">
+                            <div class="popover__wrapper">
+                                <span class="second-title m-r-5">Activity analysis</span> 
+                                <mat-icon class="absolute help-text-hover-cont popover__title" (click)="titleShow = !titleShow" style="color: #D3CDC6;cursor: pointer;">help_outline</mat-icon>
+                                <div class="popover__content">
+                                    <h4 class="second-title popover__heading">Activity analysis</h4>
+                                    <p class="popover__message">
+                                        Represents comparison of todays data with the maximum and average of the last 7 days*. <br/>It gives an indication of how the resident is doing today when compared to the last 7 days.
+                                        <br/><span style="font-size:10px;">*Custom date range can be selected</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </mat-card-title>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="halfbox progress m-l-1 m-r-1">
+            <mat-card-content style="padding: 40px 5px 0 !important" class="progress-updates">
+                <div id="visitor-chart" style="margin-top: 10px !important;">
+                    <ng-container *ngIf="activityProLoading == loadingStateType.LOADED">
+                        <div class="activeprgs" style="position: relative;">
+                            <span class="prgs-label">Active</span>
+                            <div class="value-cont"
+                                [ngStyle]="{ width: (activeActivityPercentage === 0 ? 15 : activeActivityPercentage) + '%' }">
+                                <span class="today-pg-value font-12"
+                                    [ngClass]="{'text-white' : activeActivityPercentage > 0}">{{ getTimeInHrs(todaysActivityRecord.active_time) + ' hours' }}</span>
+                            </div>
+                            <mat-progress-bar mode="determinate" [value]="activeActivityPercentage"></mat-progress-bar>
+                            <mat-icon class="avg" [ngStyle]="{ left: avgActivePercentage + '%' }" style="margin-left: -18px;" title="{{getTimeInHrs(activityRecord.avgActive)}}">arrow_drop_up</mat-icon>
+                            <mat-icon class="max" title="{{getTimeInHrs(activityRecord.maxActive)}}">eject</mat-icon>
+                        </div>
+                        <div class="sittingprgs" style="position: relative;">
+                            <span class="prgs-label">Sitting</span>
+                            <div class="value-cont"
+                                [ngStyle]="{ width: (sittingActivityPercentage === 0 ? 15 : sittingActivityPercentage) + '%' }">
+                                <span class="today-pg-value font-12"
+                                    [ngClass]="{'text-white' : sittingActivityPercentage > 0}">{{ getTimeInHrs(todaysActivityRecord.sitting_time) + ' hours' }}
+                                </span>
+                            </div>
+                            <mat-progress-bar mode="determinate" [value]="sittingActivityPercentage"></mat-progress-bar>
+                            <mat-icon class="avg" [ngStyle]="{ left: avgSittingPercentage + '%' }" style="margin-left: -18px;" title="{{getTimeInHrs(activityRecord.avgSit)}}">arrow_drop_up</mat-icon>
+                            <mat-icon class="max" title="{{getTimeInHrs(activityRecord.maxSit)}}">eject</mat-icon>
+                        </div>
+                        <div class="walkingprgs" style="position: relative;">
+                            <span class="prgs-label">Walking</span>
+                            <div class="value-cont" [ngStyle]="{ width: (stepActivityPercentage === 0 ? 10 : stepActivityPercentage) + '%' }">
+                                <span class="today-pg-value font-12">{{ todaysActivityRecord.walking_steps }} steps</span>
+                            </div>
+                            <mat-progress-bar mode="determinate" [value]="stepActivityPercentage"></mat-progress-bar>
+                            <mat-icon class="avg" [ngStyle]="{ left: avgStepPercentage + '%' }" style="margin-left: -18px;" title="{{activityRecord.avgWalk }}">arrow_drop_up</mat-icon>
+                            <mat-icon class="max" title="{{ activityRecord.maxWalk }}">eject</mat-icon>
+                        </div>
+
+                        <div class="sleepingprgs" style="position: relative;">
+                            <span class="prgs-label">Sleeping</span>
+                            <div class="value-cont"
+                                [ngStyle]="{ width: (sleepActivityPercentage === 0 ? 15 : sleepActivityPercentage) + '%' }">
+                                <span class="today-pg-value font-12"
+                                    [ngClass]="{'text-white' : sleepActivityPercentage > 0}">{{ getTimeInHrs(todaysActivityRecord.sleeping_time) + ' hours'}}</span>
+                            </div>
+                            <mat-progress-bar mode="determinate" [value]="sleepActivityPercentage"></mat-progress-bar>
+                            <mat-icon class="avg" [ngStyle]="{ left: avgSleepPercentage + '%' }" style="margin-left: -18px;" title="{{ getTimeInHrs(activityRecord.avgSleep) }}">arrow_drop_up</mat-icon>
+                            <mat-icon class="max" title="{{ getTimeInHrs(activityRecord.maxSleep) }}">eject</mat-icon>
+                        </div>
+                        <div class="progress-icons" fxLayoutAlign="center center">
+                            <div class="legend m-r-20">
+                                <mat-icon class="avg-legend">arrow_drop_up</mat-icon> <span
+                                    class="legend-text">Average</span>
+                            </div>
+                            <div class="legend">
+                                <mat-icon class="max-legend">eject</mat-icon> <span class="legend-text">Maximum</span>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+                <div class="preloader" *ngIf="activityProLoading == loadingStateType.LOADING"
+                    fxLayoutAlign="center center"
+                    [ngStyle]="{'background-color': 'unset', position: 'unset', height: '100%'}">
+                    <div class="spinner" [ngStyle]="{margin: 'unset', top: 'unset'}">
+                        <img alt="loading.." src="assets/images/loading.gif" width="40px" height="400px" />
+                    </div>
+                </div>
+                <div *ngIf="activityProLoading == loadingStateType.NODATA" fxLayout="column" fxLayoutGap="0.2em"
+                    fxLayoutAlign="center center"
+                    [ngStyle]="{width: '100%',height: '350px', background: 'transparent'}">
+                    <mat-icon class="no-data-icon">info</mat-icon>
+                    <p>No data available</p>
+                </div>
+
+            </mat-card-content>
+            <mat-card-actions fxLayoutAlign="start center">
+                <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                    <div class="" fxFlex="25" fxFlex.gt-md="25" fxFlex.gt-lg="25" fxLayoutAlign="start center">
+                        <div class="date-filter cursor-pointer" [matMenuTriggerFor]="analysisIntervals">
+                            <span class="font-14">{{analysisFilter}} </span>
+                            <mat-icon class="absolute viewAllicon">arrow_drop_down</mat-icon>
+                        </div>
+                    </div>
+                    <div fxFlex="45" fxFlex.gt-md="45" fxFlex.gt-lg="45" fxLayoutAlign="end center"
+                        *ngIf="analysisFilter === 'Custom range'">
+                        <div fxFlex="100" class="date-filter cursor-pointer" (click)="activity.click()"
+                            fxLayoutAlign="space-between center">
+                            <span class="font-14">{{progressDates?.startDate | date: getFilterFormat()}} -
+                                {{progressDates?.endDate | date : getFilterFormat()}}</span>
+                            <mat-icon class="absolute viewAllicon">arrow_drop_down</mat-icon>
+                            <div fxFlex.gt-lg="30" fxFlex.gt-md="30" fxFlex="100" class="font-14"
+                                style="visibility: hidden;position: absolute;">
+                                <input matInput [(ngModel)]="dateInput" placeholder="select start date"
+                                    [matDatepicker]="daily" (click)="daily.open()"
+                                    (dateChange)="changeProgress($event.value)">
+                                <mat-datepicker #daily></mat-datepicker>
+                                <div>
+                                    <input #activity type="text" ngxDaterangepickerMd [(ngModel)]="progressDates"
+                                        [locale]="{ applyLabel: 'Done', firstDay: 1 }" [maxDate]="momentToday"
+                                        (change)="changeProgress($event)" [showDropdowns]="true"
+                                        [lockStartDate]="false" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-actions>
+        </mat-card>
+        <mat-menu #analysisIntervals="matMenu" class="mymegamenu">
+            <button mat-menu-item (click)="updateAnalysis('Last 7 days')">Last 7 days</button>
+            <button mat-menu-item (click)="updateAnalysis('Custom range')">Custom range</button>
+        </mat-menu>
+    </div>
+</div>

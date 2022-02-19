@@ -1,0 +1,206 @@
+<div class="page-breadcrumb">
+	<div fxLayout="row wrap" fxLayoutAlign="space-between center">
+		<div fxFlex.gt-sm="60" fxFlex.gt-xs="60" fxFlex="100" class="align-self-center">
+			<div class="breadcrumb">
+				<ul class="list-style-none d-flex">
+					<li class="breadcrumb-item cursor-pointer" routerLink="/facility/dashboard">
+						<span class="text-muted">Dashboard</span>
+					</li>
+          <li class="breadcrumb-item cursor-pointer" routerLink="/facility/wards">
+            <span >Wards</span>
+          </li>
+					<li class="breadcrumb-item active">{{wardDetails.name}}'s Ward overview</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="main-section ward-view resident-view p-24">
+  <div class="popover__wrapper">
+    <span class="second-title font-24 m-r-5">{{ wardDetails.name }}</span> 
+    <!-- <mat-icon class="absolute help-text-hover-cont popover__title" style="color: #D3CDC6;cursor: pointer;position: absolute;top: 3px;">info_outline</mat-icon>
+    <div class="popover__content">
+        <h4 class="second-title popover__heading m-b-10">{{ wardDetails.name }}</h4>
+        <div fxLayout="row wrap" fxLayoutAlign="start center">
+          <p fxFlex="50">Registered rooms: {{roomTableData.length}}</p>
+          <p fxFlex="50">Registered caregivers: {{careGiverTableData.length}}</p>
+          <p fxFlex="50">Registered residents: {{residentTableData.length}}</p>
+          <p fxFlex="50">Registered wearables: {{wearableTableData.length}}</p>
+          <div fxFlex="50" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="0.2em">
+            <p>Total falls: </p>
+            <div fxLayoutAlign="start center">
+              <p class="m-0">{{wardOverView.todayFallCount}}</p>
+              <div [ngClass]="{'increased': wardDetails.wearableFallIncreased, 'decreased': !wardDetails.wearableFallIncreased}" fxLayoutAlign="start center" fxLayoutGap="0.2em">
+                <ng-container [ngSwitch]="wardDetails?.wearableFallIncreased">
+                  <mat-icon class="increased" *ngSwitchCase="true">north</mat-icon>
+                  <mat-icon class="decreased" *ngSwitchCase="false">south</mat-icon>
+                </ng-container>
+                <p class="font-10">{{wardDetails.fallDiff}}</p>
+              </div>
+            </div>
+          </div>
+          <p fxFlex="50">Wearables (Critically low): {{wardOverView.devicelowBattery}}</p>
+        </div>
+    </div> -->
+  </div>
+  <div fxLayoutAlign="start center" fxLayoutGap="1.5em">
+    <div class="cursor-pointer" title="Ward manager: {{wardDetails.wardManagerName}}" fxLayoutAlign="start center" fxLayoutGap="0.2em">
+      <mat-icon color="accent">person_pin</mat-icon>
+      <p style="font-weight: 500; margin-left: 5px;" class="arjoblue">{{wardDetails.wardManagerName}}</p>
+    </div>
+    <div class="cursor-pointer" fxLayoutAlign="start center" title="contact no: {{wardDetails?.contactPhone}}" fxLayoutGap="0.2em">
+      <mat-icon color="accent">contact_phone</mat-icon>
+      <p style="font-weight: 500; margin-left: 5px;">{{wardDetails?.contactPhone}}</p>
+    </div>
+    <div class="cursor-pointer" fxLayoutAlign="start center" (click)="editWard()" fxLayoutGap="0.2em">
+      <mat-icon color="accent">edit_road</mat-icon>
+      <p style="font-weight: 500; margin-left: 5px;">Edit ward</p>
+    </div>
+  </div>
+  <mat-tab-group mat-align-tabs="left" [selectedIndex]="selectedTab" (selectedTabChange)="onChangeTab($event)">
+    <mat-tab label="WARD OVERVIEW">
+      <div class="m-t-20">
+        <div fxLayout="row wrap">
+          <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+              <app-quick-summary [type]="'ward'"></app-quick-summary>
+          </div>
+      </div>
+      <div fxLayout="row wrap">
+          <div fxFlex.gt-lg="50" fxFlex.gt-md="50" fxFlex.gt-xs="100" fxFlex="100">
+              <app-user-statistics [type]="'ward'"></app-user-statistics>
+          </div>
+          <div fxFlex.gt-lg="50" fxFlex.gt-md="50" fxFlex.gt-xs="100" fxFlex="100">
+              <app-resident-statistics [type]="'ward'"></app-resident-statistics>
+          </div>
+      </div>
+      <div fxLayout="row wrap">
+          <div fxFlex.gt-lg="50" fxFlex.gt-md="50" fxFlex.gt-xs="100" fxFlex="100">
+              <app-battery-statistics [type]="'ward'"></app-battery-statistics>
+          </div>
+          <div fxFlex.gt-lg="50" fxFlex.gt-md="50" fxFlex.gt-xs="100" fxFlex="100">
+              <app-residents-summary-dash [type]="'ward'"></app-residents-summary-dash>
+          </div>
+      </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="CAREGIVER DETAILS">
+      <div class="" *ngIf="careGiverTableData.length > 0" style="overflow: hidden;">
+        <div class="m-t-15" fxLayoutAlign="space-between center" fxLayout="row nowrap">
+         
+        </div>
+        <app-table (actionEvent)="doOperation1($event, 'caregiver')"
+          [isLoading]="isLoading.caregiver"
+          [actionEnable]="false"
+          [widths]="careGiverWidths"
+          [displayedColumns]="careGiverDisplayedColumns"
+          [tableData]="careGiverTableData"
+        ></app-table>
+      </div>
+      <div class="preloader" *ngIf="isLoading.caregiver" fxLayoutAlign="center center"
+                    [ngStyle]="{'background-color': 'unset', position: 'unset', height: '350px'}">
+                <div class="spinner" [ngStyle]="{margin: 'unset', top: 'unset'}">
+                    <img alt="loading.." src="assets/images/loading.gif" width="40px" height="40px" />
+                </div>
+            </div>
+      <div *ngIf="careGiverTableData.length < 1 && !isLoading.caregiver" fxLayoutAlign="center center" style="width: 100%; height: calc(100vh - 275px)">
+        <div class="display-card" fxLayoutAlign="center center">
+          <p class="text text-center m-0">There is no caregiver assigned to this ward yet.Please got to <span class="links" [routerLink]="['/', 'facility', 'caregivers']">caregiver</span> section to assign for this ward</p>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="RESIDENTS DETAILS">
+      <div class="" *ngIf="residentTableData.length > 0" style="overflow: hidden;">
+        <div class="m-t-15" fxLayoutAlign="space-between center" fxLayout="row nowrap">
+          
+        </div>
+        <app-table (actionEvent)="doOperation($event)"
+          [actionEnable]="false"
+          [isLoading]="isLoading.resident"
+          [widths]="residentWidths"
+          [displayedColumns]="residentDisplayedColumns"
+          [tableData]="residentTableData"
+          [link]="false"
+        ></app-table>
+      </div>
+      <div class="preloader" *ngIf="isLoading.resident" fxLayoutAlign="center center"
+                    [ngStyle]="{'background-color': 'unset', position: 'unset', height: '350px'}">
+                <div class="spinner" [ngStyle]="{margin: 'unset', top: 'unset'}">
+                    <img alt="loading.." src="assets/images/loading.gif" width="40px" height="40px" />
+                </div>
+            </div>
+      <div *ngIf="residentTableData.length < 1 && !isLoading.resident" fxLayoutAlign="center center" style="width: 100%; height: calc(100vh - 275px)">
+        <div class="display-card" fxLayoutAlign="center center">
+          <p class="text text-center m-0">Residents has been not added yet.
+            Once residents added it will be shown here.</p>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="WEARABLES DETAILS">
+      <div class="" *ngIf="wearableTableData.length > 0" style="overflow: hidden;">
+        <div class="m-t-15" fxLayoutAlign="space-between center" fxLayout="row nowrap">
+          
+        </div>
+        <app-table (actionEvent)="doOperation($event, 'wearables')"
+          [actionEnable]="false"
+          [isLoading]="isLoading.wearable"
+          [widths]="wearableWidths"
+          [displayedColumns]="wearableDisplayedColumns"
+          [tableData]="wearableTableData"
+          [link]="false"
+        ></app-table>
+      </div>
+      <div class="preloader" *ngIf="isLoading.wearable" fxLayoutAlign="center center"
+                    [ngStyle]="{'background-color': 'unset', position: 'unset', height: '350px'}">
+                <div class="spinner" [ngStyle]="{margin: 'unset', top: 'unset'}">
+                    <img alt="loading.." src="assets/images/loading.gif" width="40px" height="40px" />
+                </div>
+            </div>
+      <div *ngIf="wearableTableData.length < 1 && !isLoading.wearable" fxLayoutAlign="center center" style="width: 100%; height: calc(100vh - 275px)">
+        <div class="display-card" fxLayoutAlign="center center">
+          <p class="text text-center m-0">Wearables has been not added yet.
+            Once wearables added it will be shown here.</p>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="ROOM DETAILS">
+      <div class=""  style="overflow: hidden;">
+        <div class="m-t-15" fxLayoutAlign="end center" fxLayout="row nowrap" fxLayoutGap="0.8em">
+          <!-- <div class="form-field">
+            <mat-form-field appearance="outline" class="lg-filter-select">
+              <mat-select value="bulk manage">
+                <mat-option></mat-option>
+                <mat-option value="bulk manage" (click)="addDialogRoom()">Bulk manage</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div> -->
+          <button class="add-button" mat-flat-button color="accent" (click)="addRoom()">
+            <mat-icon>add</mat-icon><span>Add new room</span>
+          </button>
+        </div>
+        <ng-container *ngIf="roomTableData.length > 0">
+          <app-table (actionEvent)="doOperation($event, 'rooms')"
+            [actionEnable]="false"
+            [widths]="roomWidths"
+            [isLoading]="isLoading.room"
+            [displayedColumns]="roomDisplayedColumns"
+            [tableData]="roomTableData"
+            [link]="false"
+            noDataMessage="Looks like you haven't added a rooms"
+          ></app-table>
+        </ng-container>
+        <div class="preloader" *ngIf="isLoading.room" fxLayoutAlign="center center"
+                    [ngStyle]="{'background-color': 'unset', position: 'unset', height: '350px'}">
+                <div class="spinner" [ngStyle]="{margin: 'unset', top: 'unset'}">
+                    <img alt="loading.." src="assets/images/loading.gif" width="40px" height="40px" />
+                </div>
+            </div>
+        <div *ngIf="roomTableData.length < 1 && !isLoading.room" fxLayoutAlign="center center" style="width: 100%; height: calc(100vh - 275px)">
+          <div class="display-card" fxLayoutAlign="center center">
+            <p class="text text-center m-0">Rooms has been not added yet.
+              Once rooms added it will be shown here.</p>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

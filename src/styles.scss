@@ -1,0 +1,551 @@
+/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css?family=Poppins:wght@300,400,500,600,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap");
+// @import url("https://arjo-api-dev.nsdcare.com/assets/fonts/santral/santral.scss");
+// @import url("https://arjo-api-dev.nsdcare.com/assets/fonts/whitney/whitney.scss");
+@import './assets/styles/variable.scss';
+
+.mat-form-field-appearance-outline.ng-valid .mat-form-field-outline-thick .mat-form-field-outline-start,
+.mat-form-field-appearance-outline.ng-valid .mat-form-field-outline-thick .mat-form-field-outline-end,
+.mat-form-field-appearance-outline.ng-valid .mat-form-field-outline-thick .mat-form-field-outline-gap {
+	border-width: 2px !important;
+}
+
+.residentSearch .mat-form-field-label-wrapper {
+	top: -1.5em;
+}
+.residentSearch .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+	transform: translateY(-1.1em) scale(0.75);
+	width: 133.33333%;
+}
+.residentSearch .mat-form-field-appearance-outline .mat-form-field-wrapper {
+	margin: 0;
+	margin-bottom: 0 !important;
+}
+.residentSearch .mat-form-field-appearance-outline .mat-form-field-wrapper {
+	margin: 0;
+	padding-bottom: 0 !important;
+}
+
+.resident-filters .mat-form-field-label-wrapper {
+	top: -1.5em;
+}
+.resident-filters .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+	transform: translateY(-1.1em) scale(0.75);
+	width: 133.33333%;
+}
+.readonly .mat-form-field-outline {
+	background-color: #f5f5f5;
+	border-radius: 5px;
+}
+.mat-expansion-panel-header-title, .mat-expansion-panel-header-description {
+    align-items: center;
+}
+.add-resident .mat-expansion-panel-header-title, .add-resident .mat-expansion-panel-header-description {
+	align-items: flex-end !important;
+}
+.apexcharts-menu {
+	width: 115px !important;
+}
+.apexcharts-xaxistooltip {
+	display: none;
+}
+.timeline .mat-expansion-panel {
+	box-shadow: none !important;
+	margin-bottom: 0 !important;
+	transition: none !important;
+}
+.timeline .mat-expansion-panel-header {
+	padding: 0 !important;
+	height: 25px !important;
+}
+.timeline .mat-expansion-panel-header.mat-expanded {
+	background-color: #fff !important;
+}
+.timeline .mat-expansion-panel-header.mat-expanded .mat-expansion-panel-header-title, .timeline .mat-expansion-panel-header.mat-expanded .mat-expansion-indicator::after {
+	color: #434342 !important;
+}
+.filter-box-container .mat-form-field-wrapper {
+	padding-bottom: 0 !important;
+}
+.filter-box-field .mat-form-field-appearance-outline .mat-form-field-label {
+	margin-top: 0.1em !important;
+  }
+.unit-entry .mat-form-field-outline-start, .unit-entry .mat-form-field-outline-end {
+	border-top-right-radius: 0 !important;
+	border-bottom-right-radius: 0 !important;
+}
+.unit-select .mat-form-field-outline-start, .unit-select .mat-form-field-outline-end {
+	border-top-left-radius: 0 !important;
+	border-bottom-left-radius: 0 !important;
+	border-left: none !important;
+}
+.mat-list-base .mat-list-item .mat-list-item-content .mat-list-text {
+	margin-top: 4px !important;
+	font-size: 15px !important;
+    color: #434342 !important;
+}
+.walkingprgs .mat-progress-bar-fill::after {
+	background-color: #a6bcc9!important;
+}
+.sleepingprgs .mat-progress-bar-fill::after {
+	background-color: #aaa093!important;
+}
+.sittingprgs .mat-progress-bar-fill::after {
+	background-color: #87657d!important;
+}
+.activeprgs .mat-progress-bar-fill::after {
+	background-color: #015174!important;
+}
+.md-drppicker th.month .dropdowns {
+    min-width: 70px;
+}
+.mat-list-option:focus, .mat-nav-list .mat-list-item:focus, .mat-action-list .mat-list-item:focus {
+	background: none !important;
+}
+.notification-side-nav .mat-drawer-backdrop.mat-drawer-shown {
+	background: none !important;
+}
+.notification-alert{
+	position: relative;
+	width: fit-content;
+}
+.notification-alert .badge{
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	width: 10px;
+	height: 10px;
+	background-color: #015174;
+	border-radius: 50%;
+}
+.md-drppicker option.disabled, .md-drppicker td.disabled {
+    cursor: auto !important;
+    text-decoration: none !important;
+}
+mat-tab-header {
+	border-bottom: none !important;
+}
+.mat-tab-label {
+	border: 2px solid #2b6b88;
+	border-right: none;
+	opacity: 1 !important;
+	padding: 0 10px !important;
+	min-width: 135px !important;
+}
+.mat-tab-label:last-child {
+	border-right: 2px solid #2b6b88;
+}
+.mat-tab-label-active {
+	background-color: #2b6b88;
+	color: #ffffff !important;
+}
+.mat-raised-button {
+	border-radius: 0 !important;
+	line-height: 40px !important;
+	box-shadow: none !important;
+}
+mwl-gauge {
+	width: 200px;
+	height: 70px;
+	box-sizing: border-box;
+	display: block;
+}
+mwl-gauge > .gauge > .dial {
+	stroke: #eee;
+	stroke-width: 6;
+	fill: rgba(0,0,0,0);
+	stroke-linecap: round;
+}
+mwl-gauge > .gauge > .value {
+	stroke: #015174;
+	stroke-width: 6;
+	fill: rgba(0,0,0,0);
+	stroke-linecap: round;
+}
+mwl-gauge > .gauge > .current {
+	stroke: #b39dac;
+	stroke-width: 6;
+	fill: rgba(0,0,0,0);
+	stroke-linecap: round;
+}
+mwl-gauge > .gauge > .value-text {
+	display: none;
+}
+.mat-menu-panel {
+	min-width: 135px !important;
+}
+
+
+.mat-form-field-flex > .mat-form-field-infix {
+	border-top: 0.35em solid transparent !important;
+	padding: 0.72em 0 !important;
+}
+.mat-form-field-outline {
+	background-color: #f6f4f2 !important;
+}
+.mat-form-field-appearance-outline .mat-form-field-outline-thick {
+	color: rgba(0, 0, 0, 0.12) !important;
+}
+.mat-form-field-appearance-outline .mat-form-field-outline-thick .mat-form-field-outline-start, .mat-form-field-appearance-outline .mat-form-field-outline-thick .mat-form-field-outline-end, .mat-form-field-appearance-outline .mat-form-field-outline-thick .mat-form-field-outline-gap {
+    border-width: 0px !important;
+}
+.mat-form-field-wrapper {
+	padding-bottom: 12px !important;
+}
+.mat-form-field-appearance-outline .mat-form-field-outline-start, .mat-form-field-appearance-outline .mat-form-field-outline-end {
+	border-radius: 0 !important;
+}
+.mat-form-field-subscript-wrapper{
+	top: calc(100% - 15px) !important;
+    padding: 0 !important;
+}
+.mat-select-arrow-wrapper .mat-select-arrow {
+	position: relative;
+	top: 4px;
+	color:#000000;
+}
+.mat-form-field.mat-focused.mat-primary .mat-select-arrow{
+	color: #000000 !important;
+}
+.mat-select-panel::after {
+    content: "";
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 5px 5px 0 5px;
+    border-color: #000000 transparent transparent transparent;
+    position: absolute;
+    margin-top: 3px;
+    margin-left: 10px;
+    bottom: inherit;
+    top: 15px;
+    right: 15px;
+}
+.mat-dialog-container {
+	box-shadow: none !important;
+}
+.progress-updates rect {
+	display: none;
+}
+
+.profile-dialog .mat-dialog-container{
+	padding: 0;
+}
+.add-button {
+	border-radius: 0 !important;
+	font-weight: 500 !important;
+	// padding: 0px 16px 0 8px !important;
+	height: 40px !important;
+	line-height: 35px !important;
+	box-shadow: 0 1px 0 0 rgba(34, 32, 37, 0.15) !important;
+	border: solid 1px #003249 !important;
+}
+.resident-view {
+    .mat-tab-label, .mat-tab-link {
+        color: #434242 !important;
+    }
+}
+.mat-primary .mat-pseudo-checkbox-checked, .mat-primary .mat-pseudo-checkbox-indeterminate {
+    background: $arjoblue !important;
+}
+.mat-pseudo-checkbox-checked.mat-pseudo-checkbox-disabled, .mat-pseudo-checkbox-indeterminate.mat-pseudo-checkbox-disabled {
+    background: #b0b0b0 !important;
+}
+.md-drppicker {
+	.mat-primary {
+		border-radius: 0 !important;
+		font-weight: 500 !important;
+		// padding: 0px 16px 0 8px !important;
+		height: 40px !important;
+		line-height: 35px !important;
+		box-shadow: 0 1px 0 0 rgba(34, 32, 37, 0.15) !important;
+		border: solid 1px #003249 !important;
+		background-color: #015174 !important;
+	}
+}
+.display-card{
+    width: 446px;
+    height: 222px;
+    padding: 0 40px;
+    border: 1px solid $border;
+    box-sizing: border-box;
+    .text{
+        color: $rock;
+    }
+}
+.select-search{
+	padding: 15px !important;
+	background-color:  #f6f4f2 !important;
+	margin: 0;
+}
+#visitor-chart{
+	.mat-paginator-range-label{
+		display: none !important
+	}
+	.mat-paginator-page-size{
+		display: none !important;
+	}
+	.mat-paginator-container {
+		min-height: 35px !important;
+	}
+}
+.quick-box{
+	.apexcharts-canvas{
+		width: 180px !important;
+	}
+	svg{
+		width: 180px !important;
+	}
+}
+.filter-box-section .mat-list-base .mat-list-item .mat-list-item-content .mat-list-text{
+	padding-right: 4px !important;
+	line-height: 15px;
+	margin-top: 0px !important;
+}
+.filter-btn-section{
+	text-align: center !important;
+}
+.filter-btn-section button.mat-stroked-button{
+	width: 115px;
+	float: none !important;
+}
+.filter-modal .mat-dialog-actions{
+	// place-content: end left !important;
+	border-top: 1px solid #ccc;
+}
+// .filter-modal .accordion__content.accordion__content--large{
+//     min-height: 285px;
+//     max-height: 480px;
+//     overflow-y: scroll;
+// }
+.filter-modal .mat-raised-button{
+    border-radius: 5px !important;
+}
+.filter-modal .accordion__content.accordion__content--large .mat-selection-list{
+	min-height: 285px;
+    max-height: 430px;
+    overflow-y: scroll;
+}
+.resident-view-section.resident-view .font-14{
+	font-size: 13px !important;
+ }
+ .mat-button-disabled{
+	background-color: #f6f4f2 !important;
+    color:#999!important;
+	border: 1px solid #c8c8c8 !important;
+ }
+ .date-text{
+    padding: 8px 4px !important;
+ }
+ .md-drppicker.md-drppicker .mat-primary{
+	border-radius: 5px !important;
+}
+
+
+@media screen and (min-width: 1280px) and (max-width: 1680px) {
+
+   .quick-box{
+		min-height: 180px !important;
+	}
+	.quick-box .sub-text{
+		font-size: 12px;
+		margin: 5px 0px;
+	}
+	.quick-box .view-link{
+		margin: 5px 0px;
+		font-size: 15px;
+	}
+	.quick-box .sub-title{
+		font-size: 14px;
+		margin: 6px 0px;
+	}
+	.md-drppicker .calendar td {
+		font-size: 13px !important;
+	}
+	.clear_filters_btn{
+		font-size: 13px !important;
+		border-radius: 5px !important;
+		padding: 0px 8px !important;
+	}
+	.md-drppicker .buttons_input{
+		width: 100%;
+		float: left;
+		position: absolute;
+		bottom: 10px;
+		right: 15px;
+	}
+	// html .page-wrapper {
+	// 	height: auto !important;
+	// 	min-height: 500px;
+	// }
+	// .page-dashboard.page-wrapper .mat-card.halfbox .mat-card-header{
+	// 	height: 15px;
+	// }
+	// .page-wrapper.page-dashboard .mat-card.halfbox .mat-card-actions{
+	// 	position: absolute;
+	// 	bottom: 0px;
+    //     width: 100%;
+	// }
+	// .page-wrapper.page-dashboard .mat-card.halfbox{
+	// 	height: 380px;
+	// }
+	// .page-wrapper.page-dashboard .second-title{
+	// 	font-size: 16px;
+	// }
+	// .page-wrapper.page-dashboard .page-breadcrumb{
+	// 	padding: 5px 24px 5px 24px;
+	// }
+	// .page-wrapper.page-dashboard .main-section{
+    //     padding-top: 2px;
+	// }
+	// .mat-card-content-secion{
+	// 	padding: 14px 24px 0px 24px !important;
+	// }
+	// .page-wrapper.page-dashboard .table-section p{
+	// 	font-size: 15px;     
+	// }
+	// .page-wrapper.page-dashboard .quick-box{
+    //     min-height: 125px !important; 
+	// }
+	// .page-wrapper.page-dashboard tr.mat-row, tr.mat-footer-row{
+	// 	height: 39px;
+	// }
+	// .page-wrapper.page-dashboard .main-heading{
+	// 	font-size: 16px;
+	// }
+	// .page-wrapper.page-dashboard .mat-tab-label, .mat-tab-link{
+	// 	font-size: 13px;
+	// }
+	// .page-wrapper.page-dashboard .mat-icon{
+    //     top: 0px !important;
+	// }
+    // .arjomodal .mat-card-content form .mat-form-field{
+	// 	margin-bottom: 13px !important;      
+	// }
+	// .arjomodal .mat-card.model .mat-card-actions{
+	// 	height: 70px;
+	// }
+	// .arjomodal .arjoform-value{
+	// 	margin-bottom: 0px !important;
+	// }
+	// .arjomodal .mat-expansion-panel-body .m-t-30{
+    //     margin-top: 15px !important;
+	// }
+	// .mat-expansion-panel-header.mat-expanded{
+	// 	height: 50px !important;
+	// }
+	// .mat-expansion-panel .m-t-30{
+    //     margin-top: 15px !important;
+	// }
+    // .filter_residents_dialog p{
+	// 	margin-top: 2px !important;
+	// }
+}
+
+.intervention_row {
+  display: flex;
+  vertical-align: middle;
+  width: 100%;
+  min-height: 42px;
+  z-index: 10;
+  transform: translateY(0);
+  background: #fff;
+  border: 1px solid #fff;
+  box-shadow: 0 0 10px rgb(0 0 0 / 5%);
+}
+.intervention_desc {
+  flex-grow: 1;
+  width: 100%;
+  height: 100%;
+  min-height: 42px;
+  display: inline-flex;
+  flex-direction: column;
+}
+.intervention_desc_cont {
+  cursor: pointer;
+  flex-grow: 1;
+  min-width: 100px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.status-btn-cont {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 14px;
+  margin-left: 10px;
+  margin-right: 6px;
+  cursor: pointer;
+  &:hover {
+    border: 1px solid;
+    border-radius: 2px;
+  }
+}
+.status-text-TO {
+	color: #a6bcd2;
+  }
+  .status-text-PLANNED {
+	color: #015174;
+  }
+  .status-text-IN {
+	color: #f8c276;
+  }
+  .status-text-DONE {
+	color: #91af91;
+  }
+.status-btn-cont-TO:hover {
+  border-color: #a6bcd2;
+}
+.status-btn-cont-PLANNED:hover {
+  border-color: #015174;
+}
+.status-btn-cont-IN:hover {
+  border-color: #f8c276;
+}
+.status-btn-cont-DONE:hover {
+  border-color: #91af91;
+}
+.status-btn {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.status-btn-TO {
+  background-color: #a6bcd2;
+}
+.status-btn-PLANNED {
+  background-color: #015174;
+}
+.status-btn-IN {
+  background-color: #f8c276;
+}
+.status-btn-DONE {
+  background-color: #91af91;
+}
+.full-status-btn {
+  padding: 5px;
+  color: #fff;
+  width: 150px;
+  margin-left: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.intervention-statuses.mat-menu-item {
+  height: 32px !important;
+  display: flex !important;
+  align-items: center;
+}
+.intervention_title {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 0 28px;
+}

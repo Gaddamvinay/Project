@@ -1,0 +1,97 @@
+<div class="popover__wrapper">
+	<span class="second-title m-l-15 m-r-5">Wearable summary <span style="font-size:12px;">{{forType}}</span> </span> 
+	<mat-icon class="absolute help-text-hover-cont popover__title" (click)="titleShow = !titleShow" style="color: #D3CDC6;cursor: pointer;">help_outline</mat-icon>
+	<div class="popover__content">
+		<h4 class="second-title popover__heading m-b-10">Wearable summary</h4>
+		<div class="popover__message" *ngIf="type ==='dashboard'">
+			<span>All parameters are computed across all customers.</span>
+			<p><strong>In use</strong><br/>Indicates the number of wearables that has been in use by the residents across all customers </p>
+			<p><strong>Not in use</strong><br/>Indicates the number of wearables that has not been used by the residents across all customers and includes the following states doffed, charging, lost, faulty, returned</p>
+			<p><strong>Ready to use</strong><br/>Indicates the number of wearables that are ready to be associated to residents across all customers</p>
+		</div>
+		<div class="popover__message" *ngIf="type === 'customer'">
+			<span>All parameters are computed across all facilities within the customer organization.</span>
+			<p><strong>In use</strong><br/>Indicates the number of wearables that has been in use by the residents across all facilities within the customer organization </p>
+			<p><strong>Not in use</strong><br/>Indicates the number of wearables that has not been used by the residents across all facilities within the customer organization and includes the following states doffed, charging, lost, faulty, returned</p>
+			<p><strong>Ready to use</strong><br/>Indicates the number of wearables that are ready to be associated to residents across all facilities within the customer organization</p>
+		</div>
+		<div class="popover__message" *ngIf="type === 'facility'">
+			<span>All parameters are computed across all wards within the facility.</span>
+			<p><strong>In use</strong><br/>Indicates the number of wearables that has been in use by the residents across all wards within the facility </p>
+			<p><strong>Not in use</strong><br/>Indicates the number of wearables that has not been used by the residents across all wards within the facility and includes the following states doffed, charging, lost, faulty, returned</p>
+			<p><strong>Ready to use</strong><br/>Indicates the number of wearables that are ready to be associated to residents across all wards within the facility</p>
+        </div>
+		<div class="popover__message" *ngIf="type === 'ward'">
+			<span>All parameters are computed across caregivers within the ward.</span>
+			<p><strong>In use</strong><br/>Indicates the number of wearables that has been in use by the residents within the ward</p>
+			<p><strong>Not in use</strong><br/>Indicates the number of wearables that has not been used by the residents within the ward and includes the following states doffed, charging, lost, faulty, returned</p>
+			<p><strong>Ready to use</strong><br/>Indicates the number of wearables that are ready to be associated to residents within the ward</p>
+		</div>
+	</div>
+</div>
+<mat-card class="halfbox">
+	<mat-card-header>
+		<div fxLayout="row wrap">
+			
+		</div>
+	</mat-card-header>
+	<mat-card-content style="padding: 0 24px !important">
+		<div id="visitor-chart">
+			<div *ngIf="!noData && !isLoading && isDataAvailable">
+				<apx-chart #chart [series]="chartOptions?.series" [chart]="chartOptions?.chart"
+					[colors]="chartOptions?.colors" [yaxis]="chartOptions?.yaxis" [dataLabels]="chartOptions?.dataLabels"
+					[markers]="chartOptions?.markers" [legend]="chartOptions?.legend" [stroke]="chartOptions?.stroke"
+					[grid]="chartOptions?.grid" [title]="chartOptions?.title" [xaxis]="chartOptions?.xaxis"
+					[tooltip]="chartOptions?.tooltip" [annotations]="chartOptions?.annotations"
+					[plotOptions]="chartOptions?.plotOptions"></apx-chart>
+			</div>
+			<div class="preloader" *ngIf="isLoading" fxLayoutAlign="center center"
+                [ngStyle]="{'background-color': 'unset', position: 'unset', height: '300px'}">
+				<div class="spinner" [ngStyle]="{margin: 'unset', top: 'unset'}">
+					<img alt="loading.." src="assets/images/loading.gif" width="40px" height="40px" />
+				</div>
+        	</div>
+			<div *ngIf="noData || (!isDataAvailable && !isLoading)" fxLayout="column" fxLayoutGap="0.2em"
+				fxLayoutAlign="center center" [ngStyle]="{width: '100%',height: '300px', background: 'transparent'}">
+				<mat-icon class="no-data-icon">info</mat-icon>
+				<p>No data available</p>
+			</div>
+		</div>
+	</mat-card-content>
+	<mat-card-actions fxLayoutAlign="start center">
+		<div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+			<div class="" fxFlex="70" fxFlex.gt-md="70" fxFlex.gt-lg="70" fxLayoutAlign="start center">
+				<div class="date-filter cursor-pointer" [matMenuTriggerFor]="intervals">
+					<span class="font-14">{{selectedInterval}} </span>
+					<mat-icon class="absolute viewAllicon">arrow_drop_down</mat-icon>
+				</div>
+				<div class="date-filter cursor-pointer" (click)="rdatapicker.click()"
+					fxLayoutAlign="space-between center" *ngIf="selectedInterval === 'Custom range'">
+					<span class="font-14"
+						style="margin-right: 30px;">{{customProgressDates?.startDate | date: getFilterFormat()}}
+						-
+						{{customProgressDates?.endDate | date : getFilterFormat()}}</span>
+					<mat-icon class="absolute viewAllicon">arrow_drop_down</mat-icon>
+					<div class="font-14" style="visibility: hidden;position: absolute;">
+						<div>
+							<input #rdatapicker type="text" ngxDaterangepickerMd (change)="changeDate($event)"
+								[locale]="{ applyLabel: 'Done', firstDay: 1 }" [maxDate]="momentToday"
+								 [showDropdowns]="true" [lockStartDate]="false" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div fxFlex="30" fxFlex.gt-md="30" fxFlex.gt-lg="30" fxLayoutAlign="end start"
+				style="padding-bottom: 10px;">
+				
+			</div>
+		</div>
+	</mat-card-actions>
+</mat-card>
+<mat-menu #intervals="matMenu" class="mymegamenu">
+	<button mat-menu-item (click)="selectedInterval != 'Last 7 days' ? getLast7days() : ''">Last 7 days</button>
+	<!-- <button mat-menu-item *ngIf="type === 'ward'" (click)="selectedInterval = 'Custom range'">Custom Range</button> -->
+	<button mat-menu-item (click)="selectedInterval != 'Last 1 month' ? (getLast1Month()) : ''">Last 1 month</button>
+	<button mat-menu-item (click)="selectedInterval != 'Last 3 months' ? (getLast3Month()) : ''">Last 3 months</button>
+	<button mat-menu-item (click)="selectedInterval != 'Last 6 months' ? (getLast6Month()) : ''">Last 6 months</button>
+</mat-menu>

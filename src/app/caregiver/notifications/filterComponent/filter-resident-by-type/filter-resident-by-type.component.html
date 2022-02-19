@@ -1,0 +1,22 @@
+<div class="filter-modal">
+<label mat-stroked-button for="panel-1">Filter by Type</label>
+
+<div class="accordion__content accordion__content--large">
+  <div class="filter-box-container">
+    <div class="filter-values">
+                                    <mat-selection-list [(ngModel)]="typeList" (selectionChange)="changeSelectType($event)">
+                                        <mat-list-option [value]="noti.value" *ngFor="let noti of notificationType">
+                                            {{noti.label}}
+                                        </mat-list-option>
+                                        <br/>
+                                    </mat-selection-list>
+                                
+                                 <div mat-dialog-actions fxLayoutAlign="end center">
+        <button mat-button mat-dialog-close>Cancel</button>
+        <button mat-raised-button color="accent" (click)="apply()">  Apply</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+

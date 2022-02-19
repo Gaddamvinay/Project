@@ -1,0 +1,10 @@
+<div class="main-section" fxLayout="row nowrap" fxLayoutAlign="space-between center">
+    <div class="footer-text">
+        <p style="margin: 0 0 5px;">© 2020 Arjo. All Rights Reserved.</p>
+        <p style="margin: 0 0 5px;">Arjo • Hans Michelsensgatan 10 • 211 20 Malmö • SWEDEN</p>
+    </div>
+    <ul class="footer-list" *ngIf="disable">
+        <li class="cursor-pointer" [routerLink]="['/support']">Help & Support</li>
+        <li class="cursor-pointer" [routerLink]="['/contact']">Contact us</li>
+    </ul>
+</div>

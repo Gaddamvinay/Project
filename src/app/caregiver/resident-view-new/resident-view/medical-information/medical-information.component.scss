@@ -1,0 +1,33 @@
+@import '../../../../../assets/styles/variable.scss';
+.medical-card{
+    min-height: 130px;
+    
+    @media screen and (min-width:1440px) {
+        min-width: 330px;
+    }
+    @media screen and (min-width:1600px) {
+        min-width: 370px;
+    }
+    background-color: #e9e4de;
+    padding: 16px;
+    box-sizing: border-box;
+    .title {
+        font-size: 12px;
+        margin-top: 0;
+        font-weight: 600;
+        letter-spacing: 0.4px;
+        color: #686262;
+    }
+    .med-list {
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0.25px;
+        margin: 5px 0;
+    }
+}
+.sub-heading {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: 0.15px;
+}

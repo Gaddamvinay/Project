@@ -1,0 +1,38 @@
+<div fxLayout="row wrap" class="m-t-20">
+    <div fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex="100" class="text-left">
+      <span class="second-title">Live location</span>
+    </div>
+    <div fxFlex.gt-md="75" fxFlex.gt-lg="75" fxFlex="100" class="text-right">
+      <div fxLayout="row wrap" fxLayoutGap="0.8em" fxLayoutAlign="end center">
+        <button color="accent" class="add-button" mat-raised-button (click)="openTrack()">
+          Track resident  
+        </button>
+      </div>
+    </div>
+</div>
+<div class="map-container">
+  <div class="map-details">
+    <mat-tab-group mat-align-tabs="left">
+      <mat-tab label="DETAILS">
+        <div class="details current">
+          <p class="time">Updated {{currentUpdate}}</p>
+          <p class="posture">Posture: {{currentPosture}}</p>
+          <p class="location">Location: {{'Home'}}</p>
+        </div>
+        <div class="details previous">
+          <p class="time">Previous update:{{previousUpdate}}</p>
+          <p class="posture">Posture: {{previousPosture}}</p>
+          <p class="location">Location: {{'Home'}}</p>
+        </div>
+        <p>Next update: {{nextUpdate}}</p>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  <div fxLayout="row wrap" class="m-t-20">
+    <div fxFlex.gt-md="100" fxFlex.gt-lg="100" fxFlex="100" class="text-left" class="location-map">
+      <agm-map [latitude]="lat" [zoom]="zoom" [longitude]="lng">
+        <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+      </agm-map>
+    </div>
+  </div>
+</div>

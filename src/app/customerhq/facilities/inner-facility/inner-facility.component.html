@@ -1,0 +1,175 @@
+<div class="page-breadcrumb">
+	<div fxLayout="row wrap" fxLayoutAlign="space-between center">
+		<div fxFlex.gt-sm="60" fxFlex.gt-xs="60" fxFlex="100" class="align-self-center">
+			<div class="breadcrumb">
+				<ul class="list-style-none d-flex">
+					<li class="breadcrumb-item cursor-pointer" routerLink="/hq/dashboard">
+						<span class="text-muted">Dashboard</span>
+					</li>
+          <li class="breadcrumb-item cursor-pointer" routerLink="/hq/facilities">
+            <span >Facilities</span>
+          </li>
+					<li class="breadcrumb-item active">{{facilityDetails?.facility_name}}'s overview</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="main-section ward-view resident-view p-24">
+  <div class="popover__wrapper">
+    <span class="second-title font-24 m-r-5">{{ facilityDetails?.facility_name }}</span> 
+    <!-- <mat-icon class="absolute help-text-hover-cont popover__title" style="color: #D3CDC6;cursor: pointer;position: absolute;top: 3px;">info_outline</mat-icon>
+    <div class="popover__content lg_popover">
+        <h4 class="second-title popover__heading m-b-10">{{ facilityDetails?.facility_name }}</h4>
+        <div fxLayout="row wrap" fxLayoutAlign="start center">
+          <p fxFlex="50">Number of wards: {{facilityDetails.nWards}}</p>
+          <p fxFlex="50">Registered rooms: {{facilityDetails.registeredRooms}}</p>
+          <p fxFlex="50">Registered caregivers: {{facilityDetails.registeredCaregivers}}</p>
+          <p fxFlex="50">Registered residents: {{facilityDetails.registeredResidents}}</p>
+          <p fxFlex="50">Registered wearables: {{facilityDetails.registeredWearables}}</p>
+          <div fxFlex="50" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="0.2em">
+            <p>Total falls: </p>
+            <div fxLayoutAlign="start center">
+              <p class="m-0">{{facilityDetails.todayFallCount}}</p>
+              <div [ngClass]="{'increased': facilityDetails.wearableFallIncreased, 'decreased': !facilityDetails.wearableFallIncreased}" fxLayoutAlign="start center" fxLayoutGap="0.2em">
+                <ng-container [ngSwitch]="facilityDetails?.wearableFallIncreased">
+                  <mat-icon class="increased" *ngSwitchCase="true">north</mat-icon>
+                  <mat-icon class="decreased" *ngSwitchCase="false">south</mat-icon>
+                </ng-container>
+                <p class="font-10">{{facilityDetails.fallDiff}}</p>
+              </div>
+            </div>
+          </div>
+          <p fxFlex="50">Wearables (Critically low): {{facilityDetails.wearableWLB}}</p>
+      </div>
+    </div> -->
+  </div>
+  <div fxLayoutAlign="start center" fxLayoutGap="1.5em">
+    <div class="" title="Ward manager: {{facilityDetails?.facility_admin}}" fxLayoutAlign="start center" fxLayoutGap="0.2em">
+      <mat-icon color="accent">person_pin</mat-icon>
+      <p style="font-weight: 500; margin-left: 5px;" class="arjoblue">{{facilityDetails?.facility_admin}}</p>
+    </div>
+    <div class="" fxLayoutAlign="start center" title="Facility address: {{facilityDetails?.facility_address}}" fxLayoutGap="0.2em">
+      <mat-icon color="accent">business</mat-icon>
+      <p style="font-weight: 500; margin-left: 5px;">{{facilityDetails?.facility_address}}</p>
+    </div>
+  </div>
+  <mat-tab-group mat-align-tabs="left" [selectedIndex]="selectedTab" (selectedTabChange)="onChangeTab($event)">
+    <mat-tab label="FACILITY OVERVIEW">
+      <div class="m-t-20">
+        <div fxLayout="row wrap">
+          <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+              <app-quick-summary [type]="'facility'"></app-quick-summary>
+          </div>
+      </div>
+      <div fxLayout="row wrap">
+          <div fxFlex.gt-lg="50" fxFlex.gt-md="50" fxFlex.gt-xs="100" fxFlex="100">
+              <app-user-statistics [type]="'facility'"></app-user-statistics>
+          </div>
+          <div fxFlex.gt-lg="50" fxFlex.gt-md="50" fxFlex.gt-xs="100" fxFlex="100">
+              <app-resident-statistics [type]="'facility'"></app-resident-statistics>
+          </div>
+      </div>
+      <div fxLayout="row wrap">
+          <div fxFlex.gt-lg="50" fxFlex.gt-md="50" fxFlex.gt-xs="100" fxFlex="100">
+              <app-battery-statistics [type]="'facility'"></app-battery-statistics>
+          </div>
+          <div fxFlex.gt-lg="50" fxFlex.gt-md="50" fxFlex.gt-xs="100" fxFlex="100">
+              <app-residents-summary-dash [type]="'facility'"></app-residents-summary-dash>
+          </div>
+      </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="WARD DETAILS">
+      <div class=""  style="min-height: 350px;" *ngIf="wardTableData.length > 0">
+        <app-table
+          (selectedValue)="navigate($event)"
+          [actionEnable]="false"
+          [hoverAction]="[true]"
+          [actions]="['click']"
+          [widths]="wardWidths"
+          [isLoading]="isLoading.ward"
+          [displayedColumns]="wardDisplayedColumns"
+          [tableData]="wardTableData"
+          [tableType]="'ward'"
+          noDataMessage="Looks like you haven't added a rooms"
+        ></app-table>
+      </div>
+      <div *ngIf="wardTableData.length < 1" fxLayoutAlign="center center" style="width: 100%; height: calc(100vh - 275px)">
+        <div class="display-card" fxLayoutAlign="center center">
+          <p class="text text-center m-0">There is no ward added to this facility yet.Please add <strong>ward</strong> for this facility</p>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="WEARABLE DETAILS">
+      <div fxLayout="row nowrap" fxLayoutAlign="end center" fxLayoutGap="0.8em" class="m-t-15">
+        <form [formGroup]="wearableFilterForm" *ngIf="wardsList.length > 0 && wearableBefore.length > 0">
+          <div fxLayoutAlign="start center" fxLayoutGap="0.8em">
+              <div class="form-field" style="width: 322px;">
+                  <mat-form-field appearance="outline">
+                      <mat-select value="" formControlName="ward_id" multiple #select>
+                        <input matInput class="select-search" type="text" placeholder="Search ward" formControlName="wardSearch" />
+                          <mat-select-trigger>
+                              <ng-container *ngIf="wardIds.length < 2 && wardIds.length > 0">
+                                  <span>{{wardIds? (wardIds[0]=== '' ? 'Select ward' : getWardById(wardIds[0])) : ''}}</span>
+                              </ng-container>
+                              <ng-container *ngIf="wardIds.length > 1">
+                                  <ng-container *ngFor="let ward of wardIds;let i =index">
+                                      <span class="selected" *ngIf="i < 2">{{getWardById(ward)}}</span>
+                                  </ng-container>
+                              </ng-container>
+                              <span *ngIf="wardIds?.length > 2" class="selected">
+                              (+{{wardIds.length - 2}} {{wardIds?.length === 3 ? 'other' : 'others'}})
+                              </span>
+                            </mat-select-trigger>
+                          <mat-option disabled value="">Select ward</mat-option>
+                          <mat-option [value]="ward.ward_id" *ngFor="let ward of getFilterWards()">{{ward.ward_name}}</mat-option>
+                      </mat-select>
+                  </mat-form-field>
+              </div>
+          </div>
+        </form>
+        <button mat-flat-button class="add-button" color="accent" (click)="clearWearableFilters()" *ngIf="showWearableClear()">
+            Clear
+        </button>
+      </div>
+      <div class="" *ngIf="wearableTableData.length > 0" style="min-height: 350px;">
+        <app-table
+          [actionEnable]="false"
+          [hoverAction]="[true]"
+          (selectedValue)="navigate($event)"
+          [isLoading]="isLoading.wearable"
+          [widths]="wearableWidths"
+          [actions]="['click']"
+          [tableType]="'wearable'"
+          [displayedColumns]="wearableDisplayedColumns"
+          [tableData]="wearableTableData"
+        ></app-table>
+      </div>
+      <ng-container *ngIf="wearableTableData.length < 1">
+        <ng-container *ngIf="filtered">
+            <app-table
+                [hoverAction]="[true, true]" 
+                [actionEnable]="false"
+                (selectedValue)="navigate($event)"
+                [isLoading]="isLoading.wearable"
+                [widths]="wearableWidths"
+                [Filtered]="filtered"
+                [actions]="['click']"
+                [tableType]="'wearable'"
+                [displayedColumns]="wearableDisplayedColumns"
+                [tableData]="wearableTableData"
+                [link]="false"
+                ></app-table>
+        </ng-container>
+        <ng-container *ngIf="!filtered">
+            <div fxLayoutAlign="center center" style="width: 100%; height: calc(100vh - 275px)">
+                <div class="display-card" fxLayoutAlign="center center">
+                    <p class="text text-center m-0">There is no wearable added to this customer yet.Please add <strong>wearable</strong> for this customer</p>
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+    </mat-tab>
+  </mat-tab-group>
+</div>

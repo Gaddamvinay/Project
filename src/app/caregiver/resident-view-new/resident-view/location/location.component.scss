@@ -1,0 +1,28 @@
+@import '../../../../../assets/styles/variable.scss';
+.raised{
+    background-color: white;
+    border: 2px solid $arjoblue;
+    color: $arjoblue;
+}
+.map-details{
+    width: 250px;
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5);
+    background-color: #ffffff;
+    position: absolute;
+    z-index: 1;
+    left: 15px;
+    top: 95px;
+    padding: 10px;
+    .details{
+        padding: 0 10px;
+        font-size: 14px;
+        border-bottom: 1px solid $border;
+        color: $lava;  
+    }
+    .current{
+        .time{
+            font-weight: 500;
+            font-size: 16px;
+        }
+    }
+}

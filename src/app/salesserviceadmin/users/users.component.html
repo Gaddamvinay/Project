@@ -1,0 +1,412 @@
+<div class="page-breadcrumb">
+	<div fxLayout="row wrap" fxLayoutAlign="space-between center">
+		<div fxFlex.gt-sm="60" fxFlex.gt-xs="60" fxFlex="100" class="align-self-center">
+			<div class="breadcrumb">
+				<ul class="list-style-none d-flex">
+					<li class="breadcrumb-item cursor-pointer" routerLink="/ssa/dashboard">
+						<span class="text-muted">Dashboard</span>
+					</li>
+                    <li class="breadcrumb-item">Users</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="main-section ward-view resident-view commonaddpage p-24">
+    <div fxLayoutAlign="space-between center">
+        <p class="main-heading">Access control</p>
+        <button class="add-button" style="width: 135px !important;" mat-flat-button color="accent" [matMenuTriggerFor]="users">
+            <mat-icon>add</mat-icon><span>Add new user</span>
+        </button>
+    </div>
+    <ng-container *ngIf="!isLoading">
+        <mat-tab-group mat-align-tabs="left">
+          <mat-tab label="CUSTOMER ADMIN">
+              <div fxLayout="row nowrap" fxLayoutAlign="end center" fxLayoutGap="0.8em" class="m-t-15">
+                  <form [formGroup]="customerFilterForm" *ngIf="customerList.length > 0 && customerBefore.length > 0">
+                      <div class="form-field" style="width: 322px;">
+                          <mat-form-field appearance="outline">
+                              <mat-select value="" formControlName="customer_id" multiple #select>
+                                  <input matInput class="select-search" type="text" placeholder="Search customer" formControlName="customerSearch" />
+                                  <mat-select-trigger>
+                                      <ng-container *ngIf="customerIds.length < 2 && customerIds.length > 0">
+                                          <span>{{customerIds? (customerIds[0]=== '' ? 'Select customer' : getCustomerById(customerIds[0])) : ''}}</span>
+                                      </ng-container>
+                                      <ng-container *ngIf="customerIds.length > 1">
+                                          <ng-container *ngFor="let ward of customerIds;let i =index">
+                                              <span class="selected" *ngIf="i < 2">{{getCustomerById(ward)}}</span>
+                                          </ng-container>
+                                      </ng-container>
+                                      <span *ngIf="customerIds?.length > 2" class="selected">
+                                      (+{{customerIds.length - 2}} {{customerIds?.length === 3 ? 'other' : 'others'}})
+                                      </span>
+                                    </mat-select-trigger>
+                                  <mat-option disabled value="">Select customer</mat-option>
+                                  <mat-option [value]="customer.customer_id" *ngFor="let customer of getHqFilterCustomers()">{{customer.customer_name}}</mat-option>
+                              </mat-select>
+                          </mat-form-field>
+                      </div>
+                  </form>
+                  <button mat-flat-button class="add-button" color="accent" (click)="clearCustomerFilters()" *ngIf="showCustomerClear()">
+                      Clear
+                  </button>
+              </div>
+            <ng-container *ngIf="customerTableData.length > 0">
+                <app-table
+                (actionEvent)="doOperation($event, 'customers')"
+                    [tableType]="'customer admin'"
+                    [widths]="customerWidths"
+                    [displayedColumns]="customerDisplayedColumns"
+                    [tableData]="customerTableData"
+                    [Filtered]="filtered.customer"
+                    [deleteAction]="false"
+                    [passwordAction]="true"
+                ></app-table>
+            </ng-container>
+            <ng-container *ngIf="customerTableData.length < 1">
+                <ng-container *ngIf="filtered.customer">
+                    <app-table
+                    (actionEvent)="doOperation($event, 'customers')"
+                        [tableType]="'customer admin'"
+                        [widths]="customerWidths"
+                        [displayedColumns]="customerDisplayedColumns"
+                        [tableData]="customerTableData"
+                        [Filtered]="filtered.customer"
+                        [deleteAction]="false"
+                        [passwordAction]="true"
+                    ></app-table>
+                </ng-container>
+                <ng-container *ngIf="!filtered.customer">
+                    <div fxLayoutAlign="center center" style="width: 100%; height: calc(100vh - 275px)">
+                        <div class="display-card" fxLayoutAlign="center center">
+                            <p class="text text-center m-0">There is no customer admin added yet.Please add <strong>customer admin</strong></p>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-container>
+          </mat-tab>
+          <mat-tab label="FACILITY ADMIN">
+                <div fxLayout="row nowrap" fxLayoutAlign="end center" fxLayoutGap="0.8em" class="m-t-15">
+                  <form [formGroup]="facilityFilterForm" *ngIf="customerList.length > 0 && fwaBefore.length > 0">
+                      <div fxLayoutAlign="start center" fxLayoutGap="1.8em">
+                          <div class="form-field" style="width: 322px;">
+                              <mat-form-field appearance="outline">
+                                  <mat-select value="" formControlName="customer_id" multiple #faSelect>
+                                      <input matInput class="select-search" type="text" placeholder="Search customer" formControlName="customerSearch" />
+                                      <mat-select-trigger>
+                                          <ng-container *ngIf="facilityCustomerIds.length < 2 && facilityCustomerIds.length > 0">
+                                              <span>{{facilityCustomerIds? (facilityCustomerIds[0]=== '' ? 'Select customer' : getCustomerById(facilityCustomerIds[0])) : ''}}</span>
+                                          </ng-container>
+                                          <ng-container *ngIf="facilityCustomerIds.length > 1">
+                                              <ng-container *ngFor="let ward of facilityCustomerIds;let i =index">
+                                                  <span class="selected" *ngIf="i < 2">{{getCustomerById(ward)}}</span>
+                                              </ng-container>
+                                          </ng-container>
+                                          <span *ngIf="facilityCustomerIds?.length > 2" class="selected">
+                                          (+{{facilityCustomerIds.length - 2}} {{facilityCustomerIds?.length === 3 ? 'other' : 'others'}})
+                                          </span>
+                                        </mat-select-trigger>
+                                      <mat-option disabled value="">Select customer</mat-option>
+                                      <mat-option [value]="customer.customer_id" *ngFor="let customer of getFwaFilterCustomers()">{{customer.customer_name}}</mat-option>
+                                  </mat-select>
+                              </mat-form-field>
+                          </div>
+                          <div class="form-field" style="width: 322px;" *ngIf="(facilityCustomerIds.length < 2 && facilityCustomerIds.length > 0 && facilityCustomerIds[0] !== '') || facilityCustomerIds.length > 1">
+                              <mat-form-field appearance="outline">
+                                  <mat-select value="" formControlName="facility_id" multiple #faWSelect>
+                                      <input matInput class="select-search" type="text" placeholder="Search facility" formControlName="facilitySearch" />
+                                      <mat-select-trigger>
+                                          <ng-container *ngIf="facilityIds.length < 2 && facilityIds.length > 0">
+                                              <span>{{facilityIds? (facilityIds[0]=== '' ? 'Select facility' : getFacilityById(facilityIds[0])) : ''}}</span>
+                                          </ng-container>
+                                          <ng-container *ngIf="facilityIds.length > 1">
+                                              <ng-container *ngFor="let ward of facilityIds;let i =index">
+                                                  <span class="selected" *ngIf="i < 2">{{getFacilityById(ward)}}</span>
+                                              </ng-container>
+                                          </ng-container>
+                                          <span *ngIf="facilityIds?.length > 2" class="selected">
+                                          (+{{facilityIds.length - 2}} {{facilityIds?.length === 3 ? 'other' : 'others'}})
+                                          </span>
+                                        </mat-select-trigger>
+                                      <mat-option disabled value="">Select facility</mat-option>
+                                      <mat-option [value]="facility.facility_id" *ngFor="let facility of getFwaFilterFacilities()">{{facility.facility_name}}</mat-option>
+                                  </mat-select>
+                              </mat-form-field>
+                          </div>
+                      </div>
+                  </form>
+                  <button mat-flat-button class="add-button" color="accent" (click)="clearFacilityFilters()" *ngIf="showFacilityClear()">
+                      Clear
+                  </button>
+                </div>
+                <ng-container *ngIf="fwaTableData.length > 0">
+                    <app-table
+                        (actionEvent)="doOperation($event, 'facility admin')"
+                        [tableType]="'FWA'"
+                        [widths]="facilityWidths"
+                        [displayedColumns]="facilityDisplayedColumns"
+                        [tableData]="fwaTableData"
+                        [Filtered]="filtered.facility"
+                        [deleteAction]="false"
+                        [passwordAction]="true"
+                    ></app-table>
+                </ng-container>
+                <ng-container *ngIf="fwaTableData.length < 1">
+                    <ng-container *ngIf="filtered.facility">
+                        <app-table
+                            (actionEvent)="doOperation($event, 'facility admin')"
+                            [tableType]="'FWA'"
+                            [widths]="facilityWidths"
+                            [displayedColumns]="facilityDisplayedColumns"
+                            [tableData]="fwaTableData"
+                            [Filtered]="filtered.facility"
+                            [deleteAction]="false"
+                            [passwordAction]="true"
+                        ></app-table>
+                    </ng-container>
+                    <ng-container *ngIf="!filtered.facility">
+                        <div fxLayoutAlign="center center" style="width: 100%; height: calc(100vh - 275px)">
+                            <div class="display-card" fxLayoutAlign="center center">
+                                <p class="text text-center m-0">There is no facility admin added yet.Please add <strong>facility admin</strong></p>
+                            </div>
+                        </div>
+                    </ng-container>
+                </ng-container>
+          </mat-tab>
+          <mat-tab label="WARD ADMIN">
+              <div fxLayout="row nowrap" fxLayoutAlign="end center" fxLayoutGap="0.8em" class="m-t-15">
+                  <form [formGroup]="wardFilterForm" *ngIf="customerList.length > 0 && wardBefore.length > 0">
+                      <div fxLayoutAlign="start center" fxLayoutGap="1.8em">
+                          <div class="form-field" style="width: 322px;">
+                              <mat-form-field appearance="outline">
+                                  <mat-select value="" formControlName="customer_id" multiple #waCusSelect>
+                                      <input matInput class="select-search" type="text" placeholder="Search customer" formControlName="customerSearch" />
+                                      <mat-select-trigger>
+                                          <ng-container *ngIf="wardCustomerIds.length < 2 && wardCustomerIds.length > 0">
+                                              <span>{{wardCustomerIds? (wardCustomerIds[0]=== '' ? 'Select customer' : getCustomerById(wardCustomerIds[0])) : ''}}</span>
+                                          </ng-container>
+                                          <ng-container *ngIf="wardCustomerIds.length > 1">
+                                              <ng-container *ngFor="let ward of wardCustomerIds;let i =index">
+                                                  <span class="selected" *ngIf="i < 2">{{getCustomerById(ward)}}</span>
+                                              </ng-container>
+                                          </ng-container>
+                                          <span *ngIf="wardCustomerIds?.length > 2" class="selected">
+                                          (+{{wardCustomerIds.length - 2}} {{wardCustomerIds?.length === 3 ? 'other' : 'others'}})
+                                          </span>
+                                        </mat-select-trigger>
+                                      <mat-option disabled value="">Select customer</mat-option>
+                                      <mat-option [value]="customer.customer_id" *ngFor="let customer of getWaFilterCustomers()">{{customer.customer_name}}</mat-option>
+                                  </mat-select>
+                              </mat-form-field>
+                          </div>
+                          <div class="form-field" style="width: 322px;" *ngIf="(wardCustomerIds.length < 2 && wardCustomerIds.length > 0 && wardCustomerIds[0] !== '') || wardCustomerIds.length > 1">
+                              <mat-form-field appearance="outline">
+                                  <mat-select value="" formControlName="facility_id" multiple #waFaSelect>
+                                      <input matInput class="select-search" type="text" placeholder="Search facility" formControlName="facilitySearch" />
+                                      <mat-select-trigger>
+                                          <ng-container *ngIf="wardFacilityIds.length < 2 && wardFacilityIds.length > 0">
+                                              <span>{{wardFacilityIds? (wardFacilityIds[0]=== '' ? 'Select facility' : getFacilityById(wardFacilityIds[0])) : ''}}</span>
+                                          </ng-container>
+                                          <ng-container *ngIf="wardFacilityIds.length > 1">
+                                              <ng-container *ngFor="let ward of wardFacilityIds;let i =index">
+                                                  <span class="selected" *ngIf="i < 2">{{getFacilityById(ward)}}</span>
+                                              </ng-container>
+                                          </ng-container>
+                                          <span *ngIf="wardFacilityIds?.length > 2" class="selected">
+                                          (+{{wardFacilityIds.length - 2}} {{wardFacilityIds?.length === 3 ? 'other' : 'others'}})
+                                          </span>
+                                        </mat-select-trigger>
+                                      <mat-option disabled value="">Select facility</mat-option>
+                                      <mat-option [value]="facility.facility_id" *ngFor="let facility of getWardAdminFilterFacility()">{{facility.facility_name}}</mat-option>
+                                  </mat-select>
+                              </mat-form-field>
+                          </div>
+                          <div class="form-field" style="width: 322px;" *ngIf="(wardFacilityIds.length < 2 && wardFacilityIds.length > 0 && wardFacilityIds[0] !== '') || wardFacilityIds.length > 1">
+                              <mat-form-field appearance="outline">
+                                  <mat-select value="" formControlName="ward_id" multiple #waWadSelect>
+                                      <input matInput class="select-search" type="text" placeholder="Search ward" formControlName="wardSearch" />
+                                      <mat-select-trigger>
+                                          <ng-container *ngIf="wardAdminWardIds.length < 2 && wardAdminWardIds.length > 0">
+                                              <span>{{wardAdminWardIds? (wardAdminWardIds[0]=== '' ? 'Select ward' : getWardById(wardAdminWardIds[0])) : ''}}</span>
+                                          </ng-container>
+                                          <ng-container *ngIf="wardAdminWardIds.length > 1">
+                                              <ng-container *ngFor="let ward of wardAdminWardIds;let i =index">
+                                                  <span class="selected" *ngIf="i < 2">{{getWardById(ward)}}</span>
+                                              </ng-container>
+                                          </ng-container>
+                                          <span *ngIf="wardAdminWardIds?.length > 2" class="selected">
+                                          (+{{wardAdminWardIds.length - 2}} {{wardAdminWardIds?.length === 3 ? 'other' : 'others'}})
+                                          </span>
+                                        </mat-select-trigger>
+                                      <mat-option disabled value="">Select ward</mat-option>
+                                      <mat-option [value]="ward.ward_id" *ngFor="let ward of getWardAdminFilterWards()">{{ward.ward_name}}</mat-option>
+                                  </mat-select>
+                              </mat-form-field>
+                          </div>
+                      </div>
+                  </form>
+                  <button mat-flat-button class="add-button" color="accent" (click)="clearWardFilters()" *ngIf="showWardClear()">
+                      Clear
+                  </button>
+              </div>
+              <ng-container *ngIf="wardAdminTableData.length > 0">
+                <app-table
+              (actionEvent)="doOperation($event, 'ward admin')"
+                  [tableType]="'ward admin'"
+                  [widths]="caregiverWidths"
+                  [displayedColumns]="wardAdminDisplayedColumns"
+                  [tableData]="wardAdminTableData"
+                  [Filtered]="filtered.ward"
+                  [deleteAction]="false"
+                  [passwordAction]="true"
+              ></app-table>
+            </ng-container>
+            <ng-container *ngIf="wardAdminTableData.length < 1">
+                <ng-container *ngIf="filtered.ward">
+                    <app-table
+                    (actionEvent)="doOperation($event, 'ward admin')"
+                        [tableType]="'ward admin'"
+                        [widths]="caregiverWidths"
+                        [displayedColumns]="wardAdminDisplayedColumns"
+                        [tableData]="wardAdminTableData"
+                        [Filtered]="filtered.ward"
+                        [deleteAction]="false"
+                        [passwordAction]="true"
+                    ></app-table>
+                </ng-container>
+                <ng-container *ngIf="!filtered.ward">
+                    <div fxLayoutAlign="center center" style="width: 100%; height: calc(100vh - 275px)">
+                        <div class="display-card" fxLayoutAlign="center center">
+                            <p class="text text-center m-0">There is no ward admin added yet.Please add <strong>ward admin</strong></p>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-container>
+          </mat-tab>
+          <mat-tab label="CAREGIVERS">
+              <div fxLayout="row nowrap" fxLayoutAlign="end center" fxLayoutGap="0.8em" class="m-t-15">
+                  <form [formGroup]="caregiverFilterForm" *ngIf="customerList.length > 0 && caregiverBefore.length > 0">
+                      <div fxLayoutAlign="start center" fxLayoutGap="1.8em">
+                          <div class="form-field" style="width: 322px;">
+                              <mat-form-field appearance="outline">
+                                  <mat-select value="" formControlName="customer_id" multiple #caCusSelect>
+                                      <input matInput class="select-search" type="text" placeholder="Search customer" formControlName="customerSearch" />
+                                      <mat-select-trigger>
+                                          <ng-container *ngIf="caregiverCustomerIds.length < 2 && caregiverCustomerIds.length > 0">
+                                              <span>{{caregiverCustomerIds? (caregiverCustomerIds[0]=== '' ? 'Select customer' : getCustomerById(caregiverCustomerIds[0])) : ''}}</span>
+                                          </ng-container>
+                                          <ng-container *ngIf="caregiverCustomerIds.length > 1">
+                                              <ng-container *ngFor="let ward of caregiverCustomerIds;let i =index">
+                                                  <span class="selected" *ngIf="i < 2">{{getCustomerById(ward)}}</span>
+                                              </ng-container>
+                                          </ng-container>
+                                          <span *ngIf="caregiverCustomerIds?.length > 2" class="selected">
+                                          (+{{caregiverCustomerIds.length - 2}} {{caregiverCustomerIds?.length === 3 ? 'other' : 'others'}})
+                                          </span>
+                                        </mat-select-trigger>
+                                      <mat-option disabled value="">Select customer</mat-option>
+                                      <mat-option [value]="customer.customer_id" *ngFor="let customer of getCaregiverFilterCustomers()">{{customer.customer_name}}</mat-option>
+                                  </mat-select>
+                              </mat-form-field>
+                          </div>
+                          <div class="form-field" style="width: 322px;" *ngIf="(caregiverCustomerIds.length < 2 && caregiverCustomerIds.length > 0 && caregiverCustomerIds[0] !== '') || caregiverCustomerIds.length > 1">
+                              <mat-form-field appearance="outline">
+                                  <mat-select value="" formControlName="facility_id" multiple #caFaSelect>
+                                      <input matInput class="select-search" type="text" placeholder="Search facility" formControlName="facilitySearch" />
+                                      <mat-select-trigger>
+                                          <ng-container *ngIf="caregiverFacilityIds.length < 2 && caregiverFacilityIds.length > 0">
+                                              <span>{{caregiverFacilityIds? (caregiverFacilityIds[0]=== '' ? 'Select facility' : getFacilityById(caregiverFacilityIds[0])) : ''}}</span>
+                                          </ng-container>
+                                          <ng-container *ngIf="caregiverFacilityIds.length > 1">
+                                              <ng-container *ngFor="let ward of caregiverFacilityIds;let i =index">
+                                                  <span class="selected" *ngIf="i < 2">{{getFacilityById(ward)}}</span>
+                                              </ng-container>
+                                          </ng-container>
+                                          <span *ngIf="caregiverFacilityIds?.length > 2" class="selected">
+                                          (+{{caregiverFacilityIds.length - 2}} {{caregiverFacilityIds?.length === 3 ? 'other' : 'others'}})
+                                          </span>
+                                        </mat-select-trigger>
+                                      <mat-option disabled value="">Select facility</mat-option>
+                                      <mat-option [value]="facility.facility_id" *ngFor="let facility of getCaregiverFilterFacility()">{{facility.facility_name}}</mat-option>
+                                  </mat-select>
+                              </mat-form-field>
+                          </div>
+                          <div class="form-field" style="width: 322px;" *ngIf="(caregiverFacilityIds.length < 2 && caregiverFacilityIds.length > 0 && caregiverFacilityIds[0] !== '') || caregiverFacilityIds.length > 1">
+                              <mat-form-field appearance="outline">
+                                  <mat-select value="" formControlName="ward_id" multiple #caWadSelect>
+                                      <input matInput class="select-search" type="text" placeholder="Search ward" formControlName="wardSearch" />
+                                      <mat-select-trigger>
+                                          <ng-container *ngIf="wardIds.length < 2 && wardIds.length > 0">
+                                              <span>{{wardIds? (wardIds[0]=== '' ? 'Select ward' : getWardById(wardIds[0])) : ''}}</span>
+                                          </ng-container>
+                                          <ng-container *ngIf="wardIds.length > 1">
+                                              <ng-container *ngFor="let ward of wardIds;let i =index">
+                                                  <span class="selected" *ngIf="i < 2">{{getWardById(ward)}}</span>
+                                              </ng-container>
+                                          </ng-container>
+                                          <span *ngIf="wardIds?.length > 2" class="selected">
+                                          (+{{wardIds.length - 2}} {{wardIds?.length === 3 ? 'other' : 'others'}})
+                                          </span>
+                                        </mat-select-trigger>
+                                      <mat-option disabled value="">Select ward</mat-option>
+                                      <mat-option [value]="ward.ward_id" *ngFor="let ward of getCaregiverFilterWards()">{{ward.ward_name}}</mat-option>
+                                  </mat-select>
+                              </mat-form-field>
+                          </div>
+                      </div>
+                  </form>
+                  <button mat-flat-button class="add-button" color="accent" (click)="clearCaregiverFilters()" *ngIf="showCaregiverClear()">
+                      Clear
+                  </button>
+              </div>
+              <ng-container *ngIf="caregiverTableData.length > 0">
+                <app-table
+                  (actionEvent)="doOperation($event, 'caregivers')"
+                  [tableType]="'caregivers'"
+                  [widths]="caregiverWidths"
+                  [displayedColumns]="caregiverDisplayedColumns"
+                  [tableData]="caregiverTableData"
+                  [Filtered]="filtered.caregiver"
+                  [deleteAction]="false"
+                  [passwordAction]="true"
+              ></app-table>
+            </ng-container>
+            <ng-container *ngIf="caregiverTableData.length < 1">
+                <ng-container *ngIf="filtered.caregiver">
+                    <app-table
+                        (actionEvent)="doOperation($event, 'caregivers')"
+                        [tableType]="'caregivers'"
+                        [widths]="caregiverWidths"
+                        [displayedColumns]="caregiverDisplayedColumns"
+                        [tableData]="caregiverTableData"
+                        [Filtered]="filtered.caregiver"
+                        [deleteAction]="false"
+                        [passwordAction]="true"
+                    ></app-table>
+                </ng-container>
+                <ng-container *ngIf="!filtered.caregiver">
+                    <div fxLayoutAlign="center center" style="width: 100%; height: calc(100vh - 275px)">
+                        <div class="display-card" fxLayoutAlign="center center">
+                            <p class="text text-center m-0">There is no caregiver added yet.Please add <strong>caregiver</strong></p>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-container>
+          </mat-tab>
+        </mat-tab-group>
+    </ng-container>
+    <ng-container *ngIf="isLoading">
+        <div class="preloader" fxLayoutAlign="center center" 
+            [ngStyle]="{'background-color': 'unset', position: 'unset', height: '350px'}">
+            <div class="spinner" [ngStyle]="{margin: 'unset', top: 'unset'}">
+                <img alt="loading.." src="assets/images/loading.gif" width="40px" height="40px" />
+            </div>
+        </div>
+    </ng-container>
+</div>
+<mat-menu #users="matMenu">
+    <button mat-menu-item (click)="addUser('customer admin')">Customer admin</button>
+    <button mat-menu-item (click)="addUser('facility admin')">Facility admin</button>
+    <button mat-menu-item (click)="addUser('ward admin')">Ward admin</button>
+    <button mat-menu-item (click)="addUser('caregiver user')">Caregiver</button>
+</mat-menu>

@@ -1,0 +1,111 @@
+<div class="" style="position: absolute;top: 75px;right: 25px;display: flex;align-items: center;">
+    <div style="margin-right:10px;">Score:</div>
+    <div style="width: 36px;height: 36px;
+    background: #015174;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;margin: 0;
+margin-left: auto;
+margin-right: 50px;">{{ getRisk() }}</div>
+</div>
+<div fxLayout="row wrap" fxLayoutAlign="start center" *ngIf="!loading">
+
+    <diV class="m-t-10" fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="40px">
+        <div class="" style="font-weight:600;margin-bottom:0;display: flex; width: 100%;">1. Known previous falls</div>
+        <!-- <div class="form-field flex" style="width:100%;">
+            <div class="font-700" style="font-weight:700;">1. Known previous falls</div>
+        </div> -->
+        <!-- <div class="form-field exceptional-select2">
+            <p class="arjoform-label">Questionnaire score</p>
+            <mat-form-field appearance="outline" class="m-r-10">
+                <input matInput [disabled]="disableForm" type="text" #count (change)="changeCount(count.value, '10300')" [value]="getRisk()" readonly />
+            </mat-form-field>
+        </div> -->
+        <div style="display:flex;height: 44px;">
+            <div style="display: flex;align-items:center;">
+                <div class="">Have you fallen at some point in the past year?</div>
+                <mat-slide-toggle color="secondary" style="margin: 0 16px 0 4px;" [(ngModel)]="isFallen"></mat-slide-toggle>
+                <!-- <mat-form-field appearance="outline" class="m-r-10">
+                    <mat-select [value]="getFallenValue(10301)" [disabled]="disableForm" (selectionChange)="changeFallen($event.value ,10301)">
+                      <mat-option [value]="true">Yes</mat-option>
+                      <mat-option [value]="false">No</mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+            </div>
+            <div *ngIf="isFallen" style="display:flex;align-items:center;" class="form-field exceptional-select2" >
+                <div class="">How many times? <span class="required">*</span></div>
+                <mat-form-field appearance="outline" class="m-r-10" style="width: 40px;">
+                    <input matInput type="text" #count (change)="changeCount(count.value, '10300')" [value]="getFallCount('10300')" />
+                </mat-form-field>
+            </div>
+            <div *ngIf="isFallen" style="display:flex;align-items:center;">
+                <div class="">Any injuries?</div>
+                <mat-slide-toggle color="secondary" style="margin: 0 16px 0 4px;"></mat-slide-toggle>
+                <!-- <mat-form-field appearance="outline" class="m-r-10">
+                    <mat-select [value]="false" [disabled]="disableForm">
+                      <mat-option [value]="true">Yes</mat-option>
+                      <mat-option [value]="false">No</mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+            </div>
+        </div>
+    </diV>
+    <div class="m-t-10">
+        <div>
+            <div style="font-weight:600;margin-bottom:8px;">2. Medications</div>
+        </div>
+        <div style="display: block;">
+            <ng-container *ngFor="let medic of medications; let i=index">
+                <mat-checkbox style="width:50%;margin-bottom: 6px;" [value]="medic" [checked]="getValue(medic.answerId)" [disabled]="(i < medications.length - 1 ? disabled : false) || disableForm" (change)="changeDownFall($event.checked, medic.answerId)">{{medic.label}}</mat-checkbox>
+                <!-- <ng-container *ngIf="i === 5">
+                    <ng-container *ngIf="checkOtherMedic()">
+                        <div style="width: 50%;">
+                            <p class="arjoform-label">Please enter medications</p>
+                            <mat-form-field appearance="outline" class="m-0">
+                                <textarea [disabled]="disableForm" cdkTextareaAutosize cdkAutosizeMinRows="4" #medic (keyup)="changeMedicDetails(medic.value)" matInput placeholder="About ex..."></textarea>
+                            </mat-form-field>
+                        </div>
+                    </ng-container>
+                </ng-container> -->
+            </ng-container>
+        </div>
+    </div>
+    <diV class="m-t-20" fxFlex="100" fxLayoutAlign="start center" fxLayoutGap="40px">
+        <div class="form-field exceptional-select2">
+            <div style="font-weight:600;margin-bottom:8px;">3. Sensory Impairments <span class="required">*</span></div>
+            <mat-form-field appearance="outline" class="m-r-10">
+                <mat-select placeholder="Select option" [value]="getSensoryValue()"  multiple [disabled]="disableForm" > <!--(onSelectionChange)="changeSensory($event.value)" -->
+                  <!-- <mat-option disabled value=""> Select option</mat-option> -->
+                  <mat-option [value]="value.answerID" *ngFor="let value of getSensory();let i = index" [disabled]="i != 0 && isDisabled()" (onSelectionChange)="changeSensory($event)">{{value.answer}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="form-field exceptional-select2">
+            <div style="font-weight:600;margin-bottom:8px;">4. Cognitive Impairments <span class="required">*</span></div>
+            <mat-form-field appearance="outline" class="m-r-10">
+                <mat-select [value]="getCognitiveValue()" [disabled]="disableForm" (selectionChange)="changeCognitive($event.value)">
+                    <mat-option disabled value=""> Select option</mat-option>
+                    <mat-option [value]="value.answerID" *ngFor="let value of getCognitive()">{{value.answer}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="form-field exceptional-select2">
+            <div style="font-weight:600;margin-bottom:8px;">5. Walking ability <span class="required">*</span></div>
+            <mat-form-field appearance="outline" class="m-r-10">
+                <mat-select [value]="getWalkingValue()"  [disabled]="disableForm" (selectionChange)="changeWalking($event.value)">
+                    <mat-option disabled value=""> Select option</mat-option>
+                    <mat-option [value]="value.answerID" *ngFor="let value of getWalking()">{{value.answer}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </diV>
+</div>
+<div *ngIf="loading">
+    <div class="preloader" fxLayoutAlign="center center" [ngStyle]="{'background-color': 'unset', position: 'unset', height: '300px'}">
+        <div class="spinner" [ngStyle]="{margin: 'unset', top: 'unset'}">
+            <img alt="loading.." src="assets/images/loading.gif" width="40px" height="40px" />
+          </div>
+    </div>
+</div>

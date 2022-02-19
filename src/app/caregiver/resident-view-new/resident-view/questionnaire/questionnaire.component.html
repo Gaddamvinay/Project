@@ -1,0 +1,201 @@
+<div fxLayout="row wrap m-t-5"  *ngIf="!questionnairesInfoLoading">
+    <!-- <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+        <mat-card class="section-title m-l-0" style="box-shadow: none !important;margin-bottom: 0 !important;">
+            <mat-card-content class="p-0">
+                <div fxLayout="row wrap">
+                    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex="100">
+                        <mat-card-title>
+                            <div class="popover__wrapper">
+                                <span class="second-title m-r-5">Questionnaire summary</span> 
+                                <mat-icon class="absolute help-text-hover-cont popover__title" (click)="titleShow = !titleShow" style="color: #D3CDC6;cursor: pointer;">help_outline</mat-icon>
+                                <div class="popover__content">
+                                    <h4 class="second-title popover__heading">Questionnaire summary</h4>
+                                    <p class="popover__message">
+                                        <span>Represents the risk assessment from the questionnaires taken for the resident over a period of time.</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </mat-card-title>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="halfbox m-l-1 m-r-1">
+            <mat-card-header>
+              <div fxLayout="row wrap">
+                <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100" fxLayoutAlign="end center">
+                </div>
+              </div>
+            </mat-card-header>
+            <mat-card-content style="padding: 0 24px !important"> 
+                <div id="visitor-chart" *ngIf="(!questionnairesInfoLoading && !noData) && !graphLoading">
+                <div id="loa-graph">
+                   <apx-chart
+                    #chart
+                    [series]="chartOptions?.series"
+                    [chart]="chartOptions?.chart"
+                    [colors]="chartOptions?.colors"
+                    [yaxis]="chartOptions?.yaxis"
+                    [dataLabels]="chartOptions?.dataLabels"
+                    [markers]="chartOptions?.markers"
+                    [legend]="chartOptions?.legend"
+                    [stroke]="chartOptions?.stroke"
+                    [grid]="chartOptions?.grid"
+                    [title]="chartOptions?.title"
+                    [xaxis]="chartOptions?.xaxis"
+                    [tooltip]="chartOptions?.tooltip"
+                    [annotations]="chartOptions?.annotations"
+                    [plotOptions]="chartOptions?.plotOptions"
+                    ></apx-chart>
+                </div>
+                </div>
+                <div class="preloader" *ngIf="(questionnairesInfoLoading && !noData) || graphLoading" fxLayoutAlign="center center" [ngStyle]="{'background-color': 'unset', position: 'unset', height: '320px'}">
+                    <div class="spinner" [ngStyle]="{margin: 'unset', top: 'unset'}">
+                        <img alt="loading.." src="assets/images/loading.gif" width="40px" height="40px" />
+                    </div>
+                </div>
+                <div *ngIf="!questionnairesInfoLoading && noData" fxLayout="column" fxLayoutGap="0.2em"
+                    fxLayoutAlign="center center"
+                    [ngStyle]="{width: '100%',height: '350px', background: 'transparent'}">
+                    <mat-icon class="no-data-icon">info</mat-icon>
+                    <p>No data available</p>
+                </div>
+            </mat-card-content>
+            <mat-card-actions fxLayoutAlign="start center">
+                <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                    <div class="" fxFlex="12" fxFlex.gt-md="12" fxFlex.gt-lg="12" fxLayoutAlign="start center">
+                        <div class="date-filter cursor-pointer" [matMenuTriggerFor]="intervals">
+                            <span class="font-14">{{selectedFilter}} </span>
+                            <mat-icon class="absolute viewAllicon">arrow_drop_down</mat-icon>
+                        </div>
+                        <mat-menu #intervals="matMenu">
+                            <button mat-menu-item (click)="specificInterval = 6;updateOptions()">Last 6 months</button>
+                            <button mat-menu-item (click)="specificInterval = 12;updateOptions()">Last 12 months</button>
+                        </mat-menu>
+                    </div>
+                    <div class="relative" fxFlex="30" fxFlex.gt-md="30" fxFlex.gt-lg="30" fxLayoutAlign="end center">
+                        <div fxFlex="100" class="date-filter cursor-pointer" (click)="activity.click()" fxLayoutAlign="space-between center" *ngIf="selectedFilter === 'Custom range'">
+                            <span class="font-14" *ngIf="physioDates?.startDate">{{physioDates?.startDate | date: getFilterFormat()}} - {{physioDates?.endDate | date : getFilterFormat()}}</span>
+                            <span class="font-14" *ngIf="!physioDates?.startDate">Choose dates</span>
+                            <mat-icon class="absolute viewAllicon">arrow_drop_down</mat-icon>
+                            <div fxFlex.gt-lg="30" fxFlex.gt-md="30" fxFlex="100" class="font-14" style="visibility: hidden;position: absolute;">
+                                <div>
+                                    <input #activity
+                                        type="text"
+                                        ngxDaterangepickerMd
+                                        [locale]="{ applyLabel: 'Done', firstDay: 1 }"
+                                        [maxDate]="momentToday"
+                                        (change)="change($event)"
+                                        [showDropdowns]="true"
+                                        [lockStartDate]="false"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </mat-card-actions>
+        </mat-card>
+    </div> -->
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+        <mat-card class="section-title no-shadow m-l-0 m-r-0" style="box-shadow: none !important; margin-bottom: 0 !important;">
+            <mat-card-content class="p-0">
+                <div fxLayout="row wrap">
+                    <div fxFlex.gt-lg="75" fxFlex.gt-md="75" fxFlex="100">
+                        <mat-card-title>
+                            <div class="popover__wrapper">
+                                <span class="second-title m-r-5">Questionnaire history</span> 
+                                <mat-icon class="absolute help-text-hover-cont popover__title" style="color: #D3CDC6;cursor: pointer;">help_outline</mat-icon>
+                                <div class="popover__content lg_popover">
+                                    <h4 class="second-title popover__heading">Questionnaire history</h4>
+                                    <p class="popover__message">
+                                        All the questionnaires taken can be seen in chronological order below. Please look at the "Interpretations" column below to get an understanding of the questionnaires assessment<br/>
+                                        * Recommend for retake is shown a fews after a questionnaire has been taken based on the movement of the resident which is acquired from the wearable. <br/>
+                                        ** Questionnaire score is the score as stipulated by the questionnaire protocol.
+                                    </p>
+                                </div>
+                            </div>
+                        </mat-card-title>
+                    </div>
+                    <div fxFlex.gt-lg="25" fxFlex.gt-md="25" fxFlex="100" fxLayoutAlign="end center">
+
+                        <button [matMenuTriggerFor]="questionnaires" class="add-button m-l-15 p-l-20" mat-raised-button color="accent">
+                            Add new questionnaire
+                            <mat-icon>arrow_drop_down</mat-icon>
+                        </button>
+                        <mat-menu #questionnaires>
+                            <button (click)="openDialog('downFallRisk')" style="padding: 0 65px 0 16px;" mat-menu-item>Downton fall risk index</button>
+                            <button (click)="openDialog('stayIndependent')" style="padding: 0 65px 0 16px;" mat-menu-item>Stay independent</button>
+                        </mat-menu>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <div style="margin: 0;">
+            <div>
+                <app-table
+                [widths]="widths"
+                [displayedColumns]="displayedColumns"
+                [tableData]="tableData"
+                [actionEnable]="false"
+                [description]="true"
+                [link]="false"
+                [tableType]="'questionnarie'"
+                (selectedValue)="openSideDiv($event)"
+                ></app-table>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="questionnairesInfoLoading" class="preloader" fxLayoutAlign="center center" [ngStyle]="{'background-color': 'unset', position: 'unset', height: '300px'}">
+    <div class="spinner" [ngStyle]="{margin: 'unset', top: 'unset'}">
+        <img alt="loading.." src="assets/images/loading.gif" width="40px" height="40px" />
+    </div>
+</div>
+<div class="mat-elevation-z8 bg-white" style="top: 70px;
+        height: 100vh;
+        width: 33%;
+        right: 0;
+        position: fixed;
+        z-index: 999;top: 70px; right: 0;" *ngIf="rightData" fxLayout="column" (click)="$event.stopPropagation();">
+    <div style="width: 100%;position:relative;height:100%;">
+        <div class="intervention_header" style="padding: 1em 2em;">
+            <h2 class="second-title">{{this.invData.key}}</h2>
+            <div style="font-size:20px;">{{this.invData.selected.riskIntervention}}</div>
+            <div style="display:flex;margin-top:20px;">
+                <div (click)="$event.stopPropagation();">
+                    <button [matMenuTriggerFor]="questionnaires" class="full-status-btn status-btn-{{ getText(this.invData.selected.status) }}"  [disabled]="(count < 1 ? disabled : true)" style="padding:5px;color:#fff;width:180px;margin-left: auto;cursor: pointer;">{{ getText(this.invData.selected.status) }}</button>
+                    <mat-menu #questionnaires>
+                        <button [disabled]="(count < 1 ? disabled : true)" (click)="select('TO DO', this.invData.selected)"   class="intervention-statuses" style="padding: 0 65px 0 16px;" mat-menu-item><span class="status-btn status-btn-TO m-r-10"></span>TO DO</button>
+                        <button [disabled]="(count < 1 ? disabled : true)" (click)="select('PLANNED', this.invData.selected)"  class="intervention-statuses" style="padding: 0 65px 0 16px;" mat-menu-item ><span class="status-btn status-btn-PLANNED m-r-10"></span>PLANNED</button>
+                        <button [disabled]="(count < 1 ? disabled : true)" (click)="select('IN PROGRESS', this.invData.selected)"   class="intervention-statuses" style="padding: 0 65px 0 16px;" mat-menu-item><span class="status-btn status-btn-IN m-r-10"></span>IN PROGRESS</button>
+                        <button [disabled]="(count < 1 ? disabled : true)" (click)="select('DONE', this.invData.selected)"   class="intervention-statuses" style="padding: 0 65px 0 16px;" mat-menu-item><span class="status-btn status-btn-DONE m-r-10"></span>DONE</button>
+                    </mat-menu>
+                </div>
+                <div style="margin-left:auto;">
+                    
+                </div>
+            </div>
+        </div>
+        <h2 class="second-title" style="padding-left:2em;font-size:16px;">Comments ({{ comments['itemCount']}} comments)</h2>
+        <div class="intervention_comments" style="padding: 0 2em 1em 2em;">
+            <div class="comment_rw" *ngFor="let comment of comments['body']; let i=index">
+                <div class="comment_meta">
+                    <div class="commented_by">{{comment.caregiver_name}}</div>
+                    <div class="comment_date">commented on <span>{{comment.created_at | date:'MMM d, y'}}</span> at <span>{{comment.created_at | date:'h:mm:ss a'}}</span></div>
+                </div>
+                <div class="comment">{{comment.comment}}</div>
+            </div>
+        </div>
+        
+        <form (keyup.enter)="sendit($event.target.value)">
+            <div class="comment_box" style="height:170px;width: 100%;position:absolute;bottom:0;box-shadow: 0 0 10px rgb(0 0 0 / 20%);color:#ccc;padding:12px;">
+                <textarea style="width: 100%;
+                padding: 12px;
+                height: 100%;
+                border: none;font-family: Whitney A,Whitney B,Helvetica,Arial,sans-serif;font-size: 14px;" id="textarea1" #comment  placeholder="Type your comment"></textarea>
+            </div>
+        </form>    
+    </div>
+</div>

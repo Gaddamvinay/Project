@@ -1,0 +1,242 @@
+<div class="page-breadcrumb">
+	<div fxLayout="row wrap" fxLayoutAlign="space-between center">
+		<div fxFlex.gt-sm="60" fxFlex.gt-xs="60" fxFlex="100" class="align-self-center">
+			<div class="breadcrumb">
+				<ul class="list-style-none d-flex">
+					<li class="breadcrumb-item cursor-pointer" routerLink="/ca/residents">
+						<span class="text-muted">Home</span>
+					</li>
+					<li class="breadcrumb-item active">Residents</li>
+				</ul>
+			</div>
+		</div>
+		<div>
+			 <button mat-button class="m-r-10" [matMenuTriggerFor]="dateFormats">{{ today | date: getFormat() }}</button>
+		</div>
+	</div>
+</div>
+<mat-menu #dateFormats="matMenu" class="mymegamenu">
+	<button mat-menu-item (click)="changeFormat('MM/dd/yyyy')">{{ today | date:'MM/dd/yyyy' }}</button>
+	<button mat-menu-item (click)="changeFormat('M/dd/yyyy')">{{ today | date:'M/dd/yyyy' }}</button>
+	<button mat-menu-item (click)="changeFormat('dd/MM/yyyy')">{{ today | date:'dd/MM/yyyy' }}</button>
+	<button mat-menu-item (click)="changeFormat('d/MM/yyyy')">{{ today | date:'d/MM/yyyy' }}</button>
+	<button mat-menu-item (click)="changeFormat('yyyy/dd/MM')">{{ today | date:'yyyy/dd/MM' }}</button>
+	<button mat-menu-item (click)="changeFormat('yyyy/d/M')">{{ today | date:'yyyy/d/M' }}</button>
+	<button mat-menu-item (click)="changeFormat('MMM d, y')">{{ today | date:'MMM d, y' }}</button>
+	<button mat-menu-item (click)="changeFormat('d MMM, y')">{{ today | date:'d MMM, y' }}</button>
+	<button mat-menu-item (click)="changeFormat('y MMM, d')">{{ today | date:'y MMM, d' }}</button>
+	<button mat-menu-item (click)="changeFormat('EEEE, MMMM d, y')">{{ today | date:'EEEE, MMMM d, y' }}</button>
+	<button mat-menu-item (click)="changeFormat('MMMM d, y, EEEE')">{{ today | date:'MMMM d, y, EEEE' }}</button>
+</mat-menu>
+<div class="page-content">
+	<div fxLayout="row wrap" style="padding:14px;padding-bottom:0;">
+		<div fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex="100" class="text-left">
+			<!--<span class="second-title font-24 m-r-5">Residents</span>-->
+		</div>
+		<div fxFlex.gt-md="75" fxFlex.gt-lg="75" fxFlex="100" class="text-right">
+			<div fxLayout="row wrap" fxLayoutGap="1em" fxLayoutAlign="end center">
+			<div fxLayoutAlign="center center">
+				<!-- <div class="view-button" (click)="viewType(1)" class="display1 disable2 active-{{ displayviewType }}" title="Grid view"><mat-icon>view_module</mat-icon></div>
+				<div class="view-button" (click)="viewType(2)" class="display2 active-{{ displayviewType }}" title="List view"><mat-icon>view_list</mat-icon></div> -->
+			</div>
+			
+			<div class="applied-filters m-r-10" fxLayoutAlign="start center" *ngFor = " let filter of uniqueData  ;  let i=index">
+
+				<p class="m-0" style="width: fit-content;" title = "{{ filter.title }}" > {{ getValue(filter.title,filter.value)}} {{filter.value}} </p>
+				<mat-icon class="absolute cursor-pointer" (click)="clear(filter)" style="right: 2px;top: 14px;font-size: 12px !important;">close</mat-icon>
+			</div>
+			<div  class="m-r-20">
+				<button mat-raised-button class="m-r-10" color="accent" *ngIf="!cleared" (click)="clearFilter()">Clear all</button>
+			<!--	<button mat-raised-button class="light-bg" color="primary" [disabled]="residentList.length < 1" (click)="addFilters()" title="Filters"><mat-icon class="display-ico">tune</mat-icon></button>-->
+			<button mat-raised-button class="light-bg" color="primary" (click)="addFilters()" title="Filters"><mat-icon class="display-ico">tune</mat-icon></button>
+			</div>
+			<button mat-raised-button (click)="openDialog('Add', {})" color="accent" class="add-button font-600">
+				<mat-icon style="position: relative;bottom: 2px;">add</mat-icon> Add new resident
+			</button>
+			</div>
+		</div>
+	</div>
+		
+	<div [ngSwitch]="displayviewType">
+		<ng-container *ngSwitchDefault>
+			<div fxLayoutAlign="end center">
+				<!-- <div fxLayoutAlign="start center" fxLayoutGap="0.8em">
+					<form [formGroup]="filterForm" *ngIf="wardList.length > 0 && beforeFilter.length > 0">
+						<div fxLayoutAlign="start center" fxLayoutGap="0.8em">
+							<div class="form-field" style="width: 320px;">
+								<mat-form-field appearance="outline">
+									<mat-select value="" formControlName="ward_id" multiple>
+										<input matInput class="select-search" type="text" placeholder="Search ward" formControlName="wardSearch" />
+										<mat-select-trigger>
+											<ng-container *ngIf="wardIds.length < 2 && wardIds.length > 0">
+												<span>{{wardIds? (wardIds[0]=== '' ? 'Select ward' : getWard(wardIds[0])) : ''}}</span>
+											</ng-container>
+											<ng-container *ngIf="wardIds.length > 1">
+												<ng-container *ngFor="let ward of wardIds;let i =index">
+													<span class="selected" *ngIf="i < 2">{{getWard(ward)}}</span>
+												</ng-container>
+											</ng-container>
+											<span *ngIf="wardIds?.length > 2" class="selected">
+											(+{{wardIds.length - 2}} {{wardIds?.length === 3 ? 'other' : 'others'}})
+											</span>
+										  </mat-select-trigger>
+										<mat-option disabled value="">Select ward</mat-option>
+										<mat-option [value]="ward.ward_id" *ngFor="let ward of getFilterWard()">{{ward.ward_name}}</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+						</div>
+					</form>
+					<button mat-flat-button class="add-button" color="accent" (click)="clearFilters()" *ngIf="showClear()">
+						Clear
+					</button>
+				</div> -->
+			</div>
+			<div style="padding:0 14px;">
+				<app-table
+					[actions]="['click']"
+					[Filtered]="!cleared"
+					[widths]="widths"
+					[displayedColumns]="displayedColumns"
+					[tableData]="tableData"
+					[tableType]="'resident'"
+					[actionEnable]="false"
+					 [isLoading]="isLoading"
+					(selectedValue)="navigate($event)">
+				</app-table>
+			</div>
+		</ng-container>
+		<ng-container *ngSwitchCase="2">
+			<div fxLayout="row wrap" class="residents-list">
+				<div *ngIf="residentList.length < 1 && !isDataAvailable" fxLayoutAlign="center center" [ngStyle]="{width: '100%', height: '300px'}">
+					<div class="preloader" fxLayoutAlign="center center" [ngStyle]="{'background-color': 'unset', position: 'unset'}">
+						<div class="spinner" [ngStyle]="{margin: 'unset', top: 'unset'}">
+							<img alt="loading.." src="assets/images/loading.gif" width="40px" height="40px" />
+						</div>
+					</div>
+				</div>
+				<div *ngIf="residentList.length < 1 && isDataAvailable" fxLayout="column" fxLayoutGap="0.2em" fxLayoutAlign="center center" [ngStyle]="{width: '100%',height: '300px'}">
+					<mat-icon class="no-data-icon">info</mat-icon>
+					<p>No Data Available</p>
+				</div>
+				<!-- fall alert -->
+				
+					<div fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex="100" *ngFor="let resident of fallResidentLists; let i = index">
+					<mat-card>
+						<div fxLayout="row wrap" class="residents-list">
+							<div fxFlex.gt-md="10" fxFlex.gt-lg="10" fxFlex="100">
+								<mat-card-content class="course-header" [ngClass]="{ inactive: resident.status.toLowerCase() !== 'active' }" style="padding: 18px 10px !important; border-top-left-radius: 0; border-top-right-radius: 0;background-color: #BD362F;">
+
+								</mat-card-content>
+							</div>
+							<div fxFlex.gt-md="90" fxFlex.gt-lg="90" fxFlex="100">
+								<mat-card-content class="text-center">
+									<div fxLayout="row wrap">
+										<div fxFlex.gt-md="100" fxFlex.gt-lg="100" fxFlex="100" class="bss-icons" style="background-color: #fff;">
+											<div fxLayout="row wrap">
+												<div class="balance" fxFlex.gt-md="15" fxFlex.gt-lg="15" fxFlex="100">
+													<mat-icon class="{{ resident.Balance.toLowerCase() }}" style="font-size: 30px;" title="Balance risk - {{ resident.Balance.toLowerCase() }}">directions_walk</mat-icon>
+												</div>
+												<div class="strength" fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex="100">
+													<mat-icon class="{{ resident.Strength.toLowerCase() }}" style="font-size: 30px;" title="Strength risk - {{ resident.Balance.toLowerCase() }}">airline_seat_recline_normal</mat-icon>
+												</div>
+												<div class="sleep" fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex="100">
+													<mat-icon class="{{ resident.Sleep.toLowerCase() }}" style="font-size: 30px;" title="Sleep risk - {{ resident.Sleep.toLowerCase() }}">hotel</mat-icon>
+												</div>
+												<div class="battery" fxFlex.gt-md="35" fxFlex.gt-lg="35" fxFlex="100">
+													<div fxLayoutAlign="center center">
+														<span class="battery-icon dead-{{getBatteryStatus(resident.Battery)}}" data-charging="" [attr.data-percent]="getBatteryStatus(resident.Battery)" title="Battery Status - {{getBatteryStatus(resident.Battery)}} % charged"></span>
+														<span class="" style="font-size: 12px; margin-left: 5px;"> {{getBatteryStatus(resident.Battery)}}<span class="font-10">%</span></span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div fxLayout="row wrap">
+										<div fxFlex.gt-md="100" fxFlex.gt-lg="100" fxFlex="100">
+											<p style="font-size: 15px; font-weight: bold; font-color: #BD362F;" class="m-b-5 resident-name cursor-pointer blink" (click)="getResidentName(resident.firstName,resident.lastName)" [routerLink]="['/ca/residents/residentview', resident.user_id]">{{ resident.firstName }} {{ resident.lastName }} </p>
+											<p class="text-left" style="line-height: 12px; margin-top: 2px; margin-bottom: 5px;">
+												<span class="last-status" [ngStyle]="{ 'padding-right': '20px' }">{{ resident?.ResidentStatus | titlecase}}</span>
+												<span class="last-updated text-muted">Updated {{ getUpdatedStatus(resident)}}</span>
+											</p>
+										</div>
+									
+									</div>
+								</mat-card-content>
+							</div>
+						</div>
+					</mat-card>
+				</div>
+
+				<!--fall alert end-->
+				<div fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex="100" *ngFor="let resident of residentList; let i = index">
+					<mat-card>
+						<div fxLayout="row wrap" class="residents-list">
+							<div fxFlex.gt-md="10" fxFlex.gt-lg="10" fxFlex="100">
+								<mat-card-content class="course-header"  style="padding: 18px 10px !important; border-top-left-radius: 0; border-top-right-radius: 0;">
+
+								</mat-card-content>
+							</div>
+							<div fxFlex.gt-md="90" fxFlex.gt-lg="90" fxFlex="100">
+								<mat-card-content class="text-center">
+									<div fxLayout="row wrap">
+										<div fxFlex.gt-md="100" fxFlex.gt-lg="100" fxFlex="100" class="bss-icons" style="background-color: #fff;">
+											<div fxLayout="row wrap">
+												<div class="balance" fxFlex.gt-md="15" fxFlex.gt-lg="15" fxFlex="100">
+													<mat-icon class="{{ resident.Balance.toLowerCase() }}" style="font-size: 30px;" title="Balance risk - {{ resident.Balance.toLowerCase() }}">directions_walk</mat-icon>
+												</div>
+												<div class="strength" fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex="100">
+													<mat-icon class="{{ resident.Strength.toLowerCase() }}" style="font-size: 30px;" title="Strength risk - {{ resident.Balance.toLowerCase() }}">airline_seat_recline_normal</mat-icon>
+												</div>
+												<div class="sleep" fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex="100">
+													<mat-icon class="{{ resident.Sleep.toLowerCase() }}" style="font-size: 30px;" title="Sleep risk - {{ resident.Sleep.toLowerCase() }}">hotel</mat-icon>
+												</div>
+												<div class="battery" fxFlex.gt-md="35" fxFlex.gt-lg="35" fxFlex="100">
+													<div fxLayoutAlign="center center">
+														<span class="battery-icon dead-{{getBatteryStatus(resident.Battery)}}" data-charging="" [attr.data-percent]="getBatteryStatus(resident.Battery)" title="Battery Status - {{getBatteryStatus(resident.Battery)}} % charged"></span>
+														<span class="" style="font-size: 12px; margin-left: 5px;"> {{getBatteryStatus(resident.Battery)}}<span class="font-10">%</span></span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div fxLayout="row wrap">
+										<div fxFlex.gt-md="100" fxFlex.gt-lg="100" fxFlex="100">
+											<p class="m-b-5 resident-name cursor-pointer" (click)="getResidentName(resident.firstName,resident.lastName)" [routerLink]="['/ca/residents/residentview', resident.user_id]">{{ resident.firstName }} {{ resident.lastName }} </p>
+											<p class="text-left" style="line-height: 12px; margin-top: 2px; margin-bottom: 5px;">
+												<span class="last-status" [ngStyle]="{ 'padding-right': '20px' }">{{ resident?.ResidentStatus | titlecase}}</span>
+												<span class="last-updated text-muted">Updated {{ getUpdatedStatus(resident)}}</span>
+											</p>
+										</div>
+										<!-- <div style="height: 65px;" *ngIf="resident.hasAlert" fxFlex.gt-md="100" fxFlex.gt-lg="100" fxFlex="100" fxLayoutAlign="space-around center" fxLayout="row wrap">
+											<div class="m-b-5" fxFlex.gt-md="100" fxFlex.gt-lg="100" fxFlex="100" fxLayoutAlign="center center" fxLayout="row wrap">
+												<div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="0.2em">
+													<mat-icon color="accent">sensor_door</mat-icon>
+													<p class="m-0 ">{{resident.ward_name}}, {{resident.room_name}}</p>
+												</div>
+											</div>
+											<p class="m-0" fxFlex="100">{{resident.alert.attend_status === 'N' ? 'To-be attended': 'Attended by ' + resident.alert.attend_by}}</p>
+											<ng-container *ngIf="resident.alert.attend_status === 'N'">
+												<button fxFlex="95" disable-on-click mat-raised-button  id="btn" color="accent" class="add-button m-t-5" (click)="attendAlert(resident.alert, resident)">
+													<span>Attend</span>
+												</button>
+											</ng-container>
+											<ng-container *ngIf="resident.alert.attend_status === 'Y' && resident.logAccess">
+												<button fxFlex="95" disable-on-click mat-raised-button  id="btn" color="accent" class="add-button m-t-5" (click)="logAlert(resident.alert, resident)">
+													<span>Log</span>
+												</button>
+											</ng-container>
+										</div>
+										<ng-container *ngIf="hasAlerts && !resident.hasAlert">
+											<div [ngStyle]="{width: '100%', height: resident.height}"></div>
+										</ng-container> -->
+									</div>
+								</mat-card-content>
+							</div>
+						</div>
+					</mat-card>
+				</div>
+			</div>
+		</ng-container>
+	</div>
+</div>

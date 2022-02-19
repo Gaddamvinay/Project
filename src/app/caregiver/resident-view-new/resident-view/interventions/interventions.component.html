@@ -1,0 +1,67 @@
+<div fxLayout="row wrap m-t-5">
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+        <mat-card class="section-title no-shadow m-l-0 m-r-0" style="box-shadow: none !important; margin-bottom: 0 !important;">
+            <mat-card-content class="p-0">
+                <div fxLayout="row wrap">
+                    <div fxFlex.gt-lg="75" fxFlex.gt-md="75" fxFlex="100">
+                        <mat-card-title>
+                            <div class="popover__wrapper">
+                                <span class="second-title m-r-5">Interventions</span> 
+                                <mat-icon class="absolute help-text-hover-cont popover__title" style="color: #D3CDC6;cursor: pointer;">help_outline</mat-icon>
+                                <!-- <div class="popover__content lg_popover">
+                                    <h4 class="second-title popover__heading">Questionnaire history</h4>
+                                    <p class="popover__message">
+                                        All the questionnaires taken can be seen in chronological order below. Please look at the "Interpretations" column below to get an understanding of the questionnaires assessment<br/>
+                                        * Recommend for retake is shown a fews after a questionnaire has been taken based on the movement of the resident which is acquired from the wearable. <br/>
+                                        ** Questionnaire score is the score as stipulated by the questionnaire protocol.
+                                    </p>
+                                </div> -->
+                            </div>
+                        </mat-card-title>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <div style="margin: 0;">
+            <div>
+                <app-table
+                [widths]="widths"
+                [displayedColumns]="displayedColumns"
+                [tableData]="tableData"
+                [actionEnable]="false"
+                [description]="true"
+                [link]="false"
+                [tableType]="'interventions'"
+                (selectedValue)="openSideDiv($event)"
+                ></app-table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div *ngIf="questionnairesInfoLoading" class="preloader" fxLayoutAlign="center center" [ngStyle]="{'background-color': 'unset', position: 'unset', height: '300px'}">
+    <div class="spinner" [ngStyle]="{margin: 'unset', top: 'unset'}">
+        <img alt="loading.." src="assets/images/loading.gif" width="40px" height="40px" />
+    </div>
+</div> -->
+<div class="mat-elevation-z8 bg-white" style="top: 70px;
+    height: 100vh;
+    width: 45%;
+    right: 0;
+    position: fixed;
+    z-index: 999;top: 70px; right: 0;" *ngIf="rightData" fxLayout="column" (click)="$event.stopPropagation();">
+    <div class="intervention_header" style="padding: 1em 2em;">
+        <h2 class="second-title">Sensory Impairement</h2>
+        <div style="font-size:20px;">Education - Educate the elderly the advantages of wearing eyeglasses and hearing aids and to have these checked regularly.</div>
+        <div>
+            <app-table
+            [widths]="rWidths"
+            [displayedColumns]="displayedRColumns"
+            [tableData]="tableDataR"
+            [actionEnable]="false"
+            [description]="true"
+            [link]="false"
+            (selectedValue)="openSideDiv($event)"
+            ></app-table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,457 @@
+<div style="margin-top:40px;margin-left:10px;">
+    <div fxFlex="10">
+    <mat-card-actions fxLayoutAlign="start center">
+                            <div class="form-actions" fxLayoutAlign="center" style="margin-left:10px;" >
+                                <button class="add-button"  mat-flat-button color="accent" (click)="storeAlertsData()">
+                                  Click To Store Alerts Actual Data
+                                </button>
+                            </div>
+                 
+                            <div class="form-actions" fxLayoutAlign="center" style="margin-left:10px;">
+                                <button class="add-button"  mat-flat-button color="accent" (click)="storeScreenTimeUsage()">
+                                  Click To Store Screen Time Usage Actual Data
+                                </button>
+                            </div>
+                            <div class="form-actions" fxLayoutAlign="center" style="margin-left:10px;">
+                                <button class="add-button"  mat-flat-button color="accent" (click)="storeResidentProfileDetails()">
+                                  Click To Store Resident Profile Actual Data
+                                </button>
+                            </div>
+                    </mat-card-actions>
+                    </div>
+                </div>
+
+<div fxLayout="row wrap" fxLayoutAlign="space-between start" class="p-t-10 commonaddpage" *ngIf="!showOnly">
+    <div class="ward-summary" fxFlex="50">
+        <div class="popover__wrapper">
+            <span class="second-title m-l-15 m-r-5">Ward summary </span> 
+            <mat-icon class="absolute help-text-hover-cont popover__title" (click)="titleShow = !titleShow" style="color: #D3CDC6;cursor: pointer;">help_outline</mat-icon>
+            <div class="popover__content">
+                <h4 class="second-title popover__heading">Ward summary </h4>
+                <div class="popover__message">
+                    <p>You can update the ward's summary data here</p>
+                </div>
+            </div>
+        </div>
+        <mat-card class="setting-card-section">
+            <mat-card-content style="padding: 24px 8px !important;">
+                <div fxLayoutAlign="start center" fxLayoutGap="0.8em">
+                    <div class="form-field m-b-10" style="width: 48%;">
+                        <p class="arjoform-label">Customer <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <mat-select name="customer" [(ngModel)]="customer">
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option *ngFor="let customer of customers"  [value]="customer.id">
+                                    {{ customer.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field m-b-10" style="width: 48%;">
+                        <p class="arjoform-label">Facility <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <mat-select name="facility" [(ngModel)]="facility" [disabled]="customer === ''">
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option *ngFor="let facility of getFilterFacilities()"  [value]="facility.id">
+                                    {{ facility.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="0.8em">
+                    <div class="form-field m-b-10" style="width: 48%;">
+                        <p class="arjoform-label">Ward <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <mat-select name="ward" [(ngModel)]="ward" [disabled]="facility === ''">
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option *ngFor="let ward of getFilterWards()"  [value]="ward.id">
+                                    {{ ward.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field m-b-10" style="width: 48%;">
+                        <p class="arjoform-label">Interval <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <mat-select name="ward" [(ngModel)]="interval">
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option value="daily">Daily</mat-option>
+                                <mat-option value="weekly">Weekly</mat-option>
+                                <mat-option value="monthly">monthly</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field m-b-10" style="width: 48%;">
+                        <p class="arjoform-label">Record's date <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input (click)="RPicker.open()" matInput [max]="today" required [(ngModel)]="rDate" [matDatepicker]="RPicker" placeholder="Choose a date" readonly/>
+                            <mat-datepicker #RPicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </mat-card-content>
+            <mat-card-actions fxLayoutAlign="start center">
+                <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                    <button class="add-button" mat-flat-button color="accent" [disabled]="!rDate || isLoading" (click)="updateAll()">
+                        Update all ward
+                    </button>
+                    <button class="add-button" mat-flat-button color="accent" [disabled]="validateW() || isLoading" (click)="updateSummary()">
+                        Update summary
+                    </button>
+                </div>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+    <div class="ward-summary" fxFlex="50">
+        <div class="popover__wrapper">
+            <span class="second-title m-l-15 m-r-5">Caregiver summary </span> 
+            <mat-icon class="absolute help-text-hover-cont popover__title" (click)="titleShow = !titleShow" style="color: #D3CDC6;cursor: pointer;">help_outline</mat-icon>
+            <div class="popover__content">
+                <h4 class="second-title popover__heading">Caregiver summary </h4>
+                <div class="popover__message">
+                    <p>You can update the caregiver's summary data here</p>
+                </div>
+            </div>
+        </div>
+        <mat-card class="setting-card-section">
+            <mat-card-content style="padding: 24px 8px !important;">
+                <div fxLayoutAlign="start center" fxLayoutGap="0.8em">
+                    <div class="form-field m-b-10" style="width: 48%;">
+                        <p class="arjoform-label">Customer <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <mat-select name="customer" [(ngModel)]="customerC">
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option *ngFor="let customer of customers"  [value]="customer.id">
+                                    {{ customer.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field m-b-10" style="width: 48%;">
+                        <p class="arjoform-label">Facility <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <mat-select name="facility" [(ngModel)]="facilityC" [disabled]="customerC === ''">
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option *ngFor="let facility of getFilterFacilitiesC()"  [value]="facility.id">
+                                    {{ facility.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="0.8em">
+                    <div class="form-field m-b-10" style="width: 48%;">
+                        <p class="arjoform-label">Caregiver <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <mat-select name="ward" [(ngModel)]="caregiver" [disabled]="facilityC === ''">
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option *ngFor="let caregiver of getFilterCaregivers()"  [value]="caregiver.id">
+                                    {{ caregiver.value }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field m-b-10" style="width: 48%;">
+                        <p class="arjoform-label">Interval <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <mat-select name="ward" [(ngModel)]="intervalC">
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option value="daily">Daily</mat-option>
+                                <mat-option value="weekly">Weekly</mat-option>
+                                <mat-option value="monthly">monthly</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field m-b-10" style="width: 48%;">
+                        <p class="arjoform-label">Record's date <span class="required">*</span></p>
+                        <mat-form-field appearance="outline">
+                            <input (click)="RPickerC.open()" matInput [max]="today" required [(ngModel)]="rDateC" [matDatepicker]="RPickerC" placeholder="Choose a date" readonly/>
+                            <mat-datepicker #RPickerC></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </mat-card-content>
+            <mat-card-actions fxLayoutAlign="start center">
+                <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                    <button class="add-button" mat-flat-button color="accent" [disabled]="!rDateC || isLoading" (click)="updateAllCaregiver()">
+                        Update all caregiver
+                    </button>
+                    <button class="add-button" mat-flat-button color="accent" [disabled]="validateC()" (click)="updateCSummary()">
+                        Update summary
+                    </button>
+                </div>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+    <div fxFlex="50">
+        <div class="popover__wrapper">
+            <span class="second-title m-l-15 m-r-5">Resident Scores </span> 
+            <mat-icon class="absolute help-text-hover-cont popover__title" (click)="titleShow = !titleShow" style="color: #D3CDC6;cursor: pointer;">help_outline</mat-icon>
+            <div class="popover__content">
+                <h4 class="second-title popover__heading">Resident Scores </h4>
+                <div class="popover__message">
+                    <p>You can add resident Scores data here</p>
+                </div>
+            </div>
+        </div>
+            <mat-card class="setting-card-section">
+                <mat-card-content style="padding: 15px 8px !important;">
+                    <div class="form-fields" fxLayoutAlign="start center" fxLayout="row wrap" fxLayoutGap="0.8em">
+                        <div fxFlex="48">
+                            <p class="arjoform-label">Resident</p>
+                            <mat-form-field appearance="outline" class="m-0">
+                                <mat-select #sResident value="">
+                                    <mat-option disabled value="">Select resident</mat-option>
+                                    <mat-option [value]="resident.id" *ngFor="let resident of residentNames">{{resident.value}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="48">
+                            <p class="arjoform-label">Last known status</p>
+                            <mat-form-field appearance="outline" class="m-0">
+                                <mat-select #lkStatus [value]="getStatus(sResident.value)">
+                                    <mat-option disabled value="">Select status</mat-option>
+                                    <mat-option value="sleeping">Sleeping</mat-option>
+                                    <mat-option value="walking">Walking</mat-option>
+                                    <mat-option value="sitting">Sitting</mat-option>
+                                    <mat-option value="active">Active</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="48">
+                            <p class="arjoform-label">Total falls</p>
+                            <mat-form-field appearance="outline" class="m-0">
+                                <input matInput type="number" #tFalls [value]="0"/>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="48">
+                            <p class="arjoform-label">Questionnaire falls</p>
+                            <mat-form-field appearance="outline" class="m-0">
+                                <input matInput type="number" #qFalls [value]="0"/>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="48">
+                            <p class="arjoform-label">Sleep score</p>
+                            <mat-form-field class="relative" appearance="outline" class="m-0">
+                                <span [ngStyle]="{backgroundColor: sleep.value == 0 ? 'green' : sleep.value == 1 ? 'orange': 'red'}" style="position: absolute;top: 5px;right: 20px;width: 30px;height: 30px;border-radius: 50%;"></span>
+                                <mat-select #sleep value=0>
+                                        <mat-option class="relative" value=0 ><span style="position: absolute;top: 5px;right: 5px;width: 40px;height: 40px;background-color: green;border-radius: 50%;"></span>Green</mat-option>
+                                        <mat-option class="relative" value=1 ><span style="position: absolute;top: 5px;right: 5px;width: 40px;height: 40px;background-color: orange;border-radius: 50%;"></span>Yellow</mat-option>
+                                        <mat-option class="relative" value=2 ><span style="position: absolute;top: 5px;right: 5px;width: 40px;height: 40px;background-color: red;border-radius: 50%;"></span>Red</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="48">
+                            <p class="arjoform-label">Strength score</p>
+                            <mat-form-field class="relative" appearance="outline" class="m-0">
+                                <span [ngStyle]="{backgroundColor: sit.value == 0 ? 'green' : sit.value == 1 ? 'orange': 'red'}" style="position: absolute;top: 5px;right: 20px;width: 30px;height: 30px;border-radius: 50%;"></span>
+                                <mat-select #sit value=0>
+                                    <mat-option class="relative" value=0 ><span style="position: absolute;top: 5px;right: 5px;width: 40px;height: 40px;background-color: green;border-radius: 50%;"></span>Green</mat-option>
+                                    <mat-option class="relative" value=1 ><span style="position: absolute;top: 5px;right: 5px;width: 40px;height: 40px;background-color: orange;border-radius: 50%;"></span>Yellow</mat-option>
+                                    <mat-option class="relative" value=2 ><span style="position: absolute;top: 5px;right: 5px;width: 40px;height: 40px;background-color: red;border-radius: 50%;"></span>Red</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="48">
+                            <p class="arjoform-label">Balance score</p>
+                            <mat-form-field class="relative" appearance="outline" class="m-0">
+                                <span [ngStyle]="{backgroundColor: walk.value == 0 ? 'green' : walk.value == 1 ? 'orange': 'red'}" style="position: absolute;top: 5px;right: 20px;width: 30px;height: 30px;border-radius: 50%;"></span>
+                                <mat-select #walk value=0>
+                                    <mat-option class="relative" value=0 ><span style="position: absolute;top: 5px;right: 5px;width: 40px;height: 40px;background-color: green;border-radius: 50%;"></span>Green</mat-option>
+                                    <mat-option class="relative" value=1 ><span style="position: absolute;top: 5px;right: 5px;width: 40px;height: 40px;background-color: orange;border-radius: 50%;"></span>Yellow</mat-option>
+                                    <mat-option class="relative" value=2 ><span style="position: absolute;top: 5px;right: 5px;width: 40px;height: 40px;background-color: red;border-radius: 50%;"></span>Red</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </mat-card-content>
+                <mat-card-actions fxLayoutAlign="end center">
+                    <div class="form-actions" fxLayoutAlign="end center">
+                        <button class="add-button" [disabled]="sResident.value === '' || lkStatus.value === '' || updated" mat-flat-button color="accent" (click)="updateScores(sResident.value, walk.value, sit.value, sleep.value, tFalls.value, qFalls.value, lkStatus.value)">
+                            Update resident score
+                        </button>
+                    </div>
+                </mat-card-actions>
+            </mat-card>
+    </div>
+    <div fxFlex="50">
+        <div class="popover__wrapper">
+            <span class="second-title m-l-15 m-r-5">Resident lOA Summary </span> 
+            <mat-icon class="absolute help-text-hover-cont popover__title" (click)="titleShow = !titleShow" style="color: #D3CDC6;cursor: pointer;">help_outline</mat-icon>
+            <div class="popover__content">
+                <h4 class="second-title popover__heading">Resident lOA summary </h4>
+                <div class="popover__message">
+                    <p>You can add resident loa data here</p>
+                </div>
+            </div>
+        </div>
+            <mat-card class="setting-card-section">
+                <mat-card-content style="padding: 15px 8px !important;">
+                    <div class="form-fields" fxLayoutAlign="start center" fxLayout="row wrap" fxLayoutGap="0.8em">
+                        <div fxFlex="48">
+                            <p class="arjoform-label">Resident</p>
+                            <mat-form-field appearance="outline" class="m-0">
+                                <mat-select #residentLoa value="">
+                                    <mat-option disabled value="">Select resident</mat-option>
+                                    <mat-option [value]="resident.id" *ngFor="let resident of residentNames">{{resident.value | uppercase}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                         <div  fxFlex="48">
+                            <p class="arjoform-label">Intervals</p>
+                            <mat-form-field appearance="outline" class="m-0">
+                                <mat-select #hours value="1hrs">
+                                    <!-- <mat-option value="24hrs">24hrs</mat-option> -->
+                                    <mat-option disabled value="1hrs">1 hr</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="48">
+                            <p class="arjoform-label">Record's date <span class="required">*</span></p>
+                            <mat-form-field appearance="outline" class="m-0">
+                                <input (click)="loaData.open()" matInput [max]="today" required #date [matDatepicker]="loaData" placeholder="Choose a date" readonly/>
+                                <mat-datepicker #loaData></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        
+                        <div fxFlex="48" *ngIf="hours.value === '1hrs'">
+                            <p class="arjoform-label">Select Time</p>
+                            <mat-form-field appearance="outline" class="m-0">
+                                <mat-select [(ngModel)]="timeIntervals" value="">
+                                  <mat-option disabled value="">Select Time</mat-option>
+                                    <mat-option value="0-1">00:00 - 01:00</mat-option>
+                                    <mat-option value="1-2">01:00 - 02:00</mat-option>
+                                    <mat-option value="2-3">02:00 - 03:00</mat-option>
+                                    <mat-option value="3-4">03:00 - 04:00</mat-option>
+                                    <mat-option value="4-5">04:00 - 05:00</mat-option>
+                                    <mat-option value="5-6">05:00 - 06:00</mat-option>
+                                    <mat-option value="6-7">06:00 - 07:00</mat-option>
+                                    <mat-option value="7-8">07:00 - 08:00</mat-option>
+                                    <mat-option value="8-9">08:00 - 09:00</mat-option>
+                                     <mat-option value="9-10">09:00 - 10:00</mat-option>
+                                    <mat-option value="10-11">10:00 - 11:00</mat-option>
+                                    <mat-option value="11-12">11:00 - 12:00</mat-option>
+                                    <mat-option value="12-13">12:00 - 13:00</mat-option>
+                                    <mat-option value="13-14">13:00 - 14:00</mat-option>
+                                    <mat-option value="14-15">14:00 - 15:00</mat-option>
+                                    <mat-option value="15-16">15:00 - 16:00</mat-option>
+                                    <mat-option value="16-17">16:00 - 17:00</mat-option>
+                                    <mat-option value="17-18">17:00 - 18:00</mat-option>
+                                    <mat-option value="18-19">18:00 - 19:00</mat-option>
+                                    <mat-option value="19-20">19:00 - 20:00</mat-option>
+                                    <mat-option value="20-21">20:00 - 21:00</mat-option>
+                                    <mat-option value="21-22">21:00 - 22:00</mat-option>
+                                     <mat-option value="22-23">22:00 - 23:00</mat-option>
+                                     <mat-option value="23-24">23:00 - 24:00</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="48">
+                            <p class="arjoform-label">Resident status</p>
+                            <mat-form-field appearance="outline" class="m-0">
+                               <mat-select #status value="">
+                                    <mat-option disabled value="">Select status</mat-option>
+                                    <mat-option value="sleeping">Sleeping</mat-option>
+                                    <mat-option value="walking">Walking</mat-option>
+                                    <mat-option value="sitting">Sitting</mat-option>
+                                    <mat-option value="active">Active</mat-option>
+                                    <mat-option value="run">Run</mat-option>
+                                    <mat-option value="doffed">Doffed</mat-option>
+                                    <mat-option value="charging">Charging</mat-option>
+                                    <mat-option value="unknown">Unknown</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                       
+                    </div>
+                </mat-card-content>
+                <mat-card-actions fxLayoutAlign="end center">
+                    <div class="form-actions" fxLayoutAlign="end center">
+                        <button class="add-button" [disabled]="residentLoa.value === '' || !date.value || isLoading" mat-flat-button color="accent" (click)="updateLoaData(residentLoa.value, date.value, hours.value,status.value)">
+                            Update loa data
+                        </button>
+                    </div>
+                </mat-card-actions>
+            </mat-card>
+    </div>
+</div>
+<div fxLayoutAlign="space-between start" class="m-t-10" fxLayout="row nowrap">
+    <div fxFlex="50">
+        <div class="popover__wrapper">
+            <span class="second-title m-l-15 m-r-5">Dashboard push notifications </span> 
+            <mat-icon class="absolute help-text-hover-cont popover__title" (click)="titleShow = !titleShow" style="color: #D3CDC6;cursor: pointer;">help_outline</mat-icon>
+            <div class="popover__content">
+                <h4 class="second-title popover__heading">Dashboard push notifications </h4>
+                <div class="popover__message">
+                    <p>You can add dashboard push notification's data here</p>
+                </div>
+            </div>
+        </div>
+            <mat-card class="setting-card-section">
+                    <mat-card-content>
+                            <form [formGroup]="notifyCreateForm">
+                                    <div class="form-fields" fxLayoutAlign="center center" fxLayout="row wrap">
+                                            <div fxFlex="100">
+                                                    <p class="m-b-0">Resident</p>
+                                                    <mat-form-field appearance="outline" class="m-0" style="width: 50%;">
+                                                            <mat-select formControlName="resident">
+                                                                    <mat-option disabled value="select resident">Select resident</mat-option>
+                                                                    <mat-option [value]="resident.id" *ngFor="let resident of getNotificationResident()">{{resident.value}}</mat-option>
+                                                            </mat-select>
+                                                    </mat-form-field>
+                                            </div>
+                                            <div fxFlex="100">
+                                                    <p class="m-b-0">Notification Type</p>
+                                                    <mat-form-field appearance="outline" class="m-0" style="width: 50%;">
+                                                            <mat-select formControlName="notificationType">
+                                                                    <mat-option [value]="notify.id" *ngFor="let notify of notificationType">{{notify.label}}</mat-option>
+                                                            </mat-select>
+                                                    </mat-form-field>
+                                            </div>
+                                    </div>
+                            </form>
+                    </mat-card-content>
+                    <mat-card-actions fxLayoutAlign="start center">
+                            <div class="form-actions" fxLayoutAlign="end center">
+                                <button class="add-button" [disabled]="notifyCreateForm.get('resident').value === 'select resident' || dashboardLoading" mat-flat-button color="accent" (click)="createNotification()">
+                                    Create Notification
+                                </button>
+                            </div>
+                    </mat-card-actions>
+            </mat-card>
+    </div>
+    <!-- <div fxFlex="50">
+        <div class="popover__wrapper">
+            <span class="second-title m-l-15 m-r-5">Mobile push notifications </span> 
+            <mat-icon class="absolute help-text-hover-cont popover__title" (click)="titleShow = !titleShow" style="color: #D3CDC6;cursor: pointer;">help_outline</mat-icon>
+            <div class="popover__content">
+                <h4 class="second-title popover__heading">Mobile push notifications </h4>
+                <div class="popover__message">
+                    <p>You can add mobile push notifications data here</p>
+                </div>
+            </div>
+        </div>
+            <mat-card class="setting-card-section">
+                    <mat-card-content>
+                            <div fxFlex="100">
+                                    <p class="m-b-0">Resident</p>
+                                    <mat-form-field appearance="outline" class="m-0" style="width: 50%;">
+                                            <mat-select #resident [(ngModel)]="mobileResident">
+                                                    <mat-option disabled value="select resident">Select resident</mat-option>
+                                                    <mat-option [value]="resident.id" *ngFor="let resident of residentNames">{{resident.value}}</mat-option>
+                                            </mat-select>
+                                    </mat-form-field>
+                            </div>
+                    </mat-card-content>
+                    <mat-card-actions fxLayoutAlign="start center">
+                            <div class="form-actions" fxLayoutAlign="end center">
+                                <button class="add-button" [disabled]="mobileResident === 'select resident' || mobileLoading" mat-flat-button color="accent" (click)="createMobileNotification(resident.value)">
+                                    Create mobile notification
+                                </button>
+                            </div>
+                    </mat-card-actions>
+            </mat-card>
+    </div> -->
+
+</div>

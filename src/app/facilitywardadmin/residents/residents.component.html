@@ -1,0 +1,77 @@
+
+<div class="page-breadcrumb">
+	<div fxLayout="row wrap" fxLayoutAlign="space-between center">
+		<div fxFlex.gt-sm="60" fxFlex.gt-xs="60" fxFlex="100" class="align-self-center">
+			<div class="breadcrumb">
+				<ul class="list-style-none d-flex">
+					<li class="breadcrumb-item cursor-pointer" routerLink="/facility/dashboard">
+						<span class="text-muted">Dashboard</span>
+					</li>
+					<li class="breadcrumb-item active">Residents</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="main-section caregivers-pg p-24">
+	<div fxLayout="row nowrap" fxLayoutAlign="space-between center">
+		<span class="second-title font-24 m-r-5">Residents</span> 
+		<div class="popover__wrapper">
+			
+			<!-- <mat-icon class="absolute help-text-hover-cont popover__title" style="color: #D3CDC6;cursor: pointer;position: absolute;top: 3px;">help_outline</mat-icon> -->
+			<div class="popover__content lg_popover">
+				<h4 class="second-title popover__heading m-b-10">Residents</h4>
+				<div class="popover__message">
+					<!-- <span>All parameters except "Total falls" are computed as an average across all facilities and wards within the customer organisation.</span>
+					<p><strong>Customer Status</strong><br/>Indicates the current status of the customer with respect to our solution. Following are different states - demo, contract signed, active and inactive.</p>
+					<p><strong>Total falls</strong><br/>Indicates the actual number of falls for all residents across the customer organisation as recorded by the wearable.</p>
+					<p><strong>Falls activity (per 1000 steps)</strong><br/>Indicates the average number of falls for all residents across the customer organisation as recorded by the wearable and is represented as a unit of number of 1000 steps by residents.</p>
+					<p><strong>Night walk activity (per caregiver)</strong><br/>Indicate the average number of night walk alerts received from all the wearables used by the residents across the customer organisation and is represented as a unit of caregiver. </p>
+					<p><strong>Critically low battery activity (per caregiver)</strong><br/>Indicate the average number of critical low battery alerts received from all the wearables used by the residents across the customer organisation and is represented as a unit of caregiver. </p>
+					<p><strong>Screen time usage (per caregiver)</strong><br/>Indicates the average time spent in the dashboard by caregivers across the customer organisation and is represented as a unit of caregiver. </p>
+					<p><strong>Resident profiles viewed (per caregiver)</strong><br/>Indicates the average number of resident profiles viewed by caregivers across the customer organisation and is represented as a unit of caregiver.</p>
+					<p><strong>Notification response time (per caregiver)</strong><br/>Indicates the average response time for critical alerts across all customers represented.</p> -->
+				</div>
+			</div>
+		</div>
+		<div fxLayout="row nowrap" fxLayoutAlign="start center" fxLayoutGap="0.8em">
+			<div class="applied-filters m-r-10" fxLayoutAlign="start center" *ngFor="let filter of appliedFilters; let i=index">
+				<p class="m-0" style="width: fit-content;" title="{{filter.title}}">{{getValue(filter.title,filter.value)}} {{filter.title}}</p>
+				<mat-icon class="absolute cursor-pointer" (click)="clear(filter)" style="right: 2px;top: 14px;font-size: 12px !important;">close</mat-icon>
+			</div>
+			<div  class="m-r-20">
+				<button mat-raised-button class="m-r-10" color="accent" *ngIf="!cleared" (click)="clearFilter()">Clear all</button>
+				<button mat-raised-button class="light-bg" color="primary" (click)="addFilters()" title="Filters"><mat-icon class="display-ico">tune</mat-icon></button>
+			</div>
+		</div>
+	</div>
+	<ng-container *ngIf="isLoading">
+		<div class="preloader" *ngIf="isLoading" fxLayoutAlign="center center"
+				[ngStyle]="{'background-color': 'unset', position: 'unset', height: '350px'}">
+			<div class="spinner" [ngStyle]="{margin: 'unset', top: 'unset'}">
+				<img alt="loading.." src="assets/images/loading.gif" width="40px" height="40px" />
+			</div>
+		</div>
+	  </ng-container>
+	  <ng-container *ngIf="!isLoading">
+		  <ng-container *ngIf="tableData.length > 0">
+			  <app-table (actionEvent)="doOperation($event)"
+				  [actionEnable]="false"
+				  [Filtered]="!cleared"
+				  [widths]="widths"
+				  [isLoading]="isLoading"
+				  [displayedColumns]="displayedColumns"
+				  [tableData]="tableData"
+				  [link]="false"
+				  [tableType]="'resident'"
+				  noDataMessage="Looks like you haven't added a Residents"
+			  ></app-table>
+		  </ng-container>
+		  <div *ngIf="tableData.length < 1" fxLayoutAlign="center center" style="width: 100%; height: calc(100vh - 275px)">
+			  <div  class="display-card" fxLayoutAlign="center center">
+				  <p class="text text-center m-0">There is no resident added yet.Please add <strong>resident</strong></p>
+			  </div>
+		  </div>
+	  </ng-container>
+</div>

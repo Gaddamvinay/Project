@@ -1,0 +1,19 @@
+version: 0.2
+phases:
+  
+  install:
+    runtime-versions:
+      nodejs: 12
+    commands:
+      - echo "Installing dependencies..."
+      - npm install
+      - npm install -g @angular/cli
+  build:
+    commands:
+      - echo "Dashboar Project"
+      - ng build --configuration dev
+      - docker build -t 685347493806.dkr.ecr.eu-central-1.amazonaws.com/nordicsai-arjo:user-arjo-nursing-fe-dev .
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 685347493806.dkr.ecr.eu-central-1.amazonaws.com
+      - docker push 685347493806.dkr.ecr.eu-central-1.amazonaws.com/nordicsai-arjo:user-arjo-nursing-fe-dev

@@ -1,0 +1,124 @@
+<div class="phoenix-modal-wrapper mat-typography" fxLayout="column wrap" cdkTrapFocus>
+    <mat-icon class="mat-18" (click)="closeDialog(false)" fxFlexAlign="end" class="close-button" aria-label="Close">close
+    </mat-icon>
+    <ng-container *ngIf="data.dialogType === 'attend'">
+        <div class="error-outline" fxFlexAlign="center" fxLayoutAlign="center center" class="prompt-icon">!</div>
+        <p fxFlexAlign="center">{{'Do you like to attend the patient ?' }} </p>
+        <p fxFlexAlign="center">{{'This process cannot be undone.' }}</p>
+        <div class="prompt-actions" fxLayoutAlign="center center" fxLayoutGap="16px" fxFlexAlign="center">
+          <button mat-button type="submit" [ngStyle]="{width: '150px', height: '42px'}" (click)="closeDialog(true)">Yes</button>
+          <button mat-button [ngStyle]="{width: '150px', height: '42px'}" (click)="closeDialog(false)"  >No</button>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="data.dialogType === 'log'">
+        <ng-container [ngSwitch]="data.type">
+            <ng-container *ngSwitchCase="'Fall'">
+                <h1>Log for the Fall</h1>
+                <div class="row wrap">
+                    <div class="m-0-15" fxFlex.gt-md="100" fxFlex.gt-lg="100">
+                        <h3 class="required-field m-t-10 m-b-5 m-l-10">Was it is real fall?</h3>
+                    </div>
+                </div>
+                <mat-radio-group fxLayout="row wrap" [ngStyle]="{width: '100%'}" [(ngModel)]="check">
+                        <div class="m-15 m-t-0" [ngStyle]="{width: '45%'}">
+                            <mat-radio-button value="yes">Yes</mat-radio-button>
+                        </div>
+                        <div class="m-15 m-t-0" [ngStyle]="{width: '45%'}">
+                            <mat-radio-button value="no">No</mat-radio-button>
+                        </div>
+                </mat-radio-group>
+                <h4 class="m-b-5 m-t-30">If yes, on a scale of 1 to 5 how bad did they hurt themselves?</h4>
+                <div fxLayout="row wrap" fxLayoutGap.gt-md="1em">
+                    <div fxLayout.gt-md="33.33">
+                        <span class="m-r-15">Not bad</span>
+                        <mat-radio-group aria-label="feel" [(ngModel)]="rating_scale_1_5">
+                            <mat-radio-button value="1">1</mat-radio-button>
+                            <mat-radio-button value="2">2</mat-radio-button>
+                            <mat-radio-button value="3">3</mat-radio-button>
+                            <mat-radio-button value="4">4</mat-radio-button>
+                            <mat-radio-button value="5">5</mat-radio-button>
+                        </mat-radio-group>
+                        <span class="m-l-15">Serious</span>
+                    </div>
+                </div>
+                <h4 class="m-b-5 m-t-30">Where did they fall?</h4>
+                <div fxLayout="row wrap">
+                    <div fxLayout.gt-md="100" class="w-100">
+                        <mat-form-field appearance="outline" class="m-0">
+                            <textarea  [(ngModel)]="observations"  matInput placeholder="About ex..." ></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="action-buttons" fxLayout="row nowrap" fxLayoutAlign="end center">
+                    <button mat-button [mat-dialog-close]="false">Cancel</button>
+                    <button mat-raised-button (click)="callAck()" color="accent" [disabled]="">
+                        Submit
+                    </button>
+                </div>
+            </ng-container>
+            <ng-container *ngSwitchCase="'Nightwalk'">
+                <h1>Log for the Night Walk Alert</h1>
+                <div class="row wrap">
+                    <div class="m-0-15" fxFlex.gt-md="100" fxFlex.gt-lg="100">
+                        <h3 class="required-field m-t-10 m-b-5 m-l-10">Was it a real night walk alert?</h3>
+                    </div>
+                </div>
+                <mat-radio-group fxLayout="row wrap" [ngStyle]="{width: '100%'}" [(ngModel)]="check">
+                        <div class="m-15 m-t-0" [ngStyle]="{width: '45%'}">
+                            <mat-radio-button value="yes">Yes</mat-radio-button>
+                        </div>
+                        <div class="m-15 m-t-0" [ngStyle]="{width: '45%'}">
+                            <mat-radio-button value="no">No</mat-radio-button>
+                        </div>
+                </mat-radio-group>
+                <h4 class="m-b-5 m-t-30">If yes, on a scale of 1 to 5 was the resident feeling fine?</h4>
+                <div fxLayout="row wrap" fxLayoutGap.gt-md="1em">
+                    <div fxLayout.gt-md="33.33">
+                        <span class="m-r-15">Not bad</span>
+                        <mat-radio-group aria-label="feel" [(ngModel)]="rating_scale_1_5">
+                            <mat-radio-button value="1">1</mat-radio-button>
+                            <mat-radio-button value="2">2</mat-radio-button>
+                            <mat-radio-button value="3">3</mat-radio-button>
+                            <mat-radio-button value="4">4</mat-radio-button>
+                            <mat-radio-button value="5">5</mat-radio-button>
+                        </mat-radio-group>
+                        <span class="m-l-15">Serious</span>
+                    </div>
+                </div>
+                <h4 class="m-b-5 m-t-30"> Why were they walking? </h4>
+                <div fxLayout="row wrap">
+                    <div fxLayout.gt-md="100" class="w-100">
+                        <mat-form-field appearance="outline" class="m-0">
+                            <mat-label>Reason</mat-label>
+                            <textarea  [(ngModel)]="observations"  matInput placeholder="About ex..." ></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="action-buttons" fxLayout="row nowrap" fxLayoutAlign="end center">
+                    <button mat-button [mat-dialog-close]="false">Cancel</button>
+                    <button mat-raised-button (click)="callAck()" color="accent" [disabled]="">
+                        Submit
+                    </button>
+                </div>
+            </ng-container>
+            <ng-container *ngSwitchCase="'watchRemoved'">
+                <h1>Log for the Watch Removed Alert</h1>
+                <h4 class="m-b-5 m-t-30">What was the reason for not wearaing the wearable?</h4>
+                <div fxLayout="row wrap">
+                    <div fxLayout.gt-md="100" class="w-100">
+                        <mat-form-field appearance="outline" class="m-0">
+                            <mat-label>Comments</mat-label>
+                            <textarea  [(ngModel)]="observations"  matInput placeholder="About ex..." ></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="action-buttons" fxLayout="row nowrap" fxLayoutAlign="end center">
+                    <button mat-button [mat-dialog-close]="false">Cancel</button>
+                    <button mat-raised-button (click)="callAck()" color="accent" [disabled]="">
+                        Submit
+                    </button>
+                </div>
+            </ng-container>
+        </ng-container>
+    </ng-container>
+  </div>

@@ -1,0 +1,56 @@
+<div class="relative">
+    <div style="width: 100%;">
+        <mat-card class="section-title no-shadow" style="box-shadow: none !important; margin: 0 !important;">
+            <mat-card-content>
+                <div fxLayout="row wrap">
+                    <div fxFlex.gt-lg="65" fxFlex.gt-md="55" fxFlex="100">
+                        <mat-card-title style="font-size:20px;"><span class="m-r-5">Filter </span> </mat-card-title>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <mat-card class="model" style="box-shadow: none !important; margin: 0 !important;">
+        <mat-card-content style="padding-top: 0 !important;">
+            <form [formGroup]="filterForm">
+                <div fxLayout="row nowrap" fxLayoutAlign="space-between start">
+                    <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="40px">
+                        <div class="form-field" style="width: 90%;">
+                            <p class="m-0 label">Ward name</p>
+                            <mat-form-field appearance="outline">
+                                <mat-select formControlName="wardName">
+                                  <mat-option disabled value="">Select</mat-option>
+                                  <mat-option value="111-223">Ward A</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div fxLayout="column wrap" fxFlex="48" fxLayoutGap="48px">
+                        <div class="form-field" style="width: 90%;">
+                            <p class="m-0 label">Ward manager</p>
+                            <mat-form-field appearance="outline">
+                                <mat-select formControlName="wardManager">
+                                  <mat-option disabled value="">Select</mat-option>
+                                  <mat-option value="bulk manage">John Doe</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </mat-card-content>
+        <mat-card-actions fxLayoutAlign="start center">
+            <div fxLayout="row" fxFlex="100">
+                <div class="" fxFlex="50" fxFlex.gt-md="50" fxFlex.gt-lg="50" fxLayoutAlign="start center">
+                </div>
+                <div fxFlex="50" fxFlex.gt-md="50" fxFlex.gt-lg="50" fxLayoutAlign="end center">
+                    <div class="text-right">
+                        <button mat-button mat-dialog-close>Cancel</button>
+                        <button mat-flat-button color="accent" type="submit" [disabled]="filterForm.invalid">Apply</button>
+                    </div>
+                </div>
+            </div>
+        </mat-card-actions>
+    </mat-card>
+    <mat-icon class="absolute cursor-pointer" style="top: 16px; right: 16px" mat-dialog-close>close</mat-icon>
+</div>

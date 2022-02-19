@@ -1,0 +1,136 @@
+<mat-card class="model arjomodal">
+    <mat-card-header>
+        <div fxLayout="row wrap">
+            <div fxFlex.gt-lg="65" fxFlex.gt-md="65" fxFlex="100">
+                <mat-card-title>
+                    <span class="m-r-5 arjomodal-title">Perform 30SCS
+						 test</span>
+                </mat-card-title>
+            </div>
+            <div fxFlex.gt-lg="35" fxFlex.gt-md="35" fxFlex="100" class="text-right">
+                <mat-icon class="cursor-pointer" mat-dialog-close>close</mat-icon>
+            </div>
+        </div>
+    </mat-card-header>
+    <mat-card-content>
+		<mat-horizontal-stepper (selectionChange)="event($event)" labelPosition="bottom" #stepper [linear]="false">
+			<mat-step [stepControl]="true" state="view">
+				<ng-template matStepLabel>Introduction</ng-template>
+				<div fxLayout="row wrap">
+					<div fxFlex.gt-md="50">
+						<h4 class="arjoform-label">Purpose</h4>
+						<p class="arjoform-value">The 30CST is a measurement that assesses functional lower extremity strength in older adults. It is part of the Fullerton Functional Fitness Test Battery. This test was developed to overcome the floor effect of the 5 or 10 repetition sit to stand test in older adults.</p>
+						<div class="field">
+							<h4 class="arjoform-label">Area of Assessment</h4>
+							<span class="arjoform-value">Balance – Non-vestibular</span><br />
+							<span class="arjoform-value">Functional Mobility</span><br />
+							<span class="arjoform-value">Strength</span><br />
+						</div>
+					</div>
+					<div fxFlex.gt-md="50" fxLayoutAlign="end center">
+						<iframe width="423" height="270" src="https://www.youtube.com/embed/Ng-UOHjTejY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="m-t-10"></iframe>
+					</div>
+				</div>
+			</mat-step>
+			<mat-step [stepControl]="true" state="view">
+				<ng-template matStepLabel>Pre-requisites</ng-template>
+				<ul class="m-l-0 p-l-20">
+					<li class="item">43.2 cm (17in) folding chair with back</li>
+					<li class="item">Stopwatch</li>
+					<li class="item">Wall Space</li>
+				</ul>
+			</mat-step>
+			<mat-step [stepControl]="true" state="view">
+				<ng-template matStepLabel>Instruction</ng-template>
+				<ul class="m-l-0 p-l-20">
+					<li class="item">The 30-Second Chair Test is administered using a folding chair without arms, with seat height of 17 inches (43.2 cm). The chair, with rubber tips on the legs, is placed against a wall to prevent it from moving. </li>
+					<li class="item">The participant is seated in the middle of the chair, back straight; feet approximately shoulder width apart and placed on the floor at an angle slightly back from the knees, with one foot slightly in front of the other to help maintain balance. Arms are crossed at the wrists and held against the chest.</li>
+					<li class="item">Demonstrate the task both slowly and quickly.</li>
+					<li class="item">Have the patient practice a repetition or 2 before completing the test.</li>
+					<li class="item">If a patient must use their arms to complete the test they are scored 0.</li>
+					<li class="item">The participant is encouraged to complete as many full stands as possible within 30 seconds. The participant is instructed to fully sit between each stand.</li>
+					<li class="item">While monitoring the participant’s performance to ensure proper form, the tester silently counts the completion of each correct stand.  The score is the total number of stands within 30 seconds (more than halfway up at the end of 30 seconds counts as a full stand). Incorrectly executed stands are not counted.</li>
+					<li class="item">The 30-second chair stand involves recording the number of stands a person can complete in 30 seconds rather then the amount of time it takes to complete a pre-determined number of repetitions. That way, it is possible to assess a wide variety of ability levels with scores ranging from 0 for those who can not complete 1 stand to greater then 20 for more fit individuals.</li>
+				</ul>
+			</mat-step>
+			<mat-step [stepControl]="true">
+				<ng-template matStepLabel>Results</ng-template>
+				<h4 class="arjoform-label">Number of transitions performed</h4>
+				<div fxLayout="row wrap" fxLayoutGap.gt-md="1em">
+					<div fxLayout.gt-md="50">
+						<mat-form-field appearance="outline" class="m-0">
+							<input matInput placeholder="Transitions performed"[formControl]="distance_covered_in_6_minutes_in_meters" placeholder="Transitions performed" required ngDefaultControl/>
+						</mat-form-field>
+					</div>
+					<div fxLayout.gt-md="25"></div>
+					<div fxLayout.gt-md="25"></div>
+				</div>
+				<h4 class="arjoform-label">Did the elderly use an assistive device to perform the test?</h4>
+				<div fxLayout="row wrap" class="m-b-30" fxLayoutGap.gt-md="1em">
+					<div fxLayout.gt-md="33.33">
+						<mat-radio-group aria-label="device" fxLayoutAlign="start center" fxLayoutGap="0.8em">
+							<mat-radio-button [formControl]="elderly_used_assistive_devise" value="yes" ngDefaultControl>Yes</mat-radio-button>
+							<mat-radio-button [formControl]="elderly_used_assistive_devise" value="no" ngDefaultControl>No</mat-radio-button>
+						</mat-radio-group>
+					</div>
+					<div fxLayout.gt-md="33.33"></div>
+					<div fxLayout.gt-md="33.33"></div>
+				</div>
+				<h4 class="arjoform-label">How does the elderly feel?</h4>
+				<div fxLayout="row wrap" class="m-b-30" fxLayoutGap.gt-md="1em">
+					<div fxLayout.gt-md="33.33">
+						<span class="m-r-15">Completely Exhausted</span>
+						<mat-radio-group aria-label="feel" fxLayoutAlign="start center" fxLayoutGap="0.8em">
+							<mat-radio-button  [formControl]="how_did_the_elderly_feel_rating_scale_1_5" value="1" ngDefaultControl>1</mat-radio-button>
+							<mat-radio-button  [formControl]="how_did_the_elderly_feel_rating_scale_1_5" value="2" ngDefaultControl>2</mat-radio-button>
+							<mat-radio-button  [formControl]="how_did_the_elderly_feel_rating_scale_1_5" value="3" ngDefaultControl>3</mat-radio-button>
+							<mat-radio-button  [formControl]="how_did_the_elderly_feel_rating_scale_1_5"value="4" ngDefaultControl>4</mat-radio-button>
+							<mat-radio-button  [formControl]="how_did_the_elderly_feel_rating_scale_1_5"value="5" ngDefaultControl>5</mat-radio-button>
+						</mat-radio-group>
+						<span class="m-l-15">Very Good</span>
+					</div>
+					<div fxLayout.gt-md="33.33"></div>
+					<div fxLayout.gt-md="33.33"></div>
+				</div>
+				<h4 class="arjoform-label">How much effort did it take for the elderly to perform the test?</h4>
+				<div fxLayout="row wrap" class="m-b-30" fxLayoutGap.gt-md="1em">
+					<div fxLayout.gt-md="100">
+						<span class="m-r-15">Completely Exhausted</span>
+						<mat-radio-group aria-label="effort" fxLayoutAlign="start center" fxLayoutGap="0.8em">
+							<mat-radio-button  [formControl]="effort_taken_scale_1_10" value="1" ngDefaultControl>1</mat-radio-button>
+							<mat-radio-button  [formControl]="effort_taken_scale_1_10" value="2" ngDefaultControl>2</mat-radio-button>
+							<mat-radio-button	[formControl]="effort_taken_scale_1_10"  value="3" ngDefaultControl>3</mat-radio-button>
+							<mat-radio-button [formControl]="effort_taken_scale_1_10"  value="4" ngDefaultControl>4</mat-radio-button>
+							<mat-radio-button [formControl]="effort_taken_scale_1_10" value="5"ngDefaultControl>5</mat-radio-button>
+						</mat-radio-group>
+						<span class="m-l-15">Very Good</span>
+					</div>
+				</div>
+				<h4 class="arjoform-label">Comments/Observations</h4>
+				<div fxLayout="row wrap">
+					<div fxLayout.gt-md="100" class="w-100">
+						<mat-form-field appearance="outline" class="m-0">
+							<textarea [formControl]="comments_observations"  matInput placeholder="About ex..." ngDefaultControl></textarea>
+						</mat-form-field>
+					</div>
+				</div>
+			</mat-step>
+			<ng-template matStepperIcon="done">
+				<mat-icon>visibility</mat-icon>
+			</ng-template>
+		  </mat-horizontal-stepper>
+    </mat-card-content>
+    <mat-card-actions fxLayoutAlign="start center">
+        <div fxFlex="100" class="form-actions" fxLayoutAlign="end center">
+            <div class="" fxFlex="50" fxFlex.gt-md="50" fxFlex.gt-lg="50" fxLayoutAlign="start center">
+			</div>
+			<div fxFlex="50" fxFlex.gt-md="50" fxFlex.gt-lg="50" fxLayoutAlign="end center">
+				<div class="text-right">
+					<button mat-button mat-dialog-close class="cancel m-r-10">Cancel</button>
+					<button mat-flat-button color="accent" *ngIf="selectedIndex < 3" (click)="stepper.next()" class="submit">Next</button>
+					<button mat-flat-button color="accent" [disabled]="validate()" (click)="post30SCS()" *ngIf="selectedIndex === 3" type="submit" class="submit">Add</button>
+				</div>
+			</div>
+        </div>
+    </mat-card-actions>
+</mat-card>

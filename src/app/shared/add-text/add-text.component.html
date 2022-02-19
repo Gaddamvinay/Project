@@ -1,0 +1,136 @@
+<div fxLayout="row nowrap" fxLayoutAlign="space-around center" style="margin: 16px 0;">
+    <button class="add-button" mat-flat-button color="accent" (click)="addWard()">
+        <mat-icon>add</mat-icon><span>Add new ward</span>
+    </button>
+    <button class="add-button" mat-flat-button color="accent" (click)="addRoom()">
+        <mat-icon>add</mat-icon><span>Add new room</span>
+    </button>
+    <button class="add-button" mat-flat-button color="accent" (click)="addCaregiver()">
+        <mat-icon>add</mat-icon><span>Add new caregiver</span>
+    </button>
+    <button class="add-button" mat-flat-button color="accent" (click)="addFacility()">
+        <mat-icon>add</mat-icon><span>Add new facility</span>
+    </button>
+    <button class="add-button" mat-flat-button color="accent" (click)="addWearable()">
+        <mat-icon>add</mat-icon><span>Add new wearable</span>
+    </button>
+    <button class="add-button" mat-flat-button color="accent" (click)="addResident({})">
+        <mat-icon>add</mat-icon><span>Add new resident</span>
+    </button>
+    <button class="add-button" mat-flat-button color="accent" (click)="addCustomer()">
+        <mat-icon>add</mat-icon><span>Add new customer</span>
+    </button>
+</div>
+<div class="tabs resident-view p-24">
+    <mat-tab-group mat-align-tabs="left">
+
+        <mat-tab label="WARD DETAILS">
+            <div class="" style="overflow: hidden;">
+                <app-table 
+                    (actionEvent)="doOperation($event, 'wards')"
+                    [isLoading]="isLoading.wards"
+                    [widths]="wardWidths"
+                    [tableType]="'ward'"
+                    [displayedColumns]="wardDisplayedColumns" 
+                    [tableData]="wardTableData"
+                    [link]="false"
+                >
+                </app-table>
+            </div>
+        </mat-tab>
+
+        <mat-tab label="ROOM DETAILS">
+            <div class=""  style="overflow: hidden;">
+              <app-table
+              (actionEvent)="doOperation($event, 'rooms')"
+                [widths]="roomWidths"
+                [isLoading]="isLoading.room"
+                [tableType]="'room'"
+                [displayedColumns]="roomDisplayedColumns"
+                [tableData]="roomTableData"
+                [link]="false"
+                noDataMessage="Looks like you haven't added a rooms"
+              ></app-table>
+            </div>
+          </mat-tab>
+        
+        <mat-tab label="CAREGIVER DETAILS">
+          <div class="" style="overflow: hidden;">
+            <app-table
+            (actionEvent)="doOperation($event, 'caregivers')"
+              [isLoading]="isLoading.caregiver"
+              [widths]="careGiverWidths"
+              [displayedColumns]="careGiverDisplayedColumns"
+              [tableData]="careGiverTableData"
+              [tableType]="'caregiver'"
+              [link]="false"
+            ></app-table>
+          </div>
+        </mat-tab>
+
+        <mat-tab label="FACILITY DETAILS">
+            <div class="" style="overflow: hidden;">
+              <app-table
+              (actionEvent)="doOperation($event, 'facilities')"
+                [isLoading]="isLoading.facilities"
+                [widths]="facilityWidths"
+                [link]="false"
+                [tableType]="'facility'"
+                [displayedColumns]="facilityDisplayedColumns"
+                [tableData]="facilityTableData"
+              ></app-table>
+            </div>
+        </mat-tab>
+
+        <mat-tab label="WEARABLES DETAILS">
+            <div class=""  style="overflow: hidden;">
+              <div class="m-t-15" fxLayoutAlign="space-between center" fxLayout="row nowrap">
+              </div>
+              <app-table (actionEvent)="doOperation($event, 'wearables')"
+                [isLoading]="isLoading.wearable"
+                [widths]="wearableWidths"
+                [tableType]="'wearable'"
+                [displayedColumns]="wearableDisplayedColumns"
+                [tableData]="wearableTableData"
+                [link]="false"
+              ></app-table>
+            </div>
+        </mat-tab>
+
+        <mat-tab label="CUSTOMER DETAILS">
+            <div class=""  style="overflow: hidden;">
+              <div class="m-t-15" fxLayoutAlign="space-between center" fxLayout="row nowrap">
+              </div>
+              <app-table (actionEvent)="doOperation($event, 'customers')"
+                [isLoading]="isLoading.wearable"
+                [widths]="customerWidths"
+                [tableType]="'customer'"
+                [displayedColumns]="customerDisplayedColumns"
+                [tableData]="customerTableData"
+                [link]="false"
+              ></app-table>
+            </div>
+        </mat-tab>
+
+        <mat-tab label="RESIDENTS DETAILS">
+            <div class="" *ngIf="residentTableData.length > 0" style="overflow: hidden;">
+              <div class="m-t-15" fxLayoutAlign="space-between center" fxLayout="row nowrap">
+              </div>
+              <app-table (actionEvent)="doOperation($event, 'residents')"
+                [isLoading]="isLoading.resident"
+                [widths]="residentWidths"
+                [displayedColumns]="residentDisplayedColumns"
+                [tableData]="residentTableData"
+                [link]="false"
+              ></app-table>
+            </div>
+            <div *ngIf="residentTableData.length < 1" fxLayoutAlign="center center" style="width: 100%; height: calc(100vh - 275px)">
+              <div class="display-card" fxLayoutAlign="center center">
+                <p class="text text-center m-0">Residents has been not added yet.
+                  Once residents added it will be shown here.</p>
+              </div>
+            </div>
+        </mat-tab>  
+
+      </mat-tab-group>
+</div>

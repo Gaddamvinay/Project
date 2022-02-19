@@ -1,0 +1,218 @@
+<div class="arjomodal">
+    <div style="width: 100%;">
+        <mat-card class="section-title no-shadow" style="box-shadow: none !important; margin: 0 !important;">
+            <mat-card-content>
+                <div fxLayout="row wrap">
+                    <div fxFlex.gt-lg="65" fxFlex.gt-md="55" fxFlex="100">
+                        <mat-card-title style="font-size:20px;"><span class="arjoform-title">My profile </span> </mat-card-title>
+                        <mat-card-subtitle *ngIf="titleShow" style="margin-bottom: 0 !important;">Name, Email, Password, Global date & time format settings</mat-card-subtitle>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <mat-card class="setting-card-section" style="box-shadow: none !important; margin: 0 !important;">
+        <mat-card-content style="padding-top: 0 !important;">
+            <form [formGroup]="userForm" fxLayout="row nowrap" fxLayoutAlign="space-between start">
+                <div fxLayout="column wrap" fxFlex="48">
+                    <!-- <div class="user-image" fxLayoutAlign="center center" style="width: 90%">
+                        <div class="empty cursor-pointer" *ngIf="!userProfileData?.logoBlob" fxLayoutAlign="center center">
+                            <mat-icon (click)="fileInput.click()" title="click to add profile picture">add_a_photo</mat-icon>
+                        </div>
+                        <figure class="image-container" *ngIf="userProfileData?.logoBlob">
+                            <img class="image" src="{{userProfileData?.logoBlob}}" alt="user-picture">
+                            <mat-icon (click)="fileInput.click()" class="cursor-pointer edit">edit</mat-icon>
+                        </figure>
+                    </div> -->
+                    <div class="inputs" fxLayout="column" style="width: 90%;">
+                        <div>
+                            <p class="arjoform-label">First name</p>
+                            <mat-form-field appearance="outline">
+                                <input placeholder="First name" matInput type="text" readonly formControlName="firstName" />
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <p class="arjoform-label">Last name</p>
+                            <mat-form-field appearance="outline">
+                                <input placeholder="Last name" matInput type="text" readonly formControlName="lastName"/>
+                            </mat-form-field>
+                        </div>
+                        <ng-container *ngIf="data.payload.user_type === 'Caregiver' || data.payload.user_type === 'WA'">
+                            <div>
+                                <p class="arjoform-label">Email</p>
+                                <mat-form-field appearance="outline" class="m-b-20">
+                                    <input placeholder="Email" matInput type="email" readonly formControlName="email"/>
+                                </mat-form-field>
+                            </div>
+                            <div class="m-b-40">
+                                <p class="arjoform-label">Phone number</p>
+                                <mat-form-field appearance="outline" class="unit-entry" [ngStyle]="{width: '30%'}" style="margin: 0!important">
+                                    <mat-select matInput required name="ext" formControlName="ext">
+                                        <mat-option value="+1">+1</mat-option>
+                                        <mat-option value="+46">+46</mat-option>
+                                        <mat-option value="+44">+44</mat-option>
+                                        <mat-option value="+91">+91</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" class="unit-select" [ngStyle]="{width: '70%'}" style="margin: 0!important">
+                                    <input type="text" required matInput id="phoneNumber" readonly name="phoneNumber" formControlName="phoneNumber" placeholder="Phone Number" pattern="^[0-9]*$" minlength="9" maxlength="15" />
+                                </mat-form-field>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="data.payload.user_type === 'Caregiver'">
+                            <div style="margin-bottom: 30px">
+                                <p class="arjoform-label">Global time format</p>
+                                <div class="drop-down cursor-pointer" fxLayoutAlign="start center" [matMenuTriggerFor]="timeFormats" title="Click to change time format">
+                                    <span style="font-size: 14px;">{{getTimeFormat() === 'HH:mm'? '24 hours': '12 hours'}}</span>
+                                    <mat-icon class="absolute">arrow_drop_down</mat-icon>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <div *ngIf="data.payload.user_type ==='FA' || data.payload.user_type ==='CA'">
+                            <p class="arjoform-label">Email</p>
+                            <mat-form-field appearance="outline" class="m-b-20">
+                                <input placeholder="Email" matInput type="email" readonly formControlName="email"/>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div fxLayout="column wrap" fxFlex="48">
+                    <div style="width: 90%;" *ngIf="data.payload.user_type !== 'SSA'">
+                        <p class="arjoform-label">Customer name</p>
+                        <mat-form-field appearance="outline" class="m-b-20">
+                            <mat-select formControlName="customer">
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option [value]="customer.id" *ngFor="let customer of customerList">{{customer.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div style="width: 90%;" *ngIf="data.payload.user_type !== 'SSA' && data.payload.user_type !== 'CA'">
+                        <p class="arjoform-label">Facility name</p>
+                        <mat-form-field appearance="outline" class="m-b-20">
+                            <mat-select formControlName="facility">
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option [value]="facility.id" *ngFor="let facility of facilityList">{{facility.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div style="width: 90%;" class="commonaddpage" *ngIf="data.payload.user_type === 'Caregiver' || data.payload.user_type === 'WA'">
+                        <p class="arjoform-label">Ward name</p>
+                        <mat-form-field appearance="outline" class="m-b-20">
+                            <mat-select value="select" formControlName="ward" multiple>
+                                <mat-select-trigger>
+                                    <ng-container *ngIf="userWardIds.length < 2 && userWardIds.length > 0">
+                                        <span>{{userWardIds? (userWardIds[0]=== '' ? 'Select' : getWard(userWardIds[0])?.name) : ''}}</span>
+                                    </ng-container>
+                                    <ng-container *ngIf="userWardIds.length > 1">
+                                        <ng-container *ngFor="let ward of userWardIds;let i =index">
+                                            <span class="selected" *ngIf="i < 2">{{getWard(ward)?.name}}</span>
+                                        </ng-container>
+                                    </ng-container>
+                                    <span *ngIf="userWardIds?.length > 2" class="selected">
+                                    (+{{userWardIds.length - 2}} {{userWardIds?.length === 3 ? 'other' : 'others'}})
+                                    </span>
+                                  </mat-select-trigger>
+                                <mat-option disabled value="">Select</mat-option>
+                                <mat-option *ngFor="let ward of wardList"  [value]="ward.id">
+                                    {{ ward.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <ng-container *ngIf="data.payload.user_type !== 'Caregiver'">
+                        <div style="width: 90%;" *ngIf="data.payload.user_type ==='SSA'">
+                            <p class="arjoform-label">Email</p>
+                            <mat-form-field appearance="outline" class="m-b-20">
+                                <input placeholder="Email" matInput type="email" readonly formControlName="email"/>
+                            </mat-form-field>
+                        </div>
+                        <div style="width: 90%;" class="m-b-40" *ngIf="data.payload.user_type !=='WA'">
+                            <p class="arjoform-label">Phone number</p>
+                            <mat-form-field appearance="outline" class="unit-entry" [ngStyle]="{width: '30%'}" style="margin: 0!important">
+                                <mat-select matInput required name="ext" formControlName="ext">
+                                    <mat-option value="+1">+1</mat-option>
+                                    <mat-option value="+46">+46</mat-option>
+                                    <mat-option value="+44">+44</mat-option>
+                                    <mat-option value="+91">+91</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" class="unit-select" [ngStyle]="{width: '70%'}" style="margin: 0!important">
+                                <input type="text" required matInput id="phoneNumber" readonly name="phoneNumber" formControlName="phoneNumber" placeholder="Phone Number" pattern="^[0-9]*$" minlength="9" maxlength="15" />
+                            </mat-form-field>
+                        </div>
+                    </ng-container>
+                    <div style="width: 90%;margin-bottom: 36px;margin-top:-12px;" *ngIf="data.payload.user_type === 'Caregiver'">
+                        <p class="arjoform-label">Global date format</p>
+                        <div class="drop-down cursor-pointer" fxLayoutAlign="start center" [matMenuTriggerFor]="dateFormats" title="Click to change global format">
+                            <span style="font-size: 14px;">{{today | date : getFormat()}}</span>
+                            <mat-icon class="absolute">arrow_drop_down</mat-icon>
+                        </div>
+                    </div>
+                    <div style="width: 90%;margin-bottom: 28px;" *ngIf="data.payload.user_type === 'Caregiver'">
+                        <p class="arjoform-label">Date format for filters</p>
+                        <div class="drop-down cursor-pointer" fxLayoutAlign="start center" [matMenuTriggerFor]="filterFormats" title="Click to change filter format">
+                            <span style="font-size: 14px;">{{today | date : getFilterFormat()}}</span>
+                            <mat-icon class="absolute">arrow_drop_down</mat-icon>
+                        </div>
+                    </div>
+                    <div>
+                    </div>
+                </div>
+                <form [formGroup]="fileUpload">
+                    <input hidden
+                        type="file"
+                        #fileInput
+                        formControlName="fileInput"
+                        (change)="fileChangeEvent($event)">
+                </form>
+                <div fxLayout="row wrap">
+                    <p class="m-t-0 m-b-15"></p>
+                </div>
+
+                <div fxLayout="row wrap">
+                    <div fxFlex.gt-lg="50" fxFlex="50" class="text-left">
+                    </div>
+                </div>
+            </form>
+        </mat-card-content>
+        <mat-card-actions fxLayoutAlign="start center">
+            <div fxLayout="row" fxFlex="100">
+                <div class="" fxFlex="50" fxFlex.gt-md="50" fxFlex.gt-lg="50" fxLayoutAlign="start center">
+                </div>
+                <div fxFlex="50" fxFlex.gt-md="50" fxFlex.gt-lg="50" fxLayoutAlign="end center">
+                    <div class="text-right">
+                        <button mat-button class="cancel" (click)="close()">Cancel</button>
+                        <!-- <button mat-raised-button color="accent" [disabled]="userForm.invalid || !userForm.dirty" type="submit" (click)="updateUserData()">
+                            Save
+                        </button> -->
+                    </div>
+                </div>
+            </div>
+        </mat-card-actions>
+    </mat-card>
+</div>
+<mat-menu #dateFormats="matMenu" class="mymegamenu">
+	<button mat-menu-item (click)="changeFormat('MM/dd/yyyy')">{{ today | date:'MM/dd/yyyy' }}</button>
+	<button mat-menu-item (click)="changeFormat('M/dd/yyyy')">{{ today | date:'M/dd/yyyy' }}</button>
+	<button mat-menu-item (click)="changeFormat('dd/MM/yyyy')">{{ today | date:'dd/MM/yyyy' }}</button>
+	<button mat-menu-item (click)="changeFormat('d/MM/yyyy')">{{ today | date:'d/MM/yyyy' }}</button>
+	<button mat-menu-item (click)="changeFormat('yyyy/dd/MM')">{{ today | date:'yyyy/dd/MM' }}</button>
+	<button mat-menu-item (click)="changeFormat('yyyy/d/M')">{{ today | date:'yyyy/d/M' }}</button>
+	<button mat-menu-item (click)="changeFormat('MMM d, y')">{{ today | date:'MMM d, y' }}</button>
+	<button mat-menu-item (click)="changeFormat('d MMM, y')">{{ today | date:'d MMM, y' }}</button>
+	<button mat-menu-item (click)="changeFormat('y MMM, d')">{{ today | date:'y MMM, d' }}</button>
+	<button mat-menu-item (click)="changeFormat('EEEE, MMMM d, y')">{{ today | date:'EEEE, MMMM d, y' }}</button>
+	<button mat-menu-item (click)="changeFormat('MMMM d, y, EEEE')">{{ today | date:'MMMM d, y, EEEE' }}</button>
+</mat-menu>
+<mat-menu #filterFormats="matMenu" class="mymegamenu">
+	<button mat-menu-item (click)="changeFilterFormat('MM/dd/yyyy')">{{ today | date:'MM/dd/yyyy' }}</button>
+	<button mat-menu-item (click)="changeFilterFormat('M/dd/yyyy')">{{ today | date:'M/dd/yyyy' }}</button>
+	<button mat-menu-item (click)="changeFilterFormat('dd/MM/yyyy')">{{ today | date:'dd/MM/yyyy' }}</button>
+	<button mat-menu-item (click)="changeFilterFormat('d/MM/yyyy')">{{ today | date:'d/MM/yyyy' }}</button>
+	<button mat-menu-item (click)="changeFilterFormat('yyyy/dd/MM')">{{ today | date:'yyyy/dd/MM' }}</button>
+	<button mat-menu-item (click)="changeFilterFormat('yyyy/d/M')">{{ today | date:'yyyy/d/M' }}</button>
+</mat-menu>
+<mat-menu #timeFormats="matMenu" class="mymegamenu">
+	<button mat-menu-item (click)="changeTimeFormat('HH:mm')">24 hours</button>
+	<button mat-menu-item (click)="changeTimeFormat('hh:mm, A')">12 hours</button>
+</mat-menu>

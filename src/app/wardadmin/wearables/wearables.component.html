@@ -1,0 +1,58 @@
+
+<div class="page-breadcrumb">
+	<div fxLayout="row wrap" fxLayoutAlign="space-between center">
+		<div fxFlex.gt-sm="60" fxFlex.gt-xs="60" fxFlex="100" class="align-self-center">
+			<div class="breadcrumb">
+				<ul class="list-style-none d-flex">
+					<li class="breadcrumb-item cursor-pointer" routerLink="/wa/dashboard">
+						<span class="text-muted">Dashboard</span>
+					</li>
+					<li class="breadcrumb-item active">Wearables</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="main-section p-24">
+	<div fxLayout="row nowrap">
+		<div class="popover__wrapper">
+			<span class="second-title font-24 m-r-5">Wearables</span> 
+			<mat-icon class="absolute help-text-hover-cont popover__title" style="color: #D3CDC6;cursor: pointer;position: absolute;top: 3px;">help_outline</mat-icon>
+			<div class="popover__content lg_popover">
+				<h4 class="second-title popover__heading m-b-10">Wearables</h4>
+				<div class="popover__message">
+					<p><strong>Total falls</strong><br/>Indicates the actual number of falls as recorded by the wearable.</p>
+					<p><strong>Falls activity (per 1000 steps)</strong><br/>Indicates the number of falls as recorded by the wearable and is represented as a unit of number of 1000 steps.</p>
+					<p><strong>Night walk activity(per caregiver)</strong><br/>Indicates the number of night walk alerts received from the wearable used by the resident.</p>
+					<p><strong>Critically low battery activity(per caregiver)</strong><br/>Indicates the number of critical low battery alerts received from the wearable used by the resident.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<ng-container *ngIf="isLoading">
+		<div class="preloader" *ngIf="isLoading" fxLayoutAlign="center center"
+				[ngStyle]="{'background-color': 'unset', position: 'unset', height: '350px'}">
+			<div class="spinner" [ngStyle]="{margin: 'unset', top: 'unset'}">
+				<img alt="loading.." src="assets/images/loading.gif" width="40px" height="40px" />
+			</div>
+		</div>
+	  </ng-container>
+	<ng-container *ngIf="beforeFilter.length > 0">
+		<app-table (actionEvent)="doOperation($event)" 
+		[isLoading]="isLoading"  
+		[actionEnable]="false"
+		[tableType]="'wearable'"
+		[textRemove]="true"
+		[actions]="actions" [widths]="widths" 
+		[displayedColumns]="displayedColumns" 
+		[tableData]="tableData"
+		noDataMessage="Looks like you haven't added a Wearables">
+		</app-table>
+	</ng-container>
+<div *ngIf="beforeFilter.length < 1 && !isLoading" fxLayoutAlign="center center" style="width: 100%; height: calc(100vh - 275px)">
+    <div class="display-card" fxLayoutAlign="center center">
+        <p class="text text-center m-0">There is no wearable added yet.Please add <strong>wearable</strong></p>
+    </div>
+  </div>
+</div>

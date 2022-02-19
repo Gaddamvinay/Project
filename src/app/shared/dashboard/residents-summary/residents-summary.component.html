@@ -1,0 +1,107 @@
+<div class="popover__wrapper">
+    <span class="second-title m-l-15 m-r-5">Residents summary <span style="font-size:12px;">{{forType}}</span></span> 
+    <mat-icon class="absolute help-text-hover-cont popover__title" style="color: #D3CDC6;cursor: pointer;">help_outline</mat-icon>
+    <div class="popover__content">
+        <h4 class="second-title popover__heading m-b-10">Residents summary</h4>
+        <div class="popover__message" *ngIf="type === 'dashboard'">
+            <span>Both parameters are computed across all customers.</span>
+			<p><strong>Questionnaire</strong><br/>Indicates the number of questionnaire performed across all customers.</p>
+			<p><strong>Physio tests</strong><br/>Indicates the number of physio tests performed across all customers.</p>
+		</div>
+		<div class="popover__message" *ngIf="type === 'customer'">
+			<span>Both parameters are computed across all facilities within the customer organization.</span>
+			<p><strong>Questionnaire</strong><br/>Indicates the number of questionnaire performed across all facilities within the customer organization.</p>
+			<p><strong>Physio tests</strong><br/>Indicates the number of physio tests performed across all facilities within the customer organization.</p>
+		</div>
+		<div class="popover__message" *ngIf="type === 'facility'">
+            <span>Both parameters are computed across all wards within the facility.</span>
+			<p><strong>Questionnaire</strong><br/>Indicates the number of questionnaire performed across all wards within the facility.</p>
+			<p><strong>Physio tests</strong><br/>Indicates the number of physio tests performed across all wards within the facility.</p>
+        </div>
+		<div class="popover__message" *ngIf="type === 'ward'">
+            <span>Both parameters are computed across caregivers within the ward.</span>
+			<p><strong>Questionnaire</strong><br/>Indicates the number of questionnaire performed by caregivers within the ward.</p>
+			<p><strong>Physio tests</strong><br/>Indicates the number of physio tests performed by caregivers within the ward.</p>
+		</div>
+    </div>
+</div>
+
+<mat-card class="halfbox">
+	<mat-card-header>
+		<div fxLayout="row wrap">
+			
+		</div>
+	</mat-card-header>
+	<mat-card-content style="padding: 0 24px !important">
+		<div id="visitor-chart">
+			<div *ngIf="!isLoading && isDataAvailable">
+				<apx-chart
+				#chart
+				[series]="chartOptions2?.series"
+				[chart]="chartOptions2?.chart"
+				[colors]="chartOptions2?.colors"
+				[yaxis]="chartOptions2?.yaxis"
+				[dataLabels]="chartOptions2?.dataLabels"
+				[markers]="chartOptions2?.markers"
+				[legend]="chartOptions2?.legend"
+				[stroke]="chartOptions2?.stroke"
+				[grid]="chartOptions2?.grid"
+				[title]="chartOptions2?.title"
+				[xaxis]="chartOptions2?.xaxis"
+				[tooltip]="chartOptions2?.tooltip"
+				[annotations]="chartOptions2?.annotations"
+				[plotOptions]="chartOptions2?.plotOptions"
+				></apx-chart>
+			</div>
+			<div class="preloader" *ngIf="isLoading" fxLayoutAlign="center center"
+					[ngStyle]="{'background-color': 'unset', position: 'unset', height: '300px'}">
+				<div class="spinner" [ngStyle]="{margin: 'unset', top: 'unset'}">
+					<img alt="loading.." src="assets/images/loading.gif" width="40px" height="40px" />
+				</div>
+			</div>
+			<div *ngIf="!isDataAvailable && !isLoading" fxLayout="column" fxLayoutGap="0.2em"
+					fxLayoutAlign="center center" [ngStyle]="{width: '100%',height: '300px', background: 'transparent'}">
+					<mat-icon class="no-data-icon">info</mat-icon>
+					<p>No data available</p>
+			</div>
+		</div>
+	</mat-card-content>
+	<mat-card-actions fxLayoutAlign="start center">
+		<div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+			<div class="" fxFlex="70" fxFlex.gt-md="70" fxFlex.gt-lg="70" fxLayoutAlign="start center">
+				<div class="date-filter cursor-pointer" [matMenuTriggerFor]="intervals">
+					<span class="font-14">{{selectedInterval}} </span>
+					<mat-icon class="absolute viewAllicon">arrow_drop_down</mat-icon>
+				</div>
+				<div class="date-filter cursor-pointer" (click)="rdatapicker.click()"
+					fxLayoutAlign="space-between center" *ngIf="selectedInterval === 'Custom range'">
+					<span class="font-14"
+						style="margin-right: 30px;">{{customProgressDates?.startDate | date: getFilterFormat()}}
+						-
+						{{customProgressDates?.endDate | date : getFilterFormat()}}</span>
+					<mat-icon class="absolute viewAllicon">arrow_drop_down</mat-icon>
+					<div class="font-14" style="visibility: hidden;position: absolute;">
+						<div>
+							<input #rdatapicker type="text" ngxDaterangepickerMd
+								[locale]="{ applyLabel: 'Done', firstDay: 1 }" [maxDate]="momentToday"
+								(change)="changeProgress($event)" [showDropdowns]="true" [lockStartDate]="false" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div fxFlex="25" fxFlex.gt-md="25" fxFlex.gt-lg="25" fxLayoutAlign="end start" style="padding-bottom: 10px;">
+				<!-- <div class="view-all" (click)="navigateTo()">
+					<span class="viewalltext">View all</span>
+					<mat-icon>keyboard_arrow_right</mat-icon>
+				</div> -->
+			</div>
+		</div>
+	</mat-card-actions>
+</mat-card>
+<mat-menu #intervals="matMenu" class="mymegamenu">
+	<button mat-menu-item (click)="selectedInterval != 'Last 7 days' ? getLast7days() : ''">Last 7 days</button>
+	<!-- <button mat-menu-item *ngIf="type === 'ward'" (click)="selectedInterval = 'Custom range'">Custom Range</button> -->
+	<button mat-menu-item (click)="selectedInterval != 'Last 1 month' ? (getLast1Month()) : ''">Last 1 month</button>
+	<button mat-menu-item (click)="selectedInterval != 'Last 3 months' ? (getLast3Month()) : ''">Last 3 months</button>
+	<button mat-menu-item (click)="selectedInterval != 'Last 6 months' ? (getLast6Month()) : ''">Last 6 months</button>
+</mat-menu>

@@ -1,0 +1,118 @@
+<div class="relative">
+    <div style="width: 100%;">
+        <mat-card class="section-title no-shadow" style="box-shadow: none !important; margin: 0 !important;">
+            <mat-card-content class="p-b-0">
+                <div fxFlex.gt-lg="70" fxFlex.gt-md="70" fxFlex="100" *ngIf="type === 'resident'">
+					<mat-card-title>
+						<div class="popover__wrapper">
+							<span class="second-title m-r-5">Notification Settings for {{residentData?.firstName + ' ' + residentData.lastName}}</span> 
+							<mat-icon class="absolute help-text-hover-cont popover__title" (click)="titleShow = !titleShow" style="color: #D3CDC6;cursor: pointer;">help_outline</mat-icon>
+							<div class="popover__content">
+								<h4 class="second-title popover__heading">Notification Settings for {{residentData?.firstName + ' ' + residentData.lastName}}</h4>
+								<div class="popover__message">
+									<span>Notification settings to turn on or off and set critical or low.</span>
+								</div>
+							</div>
+						</div>
+					</mat-card-title>
+				</div>
+				<div fxFlex.gt-lg="70" fxFlex.gt-md="70" fxFlex="100" *ngIf="type !== 'resident'">
+					<mat-card-title>
+						<div class="popover__wrapper">
+							<span class="second-title m-r-5">Notification Settings</span> 
+							<mat-icon class="absolute help-text-hover-cont popover__title" (click)="titleShow = !titleShow" style="color: #D3CDC6;cursor: pointer;">help_outline</mat-icon>
+							<div class="popover__content">
+								<h4 class="second-title popover__heading">Notification Settings</h4>
+								<div class="popover__message">
+									<span>Notification settings to turn on or off and set critical or low.</span>
+								</div>
+							</div>
+						</div>
+					</mat-card-title>
+				</div>
+				<div fxFlex.gt-lg="30" fxFlex.gt-md="30" fxFlex="100" class="text-right"></div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <mat-card class="model" style="box-shadow: none !important; margin: 0 !important;">
+        <mat-card-content>
+			<div fxLayout="row wrap" fxLayoutAlign="start center" *ngIf="type !== 'resident'">
+				<div fxFlex.gt-lg="30" fxFlex.gt-md="30" fxFlex="100">
+					<div class="ward-selection">
+						<p class="m-0">Ward</p>
+						<mat-form-field appearance="outline">
+							<mat-select matInput id="ward" name="ward" [(ngModel)]="wardId">
+								<mat-option disabled value="">Select</mat-option>
+								<mat-option *ngFor= "let ward of wardInfo" [value]="ward.ward_id">{{ward.ward_name}}</mat-option>
+							</mat-select>
+						</mat-form-field>	
+					</div>
+				</div>
+			</div>
+			<div fxLayoutAlign="center center" style="width: 100%; height: 275px;background-color: #F7F4F3;" *ngIf="wardId === '' && type !== 'resident'">
+				<p class="m-0 text-muted">Select the ward to configure the settings</p>
+			</div>
+            <form class="example-form" ngNativeValidate *ngIf="wardId !== '' || type === 'resident'">
+				<div fxLayout="row wrap" class="p-10" style="border-bottom: 1px solid #d3cdc6;">
+					<div class="noti-text" fxFlex.gt-lg="60" fxFlex.gt-md="70">
+						<span class="font-14" style="font-weight: 900;">Title</span>
+					</div>
+					<div class="custom-setting text-center" fxFlex.gt-lg="20" fxFlex.gt-md="15">
+						<span class="font-14" style="font-weight: 900;">Customize</span>
+					</div>
+					<div class="facility-setting text-center" fxFlex.gt-lg="20" fxFlex.gt-md="15">
+						<span class="font-14" style="font-weight: 900;">Facility</span>
+					</div>
+				</div>
+				<ng-container *ngFor="let notification of orderedNotificatons">
+					<div fxLayout="row wrap" class="p-10" style="border-bottom: 1px solid #d3cdc6;">
+						<div class="noti-text" fxFlex.gt-lg="60" fxFlex.gt-md="70">
+							<div fxLayout="column">
+								<span>{{notification.label}}</span>
+								<span class="text-muted" *ngIf="titleShow">{{getNotificationName(notification.title)}}</span>
+							</div>
+						</div>
+						<div class="custom-setting text-center" fxFlex.gt-lg="20" fxFlex.gt-md="15">
+							<mat-checkbox [disabled]="notification.label === 'Fall alert'" (change)="change(notification.title, $event)" [checked]="updatedNotifications[notification.title]" color="accent"></mat-checkbox>
+						</div>
+						<div class="facility-setting text-center" fxFlex.gt-lg="20" fxFlex.gt-md="15">
+							<mat-checkbox disabled color="accent" [checked]="IsChecked"></mat-checkbox>
+						</div>
+					</div>
+				</ng-container>
+			</form>
+        </mat-card-content>
+        <mat-card-actions fxLayoutAlign="start center">
+            <div fxLayout="row wrap" fxFlex="100">
+				<div fxFlex.gt-lg="50" fxFlex="50" class="text-left">
+					<button mat-button color="accent" type="submit" style="font-weight: 600;">
+						Restore facility settings
+					</button>
+				</div>
+				<div fxFlex.gt-lg="50" fxFlex="50" class="text-right">
+					<button mat-button type="submit" class="cancel m-r-10" mat-dialog-close>
+						Cancel
+					</button>
+					<button mat-raised-button color="accent" [disabled]="checkChangeMade()" type="submit" (click)="updateNotifications()">
+						Save
+					</button>
+				</div>
+			</div>
+        </mat-card-actions>
+	</mat-card>
+	<div class="absolute" style="bottom: 0;z-index: 999;width: 100%; height: 100%;backdrop-filter: blur(2px);" *ngIf="showWarning" fxLayoutAlign="center center">
+		<div class="warning" fxLayoutAlign="center center" fxLayout="column">
+			<p class="m-0" style="font-weight: 600; font-size: 20px">Change settings</p>
+			<p class="m-0 text-muted" style="font-size: 14px">Are you sure you want to change settings?</p>
+			<div style="margin: 20px 0">
+				<button mat-button type="submit" class="m-r-10" (click)="reverseChange()">
+					Cancel
+				</button>
+				<button mat-raised-button color="accent" (click)="makeChange()">
+					Change
+				</button>
+			</div>
+		</div>
+	</div>
+    <mat-icon class="absolute cursor-pointer" style="top: 16px; right: 16px" mat-dialog-close>close</mat-icon>
+</div>

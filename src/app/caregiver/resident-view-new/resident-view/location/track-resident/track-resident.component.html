@@ -1,0 +1,67 @@
+<mat-card class="model arjomodal">
+  <form>  
+    <mat-card-header>
+        <div fxLayout="row wrap">
+            <div fxFlex.gt-lg="65" fxFlex.gt-md="65" fxFlex="100">
+                <mat-card-title>
+                    <span class="m-r-5 arjomodal-title">Track resident</span>
+                </mat-card-title>
+            </div>
+            <div fxFlex.gt-lg="35" fxFlex.gt-md="35" fxFlex="100" class="text-right">
+                <mat-icon mat-dialog-close>close</mat-icon>
+            </div>
+        </div>
+    </mat-card-header>
+	<mat-card-content style="padding-top: 0 !important;">
+        <p class="arjoform-value"><strong>Please note:</strong>Tracking requires more battery. Putting the wearable in tracking mode will drain the battery quicker.</p>
+        <div fxLayout="row wrap">
+            <div class="m-b-30" fxFlex="90">
+                <p class="arjoform-label">Reason for tracking<span></span></p>
+                <div fxLayout.gt-md="100" class="w-100">
+                    <mat-form-field appearance="outline" class="m-0">
+                        <textarea cdkTextareaAutosize cdkAutosizeMinRows="4" matInput placeholder="About ex..." ngDefaultControl></textarea>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxFlex="90" fxLayoutAlign="space-between center" fxLayout="row wrap" class="m-b-30">
+                <div fxFlex="48" class="">
+                    <p class="arjoform-label">Refresh time <span class="required">*</span></p>
+                    <div>
+                        <mat-form-field appearance="outline" class="m-0">
+                            <mat-select required name="refreshTime" [(ngModel)]="refreshTime">
+                                <mat-option disabled value="">Select time </mat-option>
+                                <mat-option value="10">10 minutes</mat-option>
+                                <mat-option value="15">15 minutes</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxFlex="48" class="">
+                    <p class="arjoform-label">End time <span class="required">*</span></p>
+                    <div>
+                        <mat-form-field appearance="outline" class="m-0">
+                            <input matInput type="time" [(ngModel)]="todaysTime" name="todaysTime"/>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <p class="arjoform-value">Wearable will be set to tracking mode at {{todaysTime}} and will receive updates every{{refreshTime}} mins.</p>
+            </div>
+            <div fxFlex="90" class="">
+                <p class="arjoform-label">Confirm your account password <span class="required">*</span></p>
+                <div>
+                    <mat-form-field appearance="outline" class="m-0">
+                        <input matInput type="password" [(ngModel)]="pass" name="pass" placeholder="Password" />
+                    </mat-form-field>
+                </div>
+            </div>
+            
+        </div>
+	</mat-card-content>
+    <mat-card-actions fxLayoutAlign="start center">
+        <div fxFlex="100" class="form-actions" fxLayoutAlign="end center">
+			<button mat-button mat-dialog-close class="cancel">Cancel</button>
+            <button mat-raised-button type="submit" color="primary" class="cancel" (click)="trackResident()">Add</button>
+        </div>
+    </mat-card-actions>
+  </form>
+</mat-card>

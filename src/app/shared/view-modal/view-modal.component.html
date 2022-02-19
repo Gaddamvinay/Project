@@ -1,0 +1,74 @@
+<mat-card class="model arjomodal residentprofilemodal">
+    <mat-card-header>
+        <div fxLayout="row wrap">
+            <div fxFlex.gt-lg="65" fxFlex.gt-md="65" fxFlex="100">
+                <mat-card-title>
+                    <span class="m-r-5 arjomodal-title">{{profileDetails.firstName}} {{profileDetails.lastName}}'s profile</span>
+                </mat-card-title>
+            </div>
+            <div fxFlex.gt-lg="35" fxFlex.gt-md="35" fxFlex="100" class="text-right">
+                <mat-icon class="cursor-pointer" mat-dialog-close>close</mat-icon>
+            </div>
+        </div>
+    </mat-card-header>
+    <mat-card-content style="padding-top: 0 !important;">
+        <mat-accordion>
+            <mat-expansion-panel style="background-color: #f6f4f2;" [expanded]="true">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Personal Details
+                    </mat-panel-title>
+                    <mat-panel-description> </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div fxLayout="column" fxLayoutAlign="center start">
+                    <div style="width: 100%;" fxLayout="row wrap" class="m-t-20">
+                        <div fxFlex.gt-md="50" fxFlex.gt-lg="50">
+                            <p class="arjoform-label">First name</p>
+                            <p class="arjoform-value">{{profileDetails.firstName}}</p>
+                        </div>
+                        <div fxFlex.gt-md="50" fxFlex.gt-lg="50">
+                            <p class="arjoform-label">Last name</p>
+                            <p class="arjoform-value">{{profileDetails.lastName}}</p>
+                        </div>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel style="background-color: #f6f4f2;">
+                <mat-expansion-panel-header>
+                    <mat-panel-title> Contact information </mat-panel-title>
+                    <mat-panel-description> </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div fxLayout="row wrap" class="m-t-20" >
+                    <div fxFlex.gt-md="99" fxFlex.gt-lg="99">	
+                        <p class="arjoform-label">Email</p>
+                        <p class="arjoform-value">{{profileDetails.Email_address}}</p>
+                    </div>
+                </div>
+                <div fxLayout="row wrap" class="m-t-5" >
+                    <div fxFlex.gt-md="99" fxFlex.gt-lg="99">	
+                        <p class="arjoform-label">Phone number</p>
+                        <p class="arjoform-value">{{profileDetails.Phone_number}}</p>
+                    </div>				
+                </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel style="background-color: #f6f4f2;">
+                <mat-expansion-panel-header>
+                    <mat-panel-title> Ward information</mat-panel-title>
+                    <mat-panel-description> </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div fxLayout="row wrap" class="m-t-20">
+                    <div fxFlex.gt-md="99" fxFlex.gt-lg="99">	
+                        <p class="arjoform-label">Assigned Wards</p>
+                        <p class="arjoform-value">{{getWards()}}</p>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </mat-card-content>
+    <mat-card-actions fxLayoutAlign="start center" *ngIf="edit">
+        <div fxFlex="100" class="form-actions" fxLayoutAlign="end center">
+            <button mat-button mat-dialog-close class="cancel">Cancel</button>
+            <button mat-raised-button (click)="openEdit()" color="accent" class="submit">Edit details</button>
+        </div>
+    </mat-card-actions>
+</mat-card>

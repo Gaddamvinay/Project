@@ -1,0 +1,330 @@
+<h2 mat-dialog-title class="m-b-0">{{action === 'Add' ? 'Add New Resident' : 'Editing ' + local_data.firstName +" " + local_data.lastName + "'s Profile"}}</h2>
+<p class="text-muted font-14 m-t-0">{{action === 'Add' ? 'All fields are mandatory' : 'All fields are mandatory'}}</p>
+<mat-dialog-content class="mat-typography">
+	<form #userForm="ngForm" class="add-resident">
+		<mat-accordion>
+			<mat-expansion-panel style="margin-top: 10px;" [expanded]="true">
+				<mat-expansion-panel-header>
+					<mat-panel-title>
+						<mat-icon color="accent" class="m-r-10">supervised_user_circle</mat-icon>
+						General information
+					</mat-panel-title>
+					<mat-panel-description> </mat-panel-description>
+				</mat-expansion-panel-header>
+				<div class="row wrap m-t-30">
+					<div fxFlex.gt-md="30.88" fxFlex.gt-lg="30.88" class="m-r-15">
+						<p class="m-b-0">First name</p>
+						<mat-form-field appearance="outline">
+							<input type="text" matInput required id="firstname" name="firstname" pattern="^[a-zA-Z0-9äåö_]*$" [(ngModel)]="local_data.firstName" placeholder="First name" maxLength="20" />
+							<mat-error *ngIf="getErrors(userForm.form.controls.firstname).required && isTouched(userForm.form.controls.firstname)">Required</mat-error>
+						</mat-form-field>
+					</div>
+					<div fxFlex.gt-md="33.88" fxFlex.gt-lg="33.88" class="m-r-15">
+						<p class="m-b-0">Last name</p>
+						<mat-form-field appearance="outline">
+							<input type="text" matInput required id="lastname" name="lastname" pattern="^[a-zA-Z0-9äåö_]*$" [(ngModel)]="local_data.lastName" placeholder="Last name" maxlength="20" />
+							<mat-error *ngIf="getErrors(userForm.form.controls.lastname).required && isTouched(userForm.form.controls.lastname)">Required</mat-error>
+						</mat-form-field>
+					</div>
+					<div fxFlex.gt-md="33.88" fxFlex.gt-lg="33.88">
+						<p class="m-b-0">Nick name</p>
+						<mat-form-field appearance="outline">
+							<input type="text" matInput required id="nickname" name="nickname" pattern="^[a-zA-Z0-9 äåö_]*$" [(ngModel)]="local_data.nickName" placeholder="Nick Name" maxlength="10" />
+							<mat-error *ngIf="getErrors(userForm.form.controls.nickname).required && isTouched(userForm.form.controls.nickname)">Required</mat-error>
+						</mat-form-field>
+					</div>
+				</div>
+				<div class="row wrap">
+					<div fxFlex.gt-md="30.88" fxFlex.gt-lg="30.88" class="m-r-15">
+						<p class="m-b-0">Date of Birth</p>
+						<mat-form-field appearance="outline">
+							<input (click)="picker.open()" matInput [max]="today" [min]="minDate" required id="dob" name="dob" [(ngModel)]="local_data.birthdate" [matDatepicker]="picker" placeholder="Choose a date" readonly/>
+							<mat-datepicker #picker></mat-datepicker>
+							<mat-error *ngIf="getErrors(userForm.form.controls.dob).required && isTouched(userForm.form.controls.dob)">Required</mat-error>
+						</mat-form-field>
+					</div>
+					<div fxFlex.gt-md="33.88" fxFlex.gt-lg="33.88" class="m-r-15">
+						<p class="m-b-0">Height</p>
+						<ng-container *ngIf="local_data.height_units === 'feet'">
+							<mat-form-field appearance="outline" class="unit-entry" [ngStyle]="{width: '35%'}" style="margin: 0!important">
+								<mat-select required matInput required id="feet" name="feet" [(ngModel)]="local_data.height_feet">
+									<mat-option disabled [value]="''">Select feet</mat-option>
+									<mat-option *ngFor="let ft of feet" [value]="ft">{{ft}}</mat-option>
+								</mat-select>
+								<mat-error *ngIf="getErrors(userForm.form.controls.feet).required && isTouched(userForm.form.controls.feet)">Required</mat-error>
+							</mat-form-field>
+							<mat-form-field appearance="outline" class="unit-entry" [ngStyle]="{width: '35%'}" style="margin: 0!important">
+								<mat-select required matInput required id="inch" name="inch" [(ngModel)]="local_data.height_inch">
+									<mat-option disabled [value]="''">Select inch</mat-option>
+									<mat-option *ngFor="let in of inch" [value]="in">{{in}}</mat-option>
+								</mat-select>
+								<mat-error *ngIf="getErrors(userForm.form.controls.inch).required && isTouched(userForm.form.controls.inch)">Required</mat-error>
+							</mat-form-field>
+						</ng-container>
+						<ng-container *ngIf="local_data.height_units === 'cm'">
+							<mat-form-field appearance="outline" class="unit-entry" [ngStyle]="{width: '70%'}" style="margin: 0!important">
+								<input type="text" matInput required id="height" name="height" pattern="^[0-9]*$" maxlength="5" [(ngModel)]="local_data.height" placeholder="Height" />
+								<mat-error *ngIf="getErrors(userForm.form.controls.height).required && isTouched(userForm.form.controls.height)">Required</mat-error>
+							</mat-form-field>
+						</ng-container>
+						<mat-form-field appearance="outline" class="unit-select" [ngStyle]="{width: '30%'}" style="margin: 0!important">
+							<mat-select required matInput name="hUnits" [(ngModel)]="local_data.height_units">
+								<mat-option value="cm">cm</mat-option>
+								<mat-option value="feet">feet</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+					<div fxFlex.gt-md="33.88" fxFlex.gt-lg="33.88">
+						<p class="m-b-0">Weight</p>
+						<mat-form-field appearance="outline" class="unit-entry" [ngStyle]="{width: '70%'}" style="margin: 0!important">
+							<input type="text" matInput required id="weight" name="weight" pattern="^[0-9]*$" maxlength="5" [(ngModel)]="local_data.weight" placeholder="Weight" />
+							<mat-error *ngIf="getErrors(userForm.form.controls.weight).required && isTouched(userForm.form.controls.weight)">Required</mat-error>
+						</mat-form-field>
+						<mat-form-field appearance="outline" class="unit-select" [ngStyle]="{width: '30%'}" style="margin: 0!important">
+							<mat-select required matInput name="wUnits" [(ngModel)]="local_data.weight_units">
+								<mat-option value="kg">kg</mat-option>
+								<mat-option value="lbs">lbs</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+				</div>
+				<div class="row wrap">
+					<div fxFlex.gt-md="30.88" fxFlex.gt-lg="30.88" class="m-r-15">	
+						<p class="m-b-0">Gender</p>
+						<mat-form-field appearance="outline">
+							<mat-select matInput required id="gender" name="gender" [(ngModel)]="local_data.gender">
+								<mat-option value="male">Male</mat-option>
+								<mat-option value="female">Female</mat-option>
+								<mat-option value="nottosay">Prefer not to say</mat-option>
+							</mat-select>
+							<mat-error *ngIf="getErrors(userForm.form.controls.gender).required && isTouched(userForm.form.controls.gender)">Required</mat-error>
+						</mat-form-field>
+					</div>
+				</div>
+			</mat-expansion-panel>
+			<mat-expansion-panel>
+				<mat-expansion-panel-header>
+					<mat-panel-title> <mat-icon color="accent" class="m-r-10">contact_mail</mat-icon> Contact information </mat-panel-title>
+					<mat-panel-description> </mat-panel-description>
+				</mat-expansion-panel-header>
+				<div class="row wrap m-t-30" >
+					<div fxFlex.gt-md="33.88" fxFlex.gt-lg="33.88" class="m-r-15">
+						<p class="m-b-0">Contact of</p>
+						<mat-form-field appearance="outline">
+							<mat-select matInput required id="contactof" name="contactof" [(ngModel)]="local_data.contact_of">
+								<mat-option value="myself">Self</mat-option>
+								<mat-option value="relative">Relative</mat-option>
+								<mat-option value="guardian">Guardian</mat-option>
+							</mat-select>
+							<mat-error *ngIf="getErrors(userForm.form.controls.contactof).required && isTouched(userForm.form.controls.contactof)">Required</mat-error>
+						</mat-form-field>
+					</div>
+					<div fxFlex.gt-md="33.88" fxFlex.gt-lg="33.88" class="m-r-15">
+						<p class="m-b-0">Contact email</p>
+						<mat-form-field appearance="outline">
+							<input type="email" required matInput id="email" name="email" [(ngModel)]="local_data.email" placeholder="Email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" />
+							<mat-error *ngIf="getErrors(userForm.form.controls.email).required && isTouched(userForm.form.controls.email)">Required</mat-error>
+						</mat-form-field>
+					</div>
+					<div [ngStyle]="{padding: '0 1em'}" fxFlex.gt-md="33.88" fxFlex.gt-lg="33.88">
+						<p class="m-b-0">Phone number</p>
+						<mat-form-field appearance="outline" class="unit-entry" [ngStyle]="{width: '30%'}" style="margin: 0!important">
+							<mat-select matInput required name="ext" [(ngModel)]="local_data.ext">
+								<mat-option value="+1">+1</mat-option>
+								<mat-option value="+46">+46</mat-option>
+								<mat-option value="+44">+44</mat-option>
+								<mat-option value="+91">+91</mat-option>
+							</mat-select>
+						</mat-form-field>
+						<mat-form-field appearance="outline" class="unit-select" [ngStyle]="{width: '70%'}" style="margin: 0!important">
+							<input type="text" required matInput id="phoneNumber" name="phoneNumber" [(ngModel)]="local_data.mobile" placeholder="Phone Number" pattern="^[0-9]*$" minlength="9" maxlength="15" />
+							<mat-error *ngIf="getErrors(userForm.form.controls.phoneNumber).required && isTouched(userForm.form.controls.phoneNumber)">Required</mat-error>
+						</mat-form-field>
+					</div>					
+				</div>
+			</mat-expansion-panel>
+			<mat-expansion-panel>
+				<mat-expansion-panel-header>
+					<mat-panel-title> <mat-icon color="accent" class="m-r-10">single_bed</mat-icon> Ward information</mat-panel-title>
+					<mat-panel-description> </mat-panel-description>
+				</mat-expansion-panel-header>
+				<div class="row wrap m-t-30">
+					<div [ngStyle]="{padding: '0 1em'}" fxFlex.gt-md="33.88" fxFlex.gt-lg="33.88" class="m-r-15">
+						<p class="m-b-0">Ward</p>
+						<mat-form-field appearance="outline">
+							<mat-select required matInput id="ward" (selectionChange)="getRoomDetails($event.value)" name="ward" [(ngModel)]="local_data.wardId">
+								<input matInput class="select-search" type="text" placeholder="Search ward" name="wardSearch" [(ngModel)]="wardSearch" />
+								<mat-option disabled value="">Select Ward</mat-option>
+								<mat-option  *ngFor="let ward of getWards()" [value]="ward.ward_id">{{ward.ward_name}}</mat-option>
+							</mat-select>
+							<mat-error *ngIf="getErrors(userForm.form.controls.ward).required && isTouched(userForm.form.controls.ward)">Required</mat-error>
+						</mat-form-field>
+					</div>
+					<div [ngStyle]="{padding: '0 1em'}" fxFlex.gt-md="33.88" fxFlex.gt-lg="33.88" class="m-r-15">
+						<p class="m-b-0">Room</p>
+						<mat-form-field appearance="outline">
+							<mat-select required matInput [disabled]="local_data.wardId == ''" id="room" name="room" [(ngModel)]="local_data.roomId">
+								<input matInput class="select-search" type="text" placeholder="Search room" name="roomSearch" [(ngModel)]="roomSearch" />
+								<mat-option disabled value="">Select room</mat-option>
+								<mat-option *ngFor="let room of getRooms(); let i =index" [value]="room.details.room_id">{{room.details.room_name}} ({{getRoomCount(room.details.room_id)}})</mat-option>
+							</mat-select>
+							<mat-error *ngIf="getErrors(userForm.form.controls.room).required && isTouched(userForm.form.controls.room)">Required</mat-error>
+						</mat-form-field>
+					</div>
+					<div [ngStyle]="{padding: '0 1em'}" fxFlex.gt-md="33.88" fxFlex.gt-lg="33.88" class="m-r-15">
+						<p class="m-b-0">Admission date</p>
+						<mat-form-field appearance="outline">
+							<input matInput [min]="action === 'Add' ? today: local_data.admissionDate" required id="admissiondate" name="admissiondate" [(ngModel)]="local_data.admissionDate" [matDatepicker]="admissiondate" placeholder="Choose a date" readonly (click)="admissiondate.open()" />
+							<mat-datepicker #admissiondate></mat-datepicker>
+							<mat-error *ngIf="getErrors(userForm.form.controls.admissiondate).required && isTouched(userForm.form.controls.admissiondate)">Required</mat-error>
+						</mat-form-field>
+					</div>
+				</div>
+				<div class="font-12 text-muted m-t-15"><span>*If Ward, Room or Wearable is missing in the above lists, please contact your facility admin. </span></div>
+			</mat-expansion-panel>
+			<!--<mat-expansion-panel>
+				<mat-expansion-panel-header>
+					<mat-panel-title> <mat-icon color="accent" class="m-r-10">watch</mat-icon> Wearable information </mat-panel-title>
+					<mat-panel-description> </mat-panel-description>
+				</mat-expansion-panel-header>
+				<div class="row wrap m-t-30">
+					<div [ngStyle]="{padding: '0 1em'}" fxFlex.gt-md="33.88" fxFlex.gt-lg="33.88" class="m-r-15">
+						<p class="m-b-0">Wearable</p>
+						<mat-form-field appearance="outline">
+							<mat-select required matInput id="device" name="device" [(ngModel)]="local_data.deviceId">
+								<input matInput class="select-search" type="text" placeholder="Search devices" name="deviceSearch" [(ngModel)]="deviceSearch" />
+								<mat-option disabled value="">Select device</mat-option>
+								<mat-option  *ngFor="let device of getDevices()" [value]="device.details.wearable_sno">{{device.details.wearable_sno}}</mat-option>
+							</mat-select>
+							<mat-error *ngIf="getErrors(userForm.form.controls.stateGroup).required && isTouched(userForm.form.controls.stateGroup)">Required</mat-error>
+						</mat-form-field>
+					</div>
+				</div>
+			</mat-expansion-panel>
+			<mat-expansion-panel>
+				<mat-expansion-panel-header>
+					<mat-panel-title>
+						<mat-icon color="accent" class="m-r-10">local_hospital</mat-icon>
+						Medical history
+					</mat-panel-title>
+					<mat-panel-description> </mat-panel-description>
+				</mat-expansion-panel-header>
+				<div class="row wrap m-t-30">
+					<div class="m-15 m-t-0" fxFlex.gt-md="66.66" fxFlex.gt-lg="66.66">
+						<mat-checkbox color="accent" [(ngModel)]="noPreExistCheck" name="noPreExist" (change)="noPreExistingCondition($event)" >No pre existing condition</mat-checkbox>
+					</div>
+					<div class="m-15 m-t-0" fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33"></div>
+				</div>
+				<div class="row wrap custom-even">
+					<div class="m-15" fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33">
+						<mat-checkbox color="accent" [disabled]="noPreExisting" name="diabetesCheck" [(ngModel)]="diabetesCheck" name="diabetes" (change)="medicalInfo($event.checked, 10209)">Diabetes</mat-checkbox>
+					</div>
+					<div class="m-15" fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33">
+						<mat-checkbox color="accent" [disabled]="noPreExisting" name="diabetesPills" [(ngModel)]="diabetesPills" *ngIf="diabetesCheck" (change)="medicalInfo($event.checked, 10205)">Diabetes pills</mat-checkbox>
+					</div>
+					<div class="m-15" fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33">
+						<mat-checkbox color="accent" [disabled]="noPreExisting" name="insulin" [(ngModel)]="insulin" *ngIf="diabetesCheck" (change)="medicalInfo($event.checked, 10206)">Insulin</mat-checkbox>
+					</div>
+				</div>
+				<div class="row wrap">
+					<div class="m-15" fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33">
+						<mat-checkbox color="accent" [disabled]="noPreExisting" [(ngModel)]="strokeCheck" name="stroke" (change)="medicalInfo($event.checked, 10208)">Stroke</mat-checkbox>
+					</div>
+					<div class="m-15" fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33">
+						<mat-checkbox color="accent" [disabled]="noPreExisting" name="btPills" [(ngModel)]="btPills" *ngIf="strokeCheck" (change)="medicalInfo($event.checked, '')">Blood thinner pills</mat-checkbox>
+					</div>
+					<div class="m-15" fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33"></div>
+				</div>
+				<div class="row wrap custom-even">
+					<div class="m-15" fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33">
+						<mat-checkbox color="accent" [disabled]="noPreExisting" [(ngModel)]="bpCheck" name="bp" (change)="medicalInfo($event.checked, 10210)">Blood Pressure</mat-checkbox>
+					</div>
+					<div class="m-15" fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33">
+						<mat-checkbox color="accent" [disabled]="noPreExisting" name="bPills" [(ngModel)]="bPills" *ngIf="bpCheck" (change)="medicalInfo($event.checked, 10204)">BP pills</mat-checkbox>
+					</div>
+					<div class="m-15" fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33"></div>
+				</div>
+				<div class="row wrap">
+					<div class="m-15" fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33">
+						<mat-checkbox color="accent" [disabled]="noPreExisting" name="hSurgery" [(ngModel)]="hSurgery" (change)="medicalInfo($event.checked, 10212)">Hip surgery</mat-checkbox>
+					</div>
+					<div class="m-15" fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33"></div>
+					<div class="m-15" fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33"></div>
+				</div>
+				<div class="row wrap custom-even">
+					<div class="m-15" fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33">
+						<mat-checkbox color="accent" [disabled]="noPreExisting" name="aJoints" [(ngModel)]="aJoints" (change)="medicalInfo($event.checked, 10213)">Artificial joints</mat-checkbox>
+					</div>
+					<div class="m-15" fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33"></div>
+					<div class="m-15" fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33"></div>
+				</div>
+				<div class="row wrap">
+					<div class="m-15" fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33">
+						<mat-checkbox color="accent" [disabled]="noPreExisting" name="pacemaker" [(ngModel)]="pacemaker" (change)="medicalInfo($event.checked, 10211)">Pacemaker</mat-checkbox>
+					</div>
+					<div class="m-15" fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33"></div>
+					<div class="m-15" fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33"></div>
+				</div>
+				<div class="row wrap custom-even">
+					<div class="m-15" fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33">
+						<mat-checkbox color="accent" [disabled]="noPreExisting" name="sleepProblemCheck" [(ngModel)]="sleepProblemCheck" name="sleepProblem" (change)="sleepChange($event.checked, 'Sleeping problems')">Sleeping problems</mat-checkbox>
+					</div>
+					<div class="m-15" fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33">
+						<mat-checkbox color="accent" [disabled]="noPreExisting" name="sPills" [(ngModel)]="sPills" *ngIf="sleepProblemCheck" (change)="medicalInfo($event.checked, 10203)">Sleeping pills</mat-checkbox>
+					</div>
+					<div class="m-15" fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33">
+						<mat-checkbox color="accent" [disabled]="noPreExisting" name="aDepressants" [(ngModel)]="aDepressants" *ngIf="sleepProblemCheck" (change)="medicalInfo($event.checked, 10201)">Anti depressants</mat-checkbox>
+					</div>
+				</div>
+				<div class="row wrap">
+					<div class="m-15" fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33">
+						<mat-checkbox [disabled]="noPreExisting" [(ngModel)]="pPharmacy" name="pPharmacy" (change)="medicalInfo($event.checked, 10207)" color="accent">Poly Pharmacy (>4 pills)</mat-checkbox>
+					</div>
+					<div class="m-15" fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33"></div>
+					<div class="m-15" fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33"></div>
+				</div>
+			</mat-expansion-panel>-->
+			<mat-expansion-panel style="margin-bottom: 20px;" *ngIf="action == 'Add'">
+				<mat-expansion-panel-header>
+					<mat-panel-title>
+						<mat-icon color="accent" class="m-r-10">ballot</mat-icon>
+						Questionnaire
+					</mat-panel-title>
+					<mat-panel-description> </mat-panel-description>
+				</mat-expansion-panel-header>
+				<mat-accordion>
+					<div fxLayout="row wrap" [ngStyle]="{marginTop: '1.5em'}">
+						<div fxFlex.gt-lg="33.33" fxFlex.gt-md="33.33">
+							<p class="m-b-0">Select Questionnaire</p>
+							<mat-form-field appearance="outline" class="m-0">
+								<mat-select [formControl]="questionnaireControl" required>
+									<mat-option disabled value="Select a question type">Select a question type</mat-option>
+									<mat-option *ngFor="let questionnaire of allQuestionnaire"  [value]="questionnaire.value">
+										{{ questionnaire.name }}
+									</mat-option>
+								</mat-select>
+								<mat-error *ngIf="questionnaireControl.hasError('required')">Please select questionnaire</mat-error>
+							</mat-form-field>
+						</div>
+					</div>
+					<ng-container *ngIf="questionnaireControl.value === 'down_fall_risk_index'">
+						<app-down-fall-risk (downFallValues)="getDownFallValues($event, 'down fall')"></app-down-fall-risk>
+					</ng-container>
+					<ng-container *ngIf="questionnaireControl.value === 'stay_independent'">
+						<app-stay-independent (stayIndependentValues)="getDownFallValues($event, 'stay')"></app-stay-independent>
+					</ng-container>
+				</mat-accordion>
+			</mat-expansion-panel>
+		</mat-accordion>
+	</form>
+</mat-dialog-content>
+<ng-template #elseTemplate> Sure to delete <b>{{local_data.title}}</b>? </ng-template>
+<mat-dialog-actions align="end">
+	<button mat-button mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="accent" [disabled]="validate() || wardRoomCheck()" (click)="doAction();">
+		{{action === 'Add' ? 'Add Resident' : 'Update Profile'}}
+	</button> 
+	<!--<button mat-raised-button color="accent" (click)="doAction();">
+		{{action === 'Add' ? 'Add Resident' : 'Update Profile'}}
+	</button>-->
+</mat-dialog-actions>

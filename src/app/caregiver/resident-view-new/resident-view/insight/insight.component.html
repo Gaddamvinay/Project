@@ -1,0 +1,23 @@
+<div class="p-l-20 p-r-20" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="8px">
+    <div class="m-t-15 insight-card relative" *ngFor="let insight of insightHistory">
+        <div fxLayout="row wrap">
+            <div fxFlex="15">
+                <ng-container [ngSwitch]="insight.eventType">
+                    <mat-icon color="accent" *ngSwitchCase="'sleeping'">hotel</mat-icon>
+                    <mat-icon color="accent" *ngSwitchCase="'sitting'">airline_seat_recline_normal</mat-icon>
+                    <mat-icon color="accent" *ngSwitchCase="'active'">accessibility_new</mat-icon>
+                    <mat-icon color="accent" *ngSwitchCase="'walking'">directions_walk</mat-icon>
+                </ng-container>
+            </div>
+            <div fxFlex="85">
+                <p class="content m-t-0 font-14">{{insight.content}}</p>
+                <p class="m-0 font-12 absolute" style="left: 18%;bottom: 10px;font-weight: 500;color: #686262;">{{insight.date | date : 'mediumDate'}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="preloader" *ngIf="insightHistory.length < 1 && !noData" fxLayoutAlign="center center" [ngStyle]="{'background-color': 'unset', position: 'unset', height: '500px'}">
+        <div class="spinner" [ngStyle]="{margin: 'unset', top: 'unset'}">
+            <img alt="loading.." src="assets/images/loading.gif" width="40px" height="40px" />
+        </div>
+    </div>
+</div>

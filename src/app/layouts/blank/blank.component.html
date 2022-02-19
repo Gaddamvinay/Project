@@ -1,0 +1,27 @@
+<div class="main-container">
+	<mat-toolbar color="white" class="topbar telative" fxLayoutAlign="space-between center">
+		<div class="navbar-header">
+			<a class="navbar-brand">
+				<span fxShow="false" fxShow.gt-xs>
+					<img src="assets/images/arjo-logo.svg" class="light-logo" style="width: 93px;" alt="homepage" />
+				</span>
+			</a>
+		</div>
+		<span fxFlex></span>
+	</mat-toolbar>
+	<div class="notification-side-nav">
+		<mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 0 : 0">
+			<mat-sidenav-content class="page-wrapper">
+				<div class="" #mainContainer>
+					<router-outlet>
+						<app-spinner></app-spinner>
+					</router-outlet>
+				</div>
+			</mat-sidenav-content>
+		</mat-sidenav-container>
+	</div>
+	<div style="width: 100%;" class="footer">
+		<app-footer></app-footer>
+	</div>
+</div>
+  

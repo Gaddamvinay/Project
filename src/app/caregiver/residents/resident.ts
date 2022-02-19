@@ -1,0 +1,37 @@
+export class resident {
+	Id: number;
+	riskType: string;
+	Time: string;
+	Update: string;
+	WatchName: string;
+	RiskScore: number;
+	myAlias: string;
+	Age: number;
+	gender?: string;
+	Ward: string;
+	Room: string;
+	AdmissionDate: string;
+	ResidentStatus: string;
+	Risk: number;
+	Balance: string;
+	Strength: string;
+	Sleep: string;
+	Battery: number;
+	LastUpdatedAt?: string;
+	firstName: string;
+	lastName: string;
+	birthdate?: string;
+	status?:string;
+	user_id?:string;
+	wardName?: string;
+	roomId?: string;
+	roomName?:string;
+	nickName?:string;
+	LastLocation?: string;
+	deviceId?:string;
+	fallCount?: number;
+	poly_pharmacy?: any;
+	serial_no?: any;
+	createdAt?: string;
+	updatedAt?: string;
+}

@@ -1,0 +1,82 @@
+<div class="main-container" [dir]="dir" [ngClass]="{ minisidebar: minisidebar, boxed: boxed, danger: danger, blue: blue, green: green, dark: dark, 'sidebar-opened': sidebarOpened, 'sidebar-closed': !sidebarOpened }">
+	<mat-toolbar color="white" class="topbar telative" fxLayoutAlign="space-between center">
+		<div class="navbar-header">
+			<a class="navbar-brand">
+				<b>
+				</b>
+				<span fxShow="false" fxShow.gt-xs>
+					<img src="assets/images/arjo-logo.svg" class="light-logo" style="width: 93px;" alt="homepage" />
+				</span>
+			</a>
+		</div>
+		<button mat-icon-button (click)="snav.toggle()" fxShow.sm="true" fxShow.xs="true" fxShow.gt-lg="false" fxShow="false">
+			<mat-icon>menu</mat-icon>
+		</button>
+
+		<span fxFlex></span>
+		<mat-sidenav #snav id="snav" [mode]="mobileQuery.matches ? 'side' : 'over'" fixedTopGap="0" [opened]="mobileQuery.matches" [disableClose]="mobileQuery.matches" (open)="sidebarOpened = true" (close)="sidebarOpened = false">
+			<app-sidebar></app-sidebar>
+		</mat-sidenav>
+		<div>
+			<app-header></app-header>
+		</div>
+	</mat-toolbar>
+	<div class="notification-side-nav">
+		<mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 0 : 0" [ngClass]="{ minisidebar: minisidebar }">
+			<mat-sidenav-content class="page-wrapper page-dashboard">
+				<div class="" #mainContainer>
+					<router-outlet>
+						<app-spinner></app-spinner>
+					</router-outlet>
+				</div>
+				<div class="push-notification" *ngIf="notifications.length > 0">
+					<div class="scroll">
+						<mat-nav-list style="padding: 15px;">
+							<div class="notification-list" fxLayout="column">
+								<div class="notification-list-item" [ngClass]="notification.class" *ngFor="let notification of notifications">
+									<div fxLayout="column wrap">
+										<div fxLayout="row nowrap nowrap" fxLayoutAlign="space-between start">
+											<div fxLayout="row nowrap" fxLayoutAlign="start center">
+												<div class="notification-icon">
+													<mat-icon *ngIf="notification.eventType === 'watchRemoved'">watch</mat-icon>
+													<figure style="color: white;border-radius: 50%;padding: 4px;margin: 0;" *ngIf="notification.eventType === 'Fall'" fxLayoutAlign="center center">
+														<img src="./assets/images/wet-floor-white.svg" style="width: 22px;" />
+													</figure>
+													<mat-icon *ngIf="questionCheck(notification.eventType)">ballot</mat-icon>
+													<mat-icon *ngIf="walkCheck(notification.eventType)">directions_run</mat-icon>
+													<mat-icon *ngIf="residentCheck(notification.eventType)">person_add</mat-icon>
+													<mat-icon *ngIf="batteryCheck(notification.eventType)">battery_alert</mat-icon>
+													<mat-icon *ngIf="notification.eventType === 'sleep'">hotel</mat-icon>
+													<mat-icon *ngIf="notification.eventType === 'sitting'">airline_seat_recline_normal</mat-icon>
+													<mat-icon *ngIf="notification.eventType === 'acknowledgement'">fact_check</mat-icon>
+													<mat-icon *ngIf="notification.eventType === 'WALK'">fact_check</mat-icon>
+													<mat-icon *ngIf="notification.eventType === 'attended'">fact_check</mat-icon>
+													<mat-icon *ngIf="notification.eventType === 'WALK'">fact_check</mat-icon>
+												</div>
+												<div class="notification-message" [ngStyle]="{width: notification.eventType === 'Fall' || notification.eventType === 'Walk' ? '220px' : ''}">
+													<span>{{notification.title}}</span>
+												</div>
+											</div>
+											<div class="notification-action" fxLayout="row warp" fxLayoutAlign="end center" *ngIf="notification.eventType === 'Battery'">
+													<button *ngIf="!(notification.notificationStatus === 'attended' || notification.markAsAttend)" [ngClass]="{'attended': notification.notificationStatus === 'attended' || notification.markAsAttend}" (click)="openDialog(notification.title, notification.id, 'attend')" [ngStyle]='{color: notification.notificationStatus === "attended" || notification.markAsAttend ? "green": "#BD362F"}' class="cursor-pointer action-btn">Close</button>
+												<button *ngIf="(notification.notificationStatus === 'attended' || notification.markAsAttend) && notification.logAccess" (click)="wearableOncharge(notification.eventType, notification.id, 'log')" [ngStyle]='{color:"#BD362F"}' class="action-btn cursor-pointer">Wearable on charger</button>
+											</div>
+											<div class="notification-action" fxLayout="row warp" fxLayoutAlign="end center" *ngIf="checkButtons(notification.eventType)">
+												<button *ngIf="!(notification.notificationStatus === 'attended' || notification.markAsAttend)" [ngClass]="{'attended': notification.notificationStatus === 'attended' || notification.markAsAttend}" (click)="openDialog(notification.title, notification.id, 'attend')" [ngStyle]='{color: notification.notificationStatus === "attended" || notification.markAsAttend ? "green": "#BD362F"}' class="cursor-pointer action-btn">Attend</button>
+												<button *ngIf="(notification.notificationStatus === 'attended' || notification.markAsAttend) && notification.logAccess" (click)="openDialog(notification.eventType, notification.id, 'log')" [ngStyle]='{color:"#BD362F"}' class="action-btn cursor-pointer">Log</button>
+											</div>
+											<mat-icon fxFlexAlign="end" class="cursor-pointer close" *ngIf="notification.eventType != 'Battery' && (notification.eventType === 'attended'  || !checkButtons(notification.eventType)) && notification.class === 'Warning' && notification.class === 'Success'" (click)="clearNotification(notification.id)">close</mat-icon>
+										</div>
+									</div>
+								</div>
+							</div>
+						</mat-nav-list>
+					</div>
+				</div>
+			</mat-sidenav-content>
+		</mat-sidenav-container>
+	</div>
+	<div style="width: 100%;" class="footer">
+		<app-footer></app-footer>
+	</div>
+</div>

@@ -1,0 +1,13 @@
+<div class="p-l-20 p-r-20" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="8px">
+    <div class="m-t-15 saved-card" *ngFor="let saved of savedHistory">
+        <div fxLayout="row wrap">
+            <div fxFlex="15">
+                <mat-icon color="accent">hotel</mat-icon>
+            </div>
+            <div fxFlex="85">
+                <p class="content m-t-0 font-14">{{saved.content}}</p>
+                <p class="m-0 font-12" style="font-weight: 500;color: #686262;">{{saved.date}}</p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,224 @@
+<div class="popover__wrapper">
+    <span class="second-title m-l-15 m-r-5">KPI summary  <span style="font-size:12px;">{{forType}}</span></span> 
+    <mat-icon class="absolute help-text-hover-cont popover__title" (click)="titleShow = !titleShow" style="color: #D3CDC6;cursor: pointer;">help_outline</mat-icon>
+    <div class="popover__content">
+        <h4 class="second-title popover__heading m-b-10">KPI summary</h4>
+        <div class="popover__message lg_popover" *ngIf="type === 'dashboard'">
+            <span>All parameters are computed as a percentage increase or decrease of the average across all customers. Number followed by '+' sign indicates a positive trend and '-' sign indicates a negative trend</span>
+			<p><strong>Resident profiles viewed (per caregiver)</strong><br/>Indicates the percentage increase or decrease in the average number of resident profiles viewed by caregivers across all customers.</p>
+            <p><strong>Screen time usage (per caregiver)</strong><br/>Indicates the percentage increase or decrease in the average time spent in the dashboard by caregivers across all customers.</p>
+            <p><strong>Fall activity avoidance (per 1000 steps)</strong><br/>Indicate the percentage increase or decrease in the average number of falls per 1000 steps avoided across all customers represented.</p>
+            <p><strong>Night walk activity avoidance (per caregiver)</strong><br/>Indicate the percentage increase or decrease in the average number of night walks avoided across all customers represented.</p>
+            <p><strong>Critically low battery avoidance (per caregiver)</strong><br/>Indicate the percentage increase or decrease in the average number of critical low battery alerts avoided across all customers represented.</p>
+            <p><strong>Notification response time (per caregiver)</strong><br/>Indicate the percentage increase or decrease in the average response time for critical alerts across all customers represented.</p> 
+		</div>
+        <div class="popover__message lg_popover" *ngIf="type === 'customer'">
+            <span>All parameters are computed as a percentage increase or decrease of the average across all facilities within the customer organization. Number followed by '+' sign indicates a positive trend and '-' sign indicates a negative trend</span>
+			<p><strong>Resident profiles viewed (per caregiver)</strong><br/>Indicates the percentage increase or decrease in the average number of resident profiles viewed by caregivers across all facilities within the customer organization.</p>
+            <p><strong>Screen time usage (per caregiver)</strong><br/>Indicates the percentage increase or decrease in the average time spent in the dashboard by caregivers across all facilities within the customer organization.</p>
+            <p><strong>Falls activity avoidance (per 1000 steps)</strong><br/>Indicate the percentage increase or decrease in the average number of falls per 1000 steps avoided across all facilities within the customer organization.</p>
+            <p><strong>Night walk activity avoidance (per caregiver)</strong><br/>Indicate the percentage increase or decrease in the average number of night walks avoided across all facilities within the customer organization.</p>
+            <p><strong>Critically low battery avoidance (per caregiver)</strong><br/>Indicate the percentage increase or decrease in the average number of critical low battery alerts avoided across all facilities within the customer organization.</p>
+            <p><strong>Notification response time (per caregiver)</strong><br/>Indicate the percentage increase or decrease in the average response time for critical alerts across all facilities within the customer organization represented.</p> 
+		</div>
+		<div class="popover__message lg_popover" *ngIf="type === 'facility'">
+            <span>All parameters are computed as a percentage increase or decrease of the average across all wards within the facility. Number followed by '+' sign indicates a positive trend and '-' sign indicates a negative trend</span>
+			<p><strong>Resident profiles viewed (per caregiver)</strong><br/>Indicates the percentage increase or decrease in the average number of resident profiles viewed by caregivers across all wards within the facility.</p>
+            <p><strong>Screen time usage (per caregiver)</strong><br/>Indicates the percentage increase or decrease in the average time spent in the dashboard by caregivers across all wards within the facility.</p>
+            <p><strong>Falls activity avoidance (per 1000 steps)</strong><br/>Indicate the percentage increase or decrease in the average number of falls per 1000 steps avoided across all wards within the facility.</p>
+            <p><strong>Night walk activity avoidance (per caregiver)</strong><br/>Indicate the percentage increase or decrease in the average number of night walks avoided across all wards within the facility.</p>
+            <p><strong>Critically low battery avoidance (per caregiver)</strong><br/>Indicate the percentage increase or decrease in the average number of critical low battery alerts avoided across all wards within the facility.</p>
+            <p><strong>Notification response time (per caregiver)</strong><br/>Indicate the percentage increase or decrease in the average response time for critical alerts across all wards within the facility represented.</p>
+        </div>
+		<div class="popover__message lg_popover" *ngIf="type === 'ward'">
+            <span>All parameters are computed as a percentage increase or decrease of the average within the ward. Number followed by '+' sign indicates a positive trend and '-' sign indicates a negative trend</span>
+			<p><strong>Resident profiles viewed (per caregiver)</strong><br/>Indicates the percentage increase or decrease in the average number of resident profiles viewed by caregivers within the ward.</p>
+            <p><strong>Screen time usage (per caregiver)</strong><br/>Indicates the percentage increase or decrease in the average time spent in the dashboard by caregivers within the ward.</p>
+            <p><strong>Falls activity avoidance (per 1000 steps)</strong><br/>Indicate the percentage increase or decrease in the average number of falls per 1000 steps avoided within the ward.</p>
+            <p><strong>Night walk activity avoidance (per caregiver)</strong><br/>Indicate the percentage increase or decrease in the average number of night walks avoided within the ward.</p>
+            <p><strong>Critically low battery avoidance (per caregiver)</strong><br/>Indicate the percentage increase or decrease in the average number of critical low battery alerts avoided within the ward.</p>
+            <p><strong>Notification response time (per caregiver)</strong><br/>Indicate the percentage increase or decrease in the average response time for critical alerts within the ward represented.</p>
+		</div>
+    </div>
+</div>
+<mat-card>
+    <mat-card-content class="mat-card-content-secion">
+        <div fxLayout="row wrap" class="quick-box-container" fxLayoutAlign="space-between center" *ngIf="!isLoading">
+            <div class="quick-box" fxFlex.gt-lg="16" fxFlex.gt-md="16" fxFlex.gt-xs="100" fxFlex="100">
+                <div class="popover__wrapper" style="display:block;">
+                    <mat-icon class="help-icon absolute help-text-hover-cont popover__title" (click)="titleShow = !titleShow" style="cursor: pointer;right:-11px;">help_outline</mat-icon>
+                    <div class="popover__content">
+                        <div class="popover__message">
+                            <div><strong>Resident profiles viewed (per caregiver)</strong><br/>
+                                <span *ngIf="type === 'dashboard'">Indicates the percentage increase or decrease in the average number of resident profiles viewed by caregivers across all customers.</span>
+                                <span *ngIf="type === 'customer'">Indicates the percentage increase or decrease in the average number of resident profiles viewed by caregivers across all facilities within the customer organization.</span>
+                                <span *ngIf="type === 'facility'">Indicates the percentage increase or decrease in the average number of resident profiles viewed by caregivers across all wards within the facility.</span>
+                                <span *ngIf="type === 'ward'">Indicates the percentage increase or decrease in the average number of resident profiles viewed by caregivers within the ward.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="">Resident profiles viewed</p>
+                <p class="main-heading">{{getResidentTime()}}</p>
+                <div class="trend-graph" fxLayoutAlign="end center">
+                    <apx-chart
+                        [series]="quickBoxValues.resident.series"
+                        [chart]="commonLineSparklineOptions.chart"
+                        [colors]="commonLineSparklineOptions.colors"
+                        [fill]="commonLineSparklineOptions.fill"
+                        [tooltip]="commonLineSparklineOptions.tooltip"
+                        [dataLabels]="commonLineSparklineOptions.dataLabels"
+                    ></apx-chart>
+                </div>
+            </div>
+            <div class="quick-box" fxFlex.gt-lg="16" fxFlex.gt-md="16" fxFlex.gt-xs="100" fxFlex="100">
+                <div class="popover__wrapper" style="display:block;">
+                    <mat-icon class="help-icon absolute help-text-hover-cont popover__title" (click)="titleShow = !titleShow" style="cursor: pointer;right:-11px;">help_outline</mat-icon>
+                    <div class="popover__content">
+                        <div class="popover__message">
+                            <strong>Screen time usage (per caregiver)</strong><br/> 
+                                <span *ngIf="type === 'dashboard'">Indicates the percentage increase or decrease in the average time spent in the dashboard by caregivers across all customers.</span>
+                                <span *ngIf="type === 'customer'">Indicates the percentage increase or decrease in the average time spent in the dashboard by caregivers across all facilities within the customer organization.</span>
+                                <span *ngIf="type === 'facility'">Indicates the percentage increase or decrease in the average time spent in the dashboard by caregivers across all wards within the facility.</span>
+                                <span *ngIf="type === 'ward'">Indicates the percentage increase or decrease in the average time spent in the dashboard by caregivers within the ward.</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="">Screen time usage</p>
+                <p class="main-heading">{{getScreenTime()}}</p>
+                <div class="trend-graph" fxLayoutAlign="end center">
+                    <apx-chart
+                        [series]="quickBoxValues.screenTime.series"
+                        [chart]="commonLineSparklineOptions.chart"
+                        [colors]="commonLineSparklineOptions.colors"
+                        [fill]="commonLineSparklineOptions.fill"
+                        [tooltip]="commonLineSparklineOptions.tooltip"
+                        [dataLabels]="commonLineSparklineOptions.dataLabels"
+                    ></apx-chart>
+                </div>
+            </div>
+            <div class="quick-box" fxFlex.gt-lg="16" fxFlex.gt-md="16" fxFlex.gt-xs="100" fxFlex="100">
+                <div class="popover__wrapper" style="display:block;">
+                    <mat-icon class="help-icon absolute help-text-hover-cont popover__title" (click)="titleShow = !titleShow" style="cursor: pointer;right:-11px;">help_outline</mat-icon>
+                    <div class="popover__content">
+                        <div class="popover__message">
+                            <strong>Falls activity avoidance (per 1000 steps)</strong><br/> 
+                                <span *ngIf="type === 'dashboard'">Indicate the percentage increase or decrease in the average number of falls per 1000 steps avoided across all customers represented.</span>
+                                <span *ngIf="type === 'customer'">Indicate the percentage increase or decrease in the average number of falls per 1000 steps avoided all facilities within the customer organization.</span>
+                                <span *ngIf="type === 'facility'">Indicate the percentage increase or decrease in the average number of falls per 1000 steps avoided across all wards within the facility.</span>
+                                <span *ngIf="type === 'ward'">Indicate the percentage increase or decrease in the average number of falls per 1000 steps avoided within the ward.</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="">Falls activity avoidance</p>
+                <p class="main-heading">{{getFall()}}</p>
+                <div class="trend-graph" fxLayoutAlign="end center">
+                    <apx-chart
+                        [series]="quickBoxValues.fall.series"
+                        [chart]="commonLineSparklineOptions.chart"
+                        [colors]="commonLineSparklineOptions.colors"
+                        [fill]="commonLineSparklineOptions.fill"
+                        [tooltip]="commonLineSparklineOptions.tooltip"
+                        [dataLabels]="commonLineSparklineOptions.dataLabels"
+                    ></apx-chart>
+                </div>
+            </div>
+            <div class="quick-box" fxFlex.gt-lg="16" fxFlex.gt-md="16" fxFlex.gt-xs="100" fxFlex="100">
+                <div class="popover__wrapper" style="display:block;">
+                    <mat-icon class="help-icon absolute help-text-hover-cont popover__title" (click)="titleShow = !titleShow" style="cursor: pointer;right:-11px;">help_outline</mat-icon>
+                    <div class="popover__content">
+                        <div class="popover__message">
+                            <strong>Night walk activity avoidance (per caregiver)</strong><br/> 
+                            <span *ngIf="type === 'dashboard'">Indicate the percentage increase or decrease in the average number of night walks avoided across all customers represented.</span>
+                            <span *ngIf="type === 'customer'">Indicate the percentage increase or decrease in the average number of night walks avoided across all facilities within the customer organization.</span>
+                            <span *ngIf="type === 'facility'">Indicate the percentage increase or decrease in the average number of night walks avoided across all wards within the facility.</span>
+                            <span *ngIf="type === 'ward'">Indicate the percentage increase or decrease in the average number of night walks avoided within the ward.</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="">Night walk activity avoidance</p>
+                <p class="main-heading">{{getNightWalk()}}</p>
+                <div class="trend-graph" fxLayoutAlign="end center">
+                    <apx-chart
+                        [series]="quickBoxValues.nightWalk.series"
+                        [chart]="commonLineSparklineOptions.chart"
+                        [colors]="commonLineSparklineOptions.colors"
+                        [fill]="commonLineSparklineOptions.fill"
+                        [tooltip]="commonLineSparklineOptions.tooltip"
+                        [dataLabels]="commonLineSparklineOptions.dataLabels"
+                    ></apx-chart>
+                </div>
+            </div>
+            <div class="quick-box" fxFlex.gt-lg="16" fxFlex.gt-md="16" fxFlex.gt-xs="100" fxFlex="100">
+                <div class="popover__wrapper" style="display:block;">
+                    <mat-icon class="help-icon absolute help-text-hover-cont popover__title" (click)="titleShow = !titleShow" style="cursor: pointer;right:-11px;">help_outline</mat-icon>
+                    <div class="popover__content">
+                        <div class="popover__message">
+                            <strong>Critically low battery avoidance (per caregiver)</strong><br/>
+                            <span *ngIf="type === 'dashboard'">Indicate the percentage increase or decrease in the average number of critical low battery alerts avoided across all customers.</span>
+                            <span *ngIf="type === 'customer'">Indicate the percentage increase or decrease in the average number of critical low battery alerts avoided across all facilities within the customer organization.</span>
+                            <span *ngIf="type === 'facility'">Indicate the percentage increase or decrease in the average number of critical low battery alerts avoided across all wards within the facility.</span>
+                            <span *ngIf="type === 'ward'">Indicate the percentage increase or decrease in the average number of critical low battery alerts avoided within the ward.</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="">Critically low battery avoidance</p>
+                <p class="main-heading">{{getLowBatteryTime()}}</p>
+                <div class="trend-graph" fxLayoutAlign="end center">
+                    <apx-chart
+                        [series]="quickBoxValues.lowBattery.series"
+                        [chart]="commonLineSparklineOptions.chart"
+                        [colors]="commonLineSparklineOptions.colors"
+                        [fill]="commonLineSparklineOptions.fill"
+                        [tooltip]="commonLineSparklineOptions.tooltip"
+                        [dataLabels]="commonLineSparklineOptions.dataLabels"
+                    ></apx-chart>
+                </div>
+            </div>
+            <div class="quick-box" fxFlex.gt-lg="16" fxFlex.gt-md="16" fxFlex.gt-xs="100" fxFlex="100">
+                <div class="popover__wrapper" style="display:block;">
+                    <mat-icon class="help-icon absolute help-text-hover-cont popover__title" (click)="titleShow = !titleShow" style="cursor: pointer;right:-11px;">help_outline</mat-icon>
+                    <div class="popover__content">
+                        <div class="popover__message">
+                            <div><strong>Notification response time (per caregiver)</strong><br/>
+                                Indicate the percentage increase or decrease in the average response time for critical alerts across all customers represented. 
+                                <span *ngIf="type === 'dashboard'">Indicate the percentage increase or decrease in the average response time for critical alerts across all customers.</span>
+                            <span *ngIf="type === 'customer'">Indicate the percentage increase or decrease in the average response time for critical alerts across all facilities within the customer organization.</span>
+                            <span *ngIf="type === 'facility'">Indicate the percentage increase or decrease in the average response time for critical alerts across all wards within the facility.</span>
+                            <span *ngIf="type === 'ward'">Indicate the percentage increase or decrease in the average response time for critical alerts within the ward.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="">Notification response time</p>
+                <p class="main-heading">{{getResponseTime()}}</p>
+                <div class="trend-graph" fxLayoutAlign="end center">
+                    <apx-chart
+                        [series]="quickBoxValues.response.series"
+                        [chart]="commonLineSparklineOptions.chart"
+                        [colors]="commonLineSparklineOptions.colors"
+                        [fill]="commonLineSparklineOptions.fill"
+                        [tooltip]="commonLineSparklineOptions.tooltip"
+                        [dataLabels]="commonLineSparklineOptions.dataLabels"
+                    ></apx-chart>
+                </div>
+            </div>
+        </div>
+        <div class="preloader" *ngIf="isLoading" fxLayoutAlign="center center"
+                [ngStyle]="{'background-color': 'unset', position: 'unset', height: '140px'}">
+            <div class="spinner" [ngStyle]="{margin: 'unset', top: 'unset'}">
+                <img alt="loading.." src="assets/images/loading.gif" width="40px" height="40px" />
+            </div>
+        </div>
+        <div fxLayout="row wrap">
+            <div fxFlex="100" fxLayoutAlign="center center" class="m-t-15 m-b-10">
+                <mat-radio-group aria-label="Select option for quick boxes" [disabled]="isLoading" [(ngModel)]="quickSelection" (change)="changeGraph()">
+                    <mat-radio-button value="week">Last 7 days</mat-radio-button>
+                    <mat-radio-button value="month">Last 1 month</mat-radio-button>
+                    <mat-radio-button value="threeMonth">Last 3 months</mat-radio-button>
+                    <mat-radio-button value="sixMonth">Last 6 months</mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

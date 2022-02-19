@@ -1,0 +1,65 @@
+<mat-card class="model arjomodal residentprofilemodal">
+    <mat-card-header>
+        <div fxLayout="row wrap">
+            <div fxFlex.gt-lg="65" fxFlex.gt-md="65" fxFlex="100">
+                <mat-card-title>
+                    <span class="m-r-5 arjomodal-title"></span>
+                </mat-card-title>
+            </div>
+            <div fxFlex.gt-lg="35" fxFlex.gt-md="35" fxFlex="100" class="text-right">
+                <mat-icon class="cursor-pointer" mat-dialog-close>close</mat-icon>
+            </div>
+        </div>
+    </mat-card-header>
+    <mat-card-content style="padding-top: 0 !important;">
+        <div *ngIf="mode === 'view'">
+            <mat-accordion>
+                <mat-expansion-panel style="background-color: #f6f4f2;" [expanded]="true" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                           {{profileDetails.firstName}} {{profileDetails.lastName}}'s details 
+                        </mat-panel-title>
+                        <mat-panel-description> </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div fxLayout="column" fxLayoutAlign="center start">
+                        <div style="width: 100%;" fxLayout="row wrap" class="m-t-30">
+                            <div fxFlex.gt-md="33" fxFlex.gt-lg="33" class="form-field">
+                                <p class="arjoform-label">Full name</p>
+                                <p class="arjoform-value">{{profileDetails.firstName}} {{profileDetails.lastName}}</p>
+                            </div>
+                            <div class="form-field" fxFlex.gt-md="33">
+                                <p class="arjoform-label">Wearable name</p>
+                                <p class="arjoform-value">{{profileDetails.nickName}}</p>
+                            </div>
+                            <div fxFlex.gt-md="33" fxFlex.gt-lg="33">
+                                <p class="arjoform-label">Date of Birth</p>
+                                <p class="arjoform-value">{{profileDetails.birthdate}}</p>
+                            </div>
+                        </div>
+                        <div style="width: 100%;" fxLayout="row wrap" class="form-field">
+                            <div fxFlex.gt-md="33" fxFlex.gt-lg="33" class="form-field">	
+                                <p class="arjoform-label">Gender</p>
+                                <p class="arjoform-value">{{profileDetails.gender === 'nottosay' ? 'Prefer not to say' : profileDetails.gender}}</p>
+                            </div>
+                              <div class="form-field" fxFlex.gt-md="33">
+                                <p class="arjoform-label">Wearable name</p>
+                                <p class="arjoform-value">{{profileDetails.deviceId}}</p>
+                            </div>
+                          
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+                
+                
+                
+            </mat-accordion>
+        </div>
+        
+    </mat-card-content>
+    <mat-card-actions fxLayoutAlign="start center">
+        <div fxFlex="100" class="form-actions" fxLayoutAlign="end center">
+            <button mat-button mat-dialog-close class="cancel">Cancel</button>
+            <button mat-raised-button (click)="dischargeResident()" color="accent" *ngIf="mode === 'view'" class="add-button">Click to Discharege</button>
+        </div>
+    </mat-card-actions>
+</mat-card>

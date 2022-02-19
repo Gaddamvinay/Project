@@ -1,0 +1,94 @@
+<div fxLayout="row nowrap">
+	<div class="notification-alert ml-xs overflow-visible m-r-5">
+		<div class="badge" *ngIf="showBadge"></div>
+	</div>
+	<mat-menu #notification="matMenu" class="mymegamenu">
+		<div class="mailbox" (click)="$event.stopPropagation();">
+			<ul>
+				<li>
+					<div class="drop-title">Notifications</div>
+				</li>
+				<li>
+					<div class="message-center">
+						<perfect-scrollbar [config]="config">
+							<div class="scroll">
+								<mat-nav-list style="padding: 15px;">
+									<div class="notification-list" fxLayout="column">
+										<div class="notification-list-item" [ngClass]="notification.class" *ngFor="let notification of mergeNotifications">
+											<div fxLayout="column wrap">
+												<div fxLayout="row nowrap nowrap" fxLayoutAlign="space-between start">
+													<div fxLayout="row nowrap" fxLayoutAlign="start center">
+														<div class="notification-icon">
+															<mat-icon *ngIf="notification.eventType === 'watchRemoved'">watch</mat-icon>
+															<figure style="color: white;border-radius: 50%;padding: 4px;margin: 0;" *ngIf="notification.eventType === 'swfalldetection'" fxLayoutAlign="center center">
+																<img src="./assets/images/wet-floor-white.svg" style="width: 22px;" />
+															</figure>
+															<mat-icon *ngIf="questionCheck(notification.eventType)">ballot</mat-icon>
+															<mat-icon *ngIf="walkCheck(notification.eventType)">directions_run</mat-icon>
+															<mat-icon *ngIf="residentCheck(notification.eventType)">person_add</mat-icon>
+															<mat-icon *ngIf="batteryCheck(notification.eventType)">battery_alert</mat-icon>
+															<mat-icon *ngIf="notification.eventType === 'sleep'">hotel</mat-icon>
+															<mat-icon *ngIf="notification.eventType === 'sitting'">airline_seat_recline_normal</mat-icon>
+															<mat-icon *ngIf="notification.eventType === 'acknowledgement'">fact_check</mat-icon>
+														</div>
+														<div class="notification-message" [ngStyle]="{width: notification.eventType === 'swfalldetection' ? '220px' : ''}">
+															<span>{{notification.title}}</span>
+														</div>
+													</div>
+													<div class="notification-action" fxLayout="row warp" fxLayoutAlign="end center" *ngIf="checkButtons(notification)">
+														<button (click)="openDialog(notification.title, notification.id, 'attend')" [ngStyle]='{color:"#BD362F"}' *ngIf="!notification.markAsAttend" class="cursor-pointer action-btn">Attend</button>
+														<button (click)="openDialog(notification.eventType, notification.id, 'log')" [ngStyle]='{color:"#BD362F"}' class="action-btn cursor-pointer">Log</button>
+													</div>
+													
+													<mat-icon fxFlexAlign="end" class="cursor-pointer close" *ngIf="notification.class === 'warning'" (click)="clearNotification(notification.id)">close</mat-icon>
+												</div>
+											</div>
+										</div>
+										<div *ngIf="mergeNotifications.length < 1 && isDataAvailable" fxLayout="column" fxLayoutGap="0.2em" fxLayoutAlign="center center" [ngStyle]="{width: '100%',height: '100%', background: 'transparent'}">
+											<mat-icon class="no-data-icon">info</mat-icon>
+											<p>No notification available</p>
+										</div>
+										<div *ngIf="mergeNotifications.length < 1 && !isDataAvailable" fxLayout="column" fxLayoutGap="0.2em" fxLayoutAlign="center center" [ngStyle]="{width: '100%',height: '200px', background: 'transparent'}">
+											<img src="./assets/images/loading.gif" alt="loading...." width="40px" height="40px">
+										</div>
+									</div>
+								</mat-nav-list>
+							</div>
+						</perfect-scrollbar>
+					</div>
+				</li>
+	
+			</ul>
+		</div>
+	</mat-menu>
+	<div class="m-r-5 cursor-pointer" fxLayout="row nowrap" fxLayoutAlign="start center" [matMenuTriggerFor]="profile">
+		<img src="{{userImage}}" alt="user" class="profile-pic" *ngIf="userImage" />
+		<div class="profile-pic" *ngIf="!userImage" fxLayoutAlign="center center">
+			<p>{{getNoImageHolder(userProfileData?.first_name, userProfileData?.last_name)}}</p>
+		</div>
+		<button fxLayoutAlign="center center" mat-icon-button class="m-r-5" style="width: 24px;height: 24px;">
+			<mat-icon>arrow_drop_down</mat-icon>
+		</button>
+	</div>
+</div>
+<mat-menu #profile="matMenu" class="mymegamenu">
+	<div class="heading p-5" fxLayout="row nowarp" fxLayoutAlign="start center" fxLayoutGap="0.5em">
+		<img src="{{userImage}}" alt="user" class="profile-pic" *ngIf="userImage" />
+		<div class="profile-pic" *ngIf="!userImage" fxLayoutAlign="center center">
+			<p>{{getNoImageHolder(userProfileData?.first_name, userProfileData?.last_name)}}</p>
+		</div>
+		<div class="details">
+			<span *ngIf="userProfileData?.user_type === 'CA'"> Customer Admin</span>
+			<span *ngIf="userProfileData?.user_type === 'FA'">Facility Admin</span>
+			<span *ngIf="userProfileData?.user_type === 'WA'">Ward Admin</span>
+			<span *ngIf="userProfileData?.user_type === 'Caregiver'">Caregiver</span>
+			<p class="m-0" style="font-size: 14px;">{{userProfileData?.first_name}} {{userProfileData?.last_name}}</p>
+			<p class="m-0" style="font-size: 14px;">{{userProfileData?.email}}</p>
+		</div>
+	</div>
+	<button mat-menu-item (click)="openProfile()"><mat-icon>person</mat-icon> My profile</button>
+	<button mat-menu-item (click)="openSettings()"><mat-icon>settings</mat-icon> Settings</button>
+	<button mat-menu-item (click)="openPassword()"><mat-icon>lock</mat-icon> Change password</button>
+	<!--<button mat-menu-item (click)="openSessionExpire()">SessinExpire</button>-->
+	<button (click)="signout()" mat-menu-item style="color: #BD362F;"><mat-icon style="color: inherit;">exit_to_app</mat-icon> Log Out</button>
+</mat-menu>

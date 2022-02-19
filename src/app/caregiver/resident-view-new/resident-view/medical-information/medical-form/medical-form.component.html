@@ -1,0 +1,10 @@
+<div class="medications" fxLayout="column" fxLayoutGap="0.8em">
+    <p>Medications</p>
+    <ng-container *ngFor="let medication of medications; let i=index">
+        <div fxLayout="row wrap" fxLayoutGap="0.8em">
+            <div fxFlex="48" *ngFor="let medic of medication">
+                <mat-checkbox [disabled]="disable ? (i == 0  ? !disable : disable) : false" [checked]="getValue(medic.questionId)" (change)="changeMedication($event.checked, medic.questionId)">{{medic.label}}</mat-checkbox>
+            </div>
+        </div>
+    </ng-container>
+</div>

@@ -1,0 +1,98 @@
+@import '../../../../../assets/styles/variable.scss';
+.sleepingprgs, .sittingprgs, .activeprgs, .walkingprgs {
+    .mat-progress-bar {
+        height: 24px;
+    }
+    .prgs-label {
+        font-weight: 500;
+        font-size: 12px;
+        letter-spacing: 0.4px;
+    }
+    .prgs-text{
+        font-size: 12px;
+        position: relative;
+    bottom: 10px;
+
+    }
+    .prgs-icon{
+        font-size: 18px;
+    }
+    .prgs-texts{
+        font-size: 12px;
+        position: relative;
+        bottom: 4px;
+    }
+
+    .value-cont {
+        position: absolute;
+        z-index: 1;
+        text-align: right;
+        .today-pg-value {
+            color: $lava;
+            font-weight: 600;
+            font-size: 12px;
+        }
+    }
+    // .hide {
+    //     display: none;
+    //   }
+
+    //   .show:hover + .hide {
+    //     display: block;
+    //     color: black;
+    //   }
+
+    //   span#typePrompt { display: none; }
+    //   a#userType:hover + span#typePrompt { display: inline; }
+    //   a#userType:focus + span#typePrompt { display: inline; }
+    .icon-avg{
+        mat-icon {
+            color: #015174;
+            font-size: 30px;
+        }
+    }
+}
+
+#show{
+
+    span{
+        visibility: hidden;
+      }
+
+      mat-list-item:hover span{
+        visibility: visible;
+      }
+}
+
+.max-line {
+    position: absolute;
+    bottom: 0px;
+}
+.progress-icons {
+    display: flex;
+    .legend {
+        &:first-child {
+            margin-right: 24px;
+        }
+    }
+    mat-icon {
+        color: #015174;
+    }
+    .legend-text {
+        color: #434242;
+        font-size: 14px;
+        position: relative;
+        top: -6px;
+    }
+}
+.halfbox-helptext {
+    color: $rock;
+    font-size: 14px;
+    margin: 0 15px 8px 15px;
+    font-family: Whitney A, Whitney B, Helvetica, Arial, sans-serif;
+  }
+  mat-card.progress{
+      mat-card-content {
+          height: 394px !important;
+      }
+  }

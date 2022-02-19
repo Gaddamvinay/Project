@@ -1,0 +1,148 @@
+
+<div class="page-breadcrumb">
+	<div fxLayout="row wrap" fxLayoutAlign="space-between center">
+		<div fxFlex.gt-sm="60" fxFlex.gt-xs="60" fxFlex="100" class="align-self-center">
+			<div class="breadcrumb">
+				<ul class="list-style-none d-flex">
+					<li class="breadcrumb-item cursor-pointer" routerLink="/ssa/dashboard">
+						<span class="text-muted">Dashboard</span>
+					</li>
+					<li class="breadcrumb-item active">Wards</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="main-section">
+    <div fxLayout="row nowrap" fxLayoutAlign="space-between center" class="p-l-15 p-r-15">
+        <div class="popover__wrapper">
+            <span class="second-title font-24 m-r-5">Wards</span> 
+            <mat-icon class="absolute help-text-hover-cont popover__title" style="color: #D3CDC6;cursor: pointer;position: absolute;top: 3px;">help_outline</mat-icon>
+            <div class="popover__content lg_popover">
+                <h4 class="second-title popover__heading m-b-10">Wards</h4>
+                <div class="popover__message">
+                    <span>All parameters except "Total falls" are computed as an average on ward level. </span>
+                    <!-- <p><strong>Customer Status</strong><br/>Indicates the current status of the customer with respect to our solution. Following are different states - demo, contract signed, active and inactive.</p> -->
+                    <p><strong>Total falls</strong><br/>Indicates the actual number of falls for all residents in the ward as recorded by the wearable.
+                    </p>
+                    <p><strong>Falls activity (per 1000 steps)</strong><br/>Indicates the average number of falls for all residents in the ward as recorded by the wearable and is represented as a unit of number of 1000 steps by residents. 
+                    </p>
+                    <p><strong>Night walk activity (per caregiver)</strong><br/>Indicate the average number of night walk alerts received from all the wearables used by the residents in the ward and is represented as a unit of caregiver. 
+                    </p>
+                    <p><strong>Critically low battery activity (per caregiver)</strong><br/>Indicate the average number of critical low battery alerts received from all the wearables used by the residents in the ward and is represented as a unit of caregiver. 
+                    </p>
+                    <p><strong>Screen time usage (per caregiver)</strong><br/>Indicates the average time spent in the dashboard by caregivers in the ward and is represented as a unit of caregiver. 
+                    </p>
+                    <p><strong>Resident profiles viewed (per caregiver)</strong><br/>Indicates the average number of resident profiles viewed by caregivers in the ward and is represented as a unit of caregiver. 
+                    </p>
+                    <p><strong>Notification response time (per caregiver)</strong><br/>Indicates the average response time taken for critical alerts by caregivers in the ward and is represented as a unit of caregiver.</p>
+                </div>
+            </div>
+        </div>
+        <div class="commonaddpage" fxLayout="row nowrap" fxLayoutAlign="start center" fxLayoutGap="0.8em">
+            <form [formGroup]="filterForm" *ngIf="customerList.length > 0 && (beforeFilter.length > 0)">
+                <div fxLayoutAlign="start center" fxLayoutGap="1.8em">
+                    <div class="form-field" style="width: 320px;">
+                        <mat-form-field appearance="outline">
+                            <mat-select value="" formControlName="customer_id" multiple #select>
+                                <input matInput class="select-search" type="text" placeholder="Search customer" formControlName="customerSearch" />
+                                <mat-select-trigger>
+                                    <ng-container *ngIf="customerIds.length < 2 && customerIds.length > 0">
+                                        <span>{{customerIds? (customerIds[0]=== '' ? 'Select customer' : getCustomerById(customerIds[0])) : ''}}</span>
+                                    </ng-container>
+                                    <ng-container *ngIf="customerIds.length > 1">
+                                        <ng-container *ngFor="let ward of customerIds;let i =index">
+                                            <span class="selected" *ngIf="i < 2">{{getCustomerById(ward)}}</span>
+                                        </ng-container>
+                                    </ng-container>
+                                    <span *ngIf="customerIds?.length > 2" class="selected">
+                                    (+{{customerIds.length - 2}} {{customerIds?.length === 3 ? 'other' : 'others'}})
+                                    </span>
+                                  </mat-select-trigger>
+                                <mat-option disabled value="">Select customer</mat-option>
+                                <mat-option [value]="customer.customer_id" *ngFor="let customer of getFilterCustomers()">{{customer.customer_name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field" style="width: 320px;" *ngIf="(customerIds.length < 2 && customerIds.length > 0 && customerIds[0] !== '') || customerIds.length > 1">
+                        <mat-form-field appearance="outline">
+                            <mat-select value="" formControlName="facilityId" multiple #multiselect>
+                                <input matInput class="select-search" type="text" placeholder="Search facility" formControlName="facilitySearch" />
+                                <mat-select-trigger>
+                                    <ng-container *ngIf="facilityIds.length < 2 && facilityIds.length > 0">
+                                        <span>{{facilityIds? (facilityIds[0]=== '' ? 'Select facility' : getFacilityById(facilityIds[0])) : ''}}</span>
+                                    </ng-container>
+                                    <ng-container *ngIf="facilityIds.length > 1">
+                                        <ng-container *ngFor="let ward of facilityIds;let i =index">
+                                            <span class="selected" *ngIf="i < 2">{{getFacilityById(ward)}}</span>
+                                        </ng-container>
+                                    </ng-container>
+                                    <span *ngIf="facilityIds?.length > 2" class="selected">
+                                    (+{{facilityIds.length - 2}} {{facilityIds?.length === 3 ? 'other' : 'others'}})
+                                    </span>
+                                  </mat-select-trigger>
+                                <mat-option disabled value="">Select facility</mat-option>
+                                <mat-option [value]="facility.facilityId" *ngFor="let facility of getIFilterFacilities(getFilterFacilities())">{{facility.facilityName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </form>
+            <button mat-flat-button class="add-button" color="accent" (click)="clearFilters()" *ngIf="showClear()">
+                Clear
+            </button>
+            <button class="add-button" mat-flat-button color="accent" (click)="addWardDialog()">
+                <mat-icon>add</mat-icon><span>Add new ward</span>
+            </button>
+        </div>
+    </div>
+    <div class="p-l-15 p-r-15">
+        <ng-container *ngIf="isLoading">
+            <div class="preloader" *ngIf="isLoading" fxLayoutAlign="center center"
+                    [ngStyle]="{'background-color': 'unset', position: 'unset', height: '350px'}">
+                <div class="spinner" [ngStyle]="{margin: 'unset', top: 'unset'}">
+                    <img alt="loading.." src="assets/images/loading.gif" width="40px" height="40px" />
+                </div>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="!isLoading">
+            <ng-container *ngIf="tableData.length > 0">
+                <app-table (actionEvent)="doOperation($event)"
+                [hoverAction]="[true, true,true]"
+                (selectedValue)="navigate($event)"
+                [isLoading]="isLoading"
+                [actionEnable]="false"
+                [tableType]="'ward'"
+                [actions]="actions"
+                [widths]="widths"
+                [displayedColumns]="displayedColumns"
+                [tableData]="tableData"
+                [Filtered]="filtered"
+                ></app-table>
+            </ng-container>
+            <ng-container *ngIf="tableData.length < 1">
+                <ng-container *ngIf="filtered">
+                    <app-table (actionEvent)="doOperation($event)"
+                        [hoverAction]="[true, true]"
+                        (selectedValue)="navigate($event)"
+                        [isLoading]="isLoading"
+                        [actionEnable]="false"
+                        [tableType]="'ward'"
+                        [actions]="actions"
+                        [widths]="widths"
+                        [displayedColumns]="displayedColumns"
+                        [tableData]="tableData"
+                        [Filtered]="filtered"
+                        ></app-table>
+                </ng-container>
+                <ng-container *ngIf="!filtered">
+                    <div fxLayoutAlign="center center" style="width: 100%; height: calc(100vh - 275px)">
+                        <div class="display-card" fxLayoutAlign="center center">
+                            <p class="text text-center m-0">There is no ward added yet.Please add <strong>ward</strong></p>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-container>
+        </ng-container>
+    </div>
+</div>

@@ -1,0 +1,83 @@
+<div class="page-breadcrumb">
+	<div fxLayout="row wrap" fxLayoutAlign="space-between center">
+		<div fxFlex.gt-sm="60" fxFlex.gt-xs="60" fxFlex="100" class="align-self-center">
+			<div class="breadcrumb d-flex align-items-left float-left float-sm-left">
+				<ul class="list-style-none d-flex align-items-left">
+					<li class="breadcrumb-item cursor-pointer" routerLink="/residents">
+						<span class="text-muted">Home</span>
+					</li>
+					<li class="breadcrumb-item cursor-pointer" routerLink="/residents">
+						<span class="text-muted">Residents</span>
+					</li>
+					<li class="breadcrumb-item active" *ngIf="residentName">{{residentName}}'s Dashboard</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="page-content">
+  <div fxLayout="row wrap" style="padding: 12px;">
+      <div class="" style="width:100%;">
+        <span class="second-title font-24">{{residentName}}<span class="age">({{getAge(residentData?.birthdate)}} Old)</span></span>
+        <div fxLayoutAlign="start center" fxLayoutGap="1.5em">
+          <!-- <div class="battery">
+              <div fxLayoutAlign="center center">
+                  <span class="battery-icon dead-{{residentData?.Battery ? residentData?.Battery : 0}}" data-charging="" [attr.data-percent]="residentData?.Battery ? residentData?.Battery : 0" title="Battery Status - {{residentData?.Battery ? residentData?.Battery : 0}} % charged"></span>
+                  <span class="" style="font-weight: 500; margin-left: 5px;"> {{residentData?.Battery ? residentData?.Battery : 0}}<span class="font-10">%</span></span>
+              </div>
+          </div>
+          <div fxLayoutAlign="start center" fxLayoutGap="0.2em">
+              <span><mat-icon color="accent">location_on</mat-icon></span>
+              <span style="font-weight: 500; margin-left: 5px;">{{residentData?.LastLocation ? residentData?.LastLocation :'Home'}}</span>
+          </div> -->
+          <div fxLayoutAlign="start center" fxLayoutGap="0.2em">
+              <span><mat-icon color="accent">sensor_door</mat-icon></span>
+              <span style="font-weight: 500; margin-left: 5px;">{{residentData?.wardName}}, {{residentData?.roomName}}</span>
+          </div>
+          <div class="cursor-pointer" (click)="viewResident()" fxLayoutAlign="start center" fxLayoutGap="0.2em">
+              <span><mat-icon color="accent">visibility</mat-icon></span>
+              <span style="font-weight: 500; margin-left: 5px;" class="arjoblue">View profile information</span>
+          </div>
+           <!-- <div class="cursor-pointer" (click)="discharegeResident()" fxLayoutAlign="start center" fxLayoutGap="0.2em">
+              
+              <span style="font-weight: 500; margin-left: 5px;" class="arjoblue">Click to Discharege Resident</span>
+          </div> -->
+        </div>
+        <div class="resident-view resident-view-section">
+          <mat-tab-group mat-align-tabs="left" [selectedIndex]="selectedTab" (selectedTabChange)="onTabChanged($event);">
+              <!-- <mat-tab label="OVERVIEW">
+                  <app-overview [userData]="residentData" (viewSelected)="gotoTab($event)"></app-overview>
+              </mat-tab>
+              <mat-tab label="TREND REPORTS">
+                <app-trend-report [userData]="residentData"></app-trend-report>
+              </mat-tab> -->
+              <mat-tab label="QUESTIONNAIRES" #questionnaireTab>
+                <app-questionnaire [userData]="residentData" (callResident)="getResidentData()"></app-questionnaire>
+              </mat-tab>
+              <mat-tab label="PHYSIO TESTS">
+                <app-physio-test [userData]="residentData"></app-physio-test>
+              </mat-tab>
+              <!-- <mat-tab label="MEDICAL INFORMATION" #medicationTab>
+                <app-medical-information (callResident)="getResidentData()" [medication]="residentData?.medical_history"></app-medical-information>
+              </mat-tab> -->
+              <!-- <mat-tab label="LOCATION">
+                  <app-location [userData]="residentData"></app-location>
+              </mat-tab> -->
+              <mat-tab label="NOTIFICATIONS">
+                <app-inner-notification [userData]="residentData" [filter]="filter()"></app-inner-notification>
+              </mat-tab>
+            </mat-tab-group>
+        </div>
+      </div>
+      <!-- <div class="resident-view insight">
+          <mat-tab-group mat-align-tabs="left">
+              <mat-tab label="INSIGHTS">
+                  <app-insight [userData]="residentData"></app-insight>
+              </mat-tab>
+              <mat-tab label="SAVED">
+                  <app-saved></app-saved>
+              </mat-tab>
+            </mat-tab-group>
+      </div> -->
+  </div>
+</div>

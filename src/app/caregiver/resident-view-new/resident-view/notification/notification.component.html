@@ -1,0 +1,116 @@
+<div fxLayout="row wrap" class="m-t-20">
+    <div fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex="100" class="text-left">
+      <span class="second-title">Notifications</span>
+    </div>
+    <div fxFlex.gt-md="75" fxFlex.gt-lg="75" fxFlex="100" class="text-right">
+      <div fxLayout="row wrap" fxLayoutGap="0.8em" fxLayoutAlign="end center">
+        <mat-icon class="cursor-pointer" style="color: #686262;" (click)="openDialog()">settings</mat-icon>
+      </div>
+    </div>
+</div>
+<div fxLayout="row wrap">
+    <div fxFlex.gt-lg="20" fxFlex.gt-md="20" fxFlex.gt-sm="20" fxFlex.gt-xs="100" fxFlex="100">
+        <mat-card style="min-height: 550px;background-color: transparent !important;box-shadow: none!important;">
+            <mat-card-content class="p-0">
+                <div class="relative">
+                    <div class="filter-box-field m-b-10 resident-filters custom-filters">
+                        <div class="" fxLayout="column" fxLayoutAlign="center end">
+                            <button class="clear_filters_btn" mat-raised-button color="accent" *ngIf="showClear()" style="align-items: flex-end;" (click)="clearFilters()">Clear filters</button>
+                            <div style="width: 100%;" class="">
+                                <p class="m-b-0">Choose the date</p>
+                                <div style="max-width: 100%;" class="date-filters cursor-pointer date-text" (click)="filterDate.click()" fxLayoutAlign="space-between center">
+                                    <span class="font-12" *ngIf="filterDates.startDate">{{filterDates.startDate | date: getFilterFormat()}} - {{filterDates.endDate | date : getFilterFormat()}}</span>
+                                    <p class="m-0" style="color: #8F8E8C;" *ngIf="!filterDates.startDate">Choose the date</p>
+                                    <mat-icon class="absolute viewAllicon">arrow_drop_down</mat-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter-box filter-box-section">
+                        <div class="filter-box-container">
+                            <h5 class="filter-head">Filter by Type</h5>
+                            <div class="filter-values">
+                                <mat-selection-list [(ngModel)]="typeList" (selectionChange)="changeSelectType($event)">
+                                    <mat-list-option [value]="noti.value" *ngFor="let noti of notificationTypes">
+                                        {{noti.label}}
+                                    </mat-list-option>
+                                    <br/>
+                                </mat-selection-list>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="font-14 absolute" style="visibility: hidden;top: 0;right: 0;">
+                        <mat-form-field appearance="outline" class="m-t-10 m-b-10">
+                            <input
+                            matInput
+                            #filterDate
+                            name="inline-daterangepicker"
+                            ngxDaterangepickerMd
+                            showCancel="true"
+                            placeholder="Choose date range"
+                            [locale]="{ applyLabel: 'Done', firstDay: 1 }"
+                            (change)="changeDateRange($event)"
+                            [showDropdowns]="true"
+                            [lockStartDate]="false"
+                            [customRangeDirection]="true"
+                            [(ngModel)]="dateRange"
+                            [maxDate]="today"
+                            style="color:#434342"
+                            />
+                        </mat-form-field>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div fxFlex.gt-lg="80" fxFlex.gt-md="80" fxFlex.gt-sm="80" fxFlex.gt-xs="100" fxFlex="100">
+    
+
+
+        <mat-card style="background: transparent; box-shadow:none!important">
+            <mat-card-content class="p-0" style="max-height:70vh;overflow-y: scroll;">
+                <ul class="timeline" style="margin-left: 15%;background-color: #fff;" *ngIf="notifications.length > 0">
+                    <mat-accordion class="">
+                        <li class="event {{notification.sourceType}} {{notification.class}} {{notification.fallActive }}" [ngClass]="{'opened': listExpanded === i}" *ngFor="let notification of notifications| slice:pageStart:pageEnd, let i= index">
+                            <ng-container *ngIf="notification.contents.length >= 2">
+                                <mat-expansion-panel [expanded]="i=== listExpanded" [ngStyle]="{paddingRight: '10px'}">
+                                    <mat-expansion-panel-header (click)="changeExpandedIndex(i)">
+                                        <mat-panel-title>{{notification.title}}</mat-panel-title>
+                                    </mat-expansion-panel-header>
+                                    <div class="m-t-20">
+                                        <p *ngFor="let content of notification.contents | slice:1"><span *ngIf="content.date">[{{content.date | date : getTimeFormat()}}]</span> {{content.action}}</p>
+                                    </div>
+                                </mat-expansion-panel>
+                            </ng-container>
+                            <p *ngIf="notification.contents.length < 2">{{notification.title}}</p>
+                            <p class="data-date" *ngIf="getDateOrString(notification.date)">{{getValueOfDate(notification.date) | date : getFormat()}}</p>
+                            <p class="data-date" *ngIf="!getDateOrString(notification.date)">{{getValueOfDate(notification.date)}}</p>
+                            <div class="line"></div>
+                        </li>
+                        
+                    </mat-accordion>
+                </ul>
+                <div class="preloader" *ngIf="notifications.length < 1 && isLoading" fxLayoutAlign="center center" [ngStyle]="{'background-color': 'unset', position: 'unset', height: '500px'}">
+                    <div class="spinner" [ngStyle]="{margin: 'unset', top: 'unset'}">
+                    <img alt="loading.." src="assets/images/loading.gif" width="40px" height="40px" />
+                    </div>
+                </div>
+                <div fxLayout="row nowrap" fxLayoutAlign="center center" [ngStyle]="{padding: '10px'}" *ngIf="showLoadMore() && notifications.length > 0">
+                    <div class="loading-button">
+                        <button mat-raised-button [disabled]="isLoading" class="btn-block btn-lg m-t-20 m-b-20" color="accent" (click)="paginate()">Load more</button>
+                        <div class="loading" *ngIf="isLoading">
+                            <mat-spinner [diameter]="40"></mat-spinner>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="notifications.length < 1 && isDataAvailable && !isLoading && noData" fxLayout="column" fxLayoutGap="0.2em" fxLayoutAlign="center center" [ngStyle]="{width: '100%',height: '500px', background: 'transparent'}">
+                    <mat-icon class="no-data-icon">info</mat-icon>
+                    <p>No Data Available</p>
+                </div>
+            </mat-card-content>
+        </mat-card>    <button  mat-stroked-button [disabled]="!isButtonVisible"  (click)="loadMore(pageEnd)" class="next">Load more</button>
+
+    </div>
+</div>
+
+           

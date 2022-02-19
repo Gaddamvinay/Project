@@ -1,0 +1,19 @@
+<div class="filter-modal">
+<label mat-stroked-button for="panel-1">Filter by Name</label>
+
+<div class="accordion__content accordion__content--large">
+  <div class="filter-box-container">
+    <div class="filter-values">
+      <mat-selection-list *ngIf="residentNames.length > 0"  #resident  [(ngModel)]="personList"  (selectionChange)="changeSelectPerson($event)" >
+        <mat-list-option  [value]="resident"  *ngFor="let resident of residentNames" >
+          {{ resident }}
+        </mat-list-option>
+      </mat-selection-list>
+      <div mat-dialog-actions fxLayoutAlign="end center">
+        <button mat-button mat-dialog-close>Cancel</button>
+        <button mat-raised-button color="accent" (click)="apply()">Apply</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

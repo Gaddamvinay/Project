@@ -1,0 +1,280 @@
+<mat-card class="model arjomodal residentprofilemodal">
+    <mat-card-header>
+        <div fxLayout="row wrap">
+            <div fxFlex.gt-lg="65" fxFlex.gt-md="65" fxFlex="100">
+                <mat-card-title>
+                    <span class="m-r-5 arjomodal-title">{{profileDetails.firstName}} {{profileDetails.lastName}}'s profile</span>
+                </mat-card-title>
+            </div>
+            <div fxFlex.gt-lg="35" fxFlex.gt-md="35" fxFlex="100" class="text-right">
+                <mat-icon class="cursor-pointer" mat-dialog-close>close</mat-icon>
+            </div>
+        </div>
+    </mat-card-header>
+    <mat-card-content style="padding-top: 0 !important;">
+        <div *ngIf="mode === 'view'">
+            <mat-accordion>
+                <mat-expansion-panel style="background-color: #f6f4f2;" [expanded]="true" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Personal Details
+                        </mat-panel-title>
+                        <mat-panel-description> </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div fxLayout="column" fxLayoutAlign="center start">
+                        <div style="width: 100%;" fxLayout="row wrap" class="m-t-30">
+                            <div fxFlex.gt-md="33" fxFlex.gt-lg="33" class="form-field">
+                                <p class="arjoform-label">Full name</p>
+                                <p class="arjoform-value">{{profileDetails.firstName}} {{profileDetails.lastName}}</p>
+                            </div>
+                            <div class="form-field" fxFlex.gt-md="33">
+                                <p class="arjoform-label">Wearable name</p>
+                                <p class="arjoform-value">{{profileDetails.nickName}}</p>
+                            </div>
+                            <div fxFlex.gt-md="33" fxFlex.gt-lg="33">
+                                <p class="arjoform-label">Date of Birth</p>
+                                <p class="arjoform-value">{{profileDetails.dob}}</p>
+                            </div>
+                        </div>
+                        <div style="width: 100%;" fxLayout="row wrap" class="form-field">
+                            <div fxFlex.gt-md="33" fxFlex.gt-lg="33" class="form-field">	
+                                <p class="arjoform-label">Gender</p>
+                                <p class="arjoform-value">{{profileDetails.gender === 'nottosay' ? 'Prefer not to say' : profileDetails.gender}}</p>
+                            </div>
+                            <div fxFlex.gt-md="33" fxFlex.gt-lg="33" class="form-field">
+                                <p class="arjoform-label">Height</p>
+                                <p class="arjoform-value" *ngIf="profileDetails.height_units === 'cm'">{{profileDetails.height}} {{profileDetails.height_units}}</p>
+                                <p class="arjoform-value" *ngIf="profileDetails.height_units === 'feet'">{{profileDetails.height_feet}} feet - {{profileDetails.height_inch}} inch</p>
+                            </div>
+                            <div fxFlex.gt-md="33" fxFlex.gt-lg="33" class="form-field">
+                                <p class="arjoform-label">Weight</p>
+                                <p class="arjoform-value">{{profileDetails.weight}} {{profileDetails.weight_units}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel style="background-color: #f6f4f2;" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title> Contact information </mat-panel-title>
+                        <mat-panel-description> </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div fxLayout="row wrap" class="m-t-30 form-field" >
+                        <div fxFlex.gt-md="33" fxFlex.gt-lg="33" class="form-field">	
+                            <p class="arjoform-label">Contact of</p>
+                            <p class="arjoform-value">{{profileDetails.contact_of}}</p>
+                        </div>
+                        <div fxFlex.gt-md="33" fxFlex.gt-lg="33" class="form-field">	
+                            <p class="arjoform-label">Email</p>
+                            <p class="arjoform-value">{{profileDetails.email}}</p>
+                        </div>
+                        <div fxFlex.gt-md="33" fxFlex.gt-lg="33" class="form-field">	
+                            <p class="arjoform-label">Phone number</p>
+                            <p class="arjoform-value">{{profileDetails.ext}} {{profileDetails.mobile}}</p>
+                        </div>				
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel style="background-color: #f6f4f2;" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title> Ward information</mat-panel-title>
+                        <mat-panel-description> </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div fxLayout="row wrap" class="m-t-30 form-field">
+                        <div fxFlex.gt-md="33" fxFlex.gt-lg="33" class="form-field">	
+                            <p class="arjoform-label">Ward</p>
+                            <p class="arjoform-value">{{profileDetails.wardName}}</p>
+                        </div>
+                        <div fxFlex.gt-md="33" fxFlex.gt-lg="33" class="form-field">	
+                            <p class="arjoform-label">Room</p>
+                            <p class="arjoform-value">{{profileDetails.roomName}}</p>
+                        </div>
+                        <div fxFlex.gt-md="33" fxFlex.gt-lg="33" class="form-field">	
+                            <p class="arjoform-label">Admission date</p>
+                            <p class="arjoform-value">{{profileDetails.admission_Date}}</p>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+                <!-- <mat-expansion-panel style="background-color: #f6f4f2;" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Wearable information </mat-panel-title>
+                        <mat-panel-description> </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="m-t-30 form-field">
+                        <div fxFlex.gt-md="33" fxFlex.gt-lg="33" class="form-field">	
+                            <p class="arjoform-label">Wearable</p>
+                            <p class="arjoform-value">{{profileDetails.deviceId}}</p>
+                        </div>
+                    </div>
+                </mat-expansion-panel> -->
+            </mat-accordion>
+        </div>
+        <div *ngIf="mode === 'edit'">
+            <p class="arjoform-title">Personal details</p>
+            <div fxLayout="column" fxLayoutAlign="center start">
+                <div style="width: 100%;" fxLayout="row wrap">
+                    <div fxFlex.gt-md="30" fxFlex.gt-lg="30" class="m-r-15 form-field">
+                        <p class="arjoform-label">First name</p>
+                        <mat-form-field appearance="outline">
+                            <input type="text" matInput required id="firstName" name="firstName" pattern="^[a-zA-Z0-9äåö_]*$" [(ngModel)]="profileDetails.firstName" placeholder="First name" maxLength="20" />
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex.gt-md="30" fxFlex.gt-lg="30" class="m-r-15 form-field">
+                        <p class="arjoform-label">Last name</p>
+                        <mat-form-field appearance="outline">
+                            <input type="text" matInput required id="lastName" name="lastName" pattern="^[a-zA-Z0-9äåö_]*$" [(ngModel)]="profileDetails.lastName" placeholder="First name" maxLength="20" />
+                        </mat-form-field>
+                    </div>
+                    <div class="form-field" fxFlex.gt-md="30" fxFlex.gt-lg="30">
+                        <p class="arjoform-label">Nick name</p>
+                        <mat-form-field appearance="outline">
+                            <input type="text" matInput required id="nickName" name="nickName" pattern="^[a-zA-Z0-9äåö_]*$" [(ngModel)]="profileDetails.nickName" placeholder="First name" maxLength="20" />
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div style="width: 100%;" fxLayout="row wrap" class="form-field">
+                    <div fxFlex.gt-md="30" fxFlex.gt-lg="30" class="m-r-15">
+                        <p class="arjoform-label">Date of Birth</p>
+                        <mat-form-field appearance="outline">
+                            <input (click)="picker.open()" matInput [max]="today" required id="dob" name="dob" [(ngModel)]="profileDetails.birthdate" [matDatepicker]="picker" placeholder="Choose a date" readonly/>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex.gt-md="30" fxFlex.gt-lg="30" class="m-r-15">
+                        <p class="arjoform-label">Height</p>
+                        <ng-container *ngIf="profileDetails.height_units === 'feet'">
+							<mat-form-field appearance="outline" class="unit-entry" [ngStyle]="{width: '35%'}" style="margin: 0!important">
+								<mat-select (selectionChange)="changeHeight()" required matInput required id="feet" name="feet" [(ngModel)]="profileDetails.height_feet">
+									<mat-option disabled [value]="''">Select feet</mat-option>
+									<mat-option *ngFor="let ft of feet" [value]="ft">{{ft}}</mat-option>
+								</mat-select>
+                                </mat-form-field>
+							<mat-form-field appearance="outline" class="unit-entry" [ngStyle]="{width: '35%'}" style="margin: 0!important">
+								<mat-select (selectionChange)="changeHeight()" required matInput required id="inch" name="inch" [(ngModel)]="profileDetails.height_inch">
+									<mat-option disabled [value]="''">Select inch</mat-option>
+									<mat-option *ngFor="let in of inch" [value]="in">{{in}}</mat-option>
+								</mat-select>
+                            </mat-form-field>
+						</ng-container>
+						<ng-container *ngIf="profileDetails.height_units === 'cm'">
+							<mat-form-field appearance="outline" class="unit-entry" [ngStyle]="{width: '70%'}" style="margin: 0!important">
+								<input type="text" matInput required id="height" name="height" pattern="^[0-9]*$" maxlength="5" [(ngModel)]="profileDetails.height" placeholder="Height" />
+							</mat-form-field>
+						</ng-container>
+                        <mat-form-field appearance="outline" class="unit-select" [ngStyle]="{width: '30%'}" style="margin: 0!important">
+                            <mat-select required (selectionChange)="changeHeightValues()" matInput name="hUnits" [(ngModel)]="profileDetails.height_units">
+                                <mat-option value="cm">cm</mat-option>
+                                <mat-option value="feet">feet</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex.gt-md="30" fxFlex.gt-lg="30">
+                        <p class="arjoform-label">Weight</p>
+                        <mat-form-field appearance="outline" class="unit-entry" [ngStyle]="{width: '70%'}" style="margin: 0!important">
+                            <input type="text" matInput required id="weight" name="weight" pattern="^[0-9]*$" maxlength="5" [(ngModel)]="profileDetails.weight" placeholder="Weight" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="unit-select" [ngStyle]="{width: '30%'}" style="margin: 0!important">
+                            <mat-select required matInput name="hUnits" [(ngModel)]="profileDetails.weight_units">
+                                <mat-option value="kg">kg</mat-option>
+                                <mat-option value="lbs">lbs</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div style="width: 100%;" class="form-field">
+                    <div fxFlex.gt-md="30" fxFlex.gt-lg="30" class="m-r-15">	
+                        <p class="arjoform-label">Gender</p>
+                        <mat-form-field appearance="outline">
+                            <mat-select matInput required id="gender" name="gender" [(ngModel)]="profileDetails.gender">
+                                <mat-option value="male">Male</mat-option>
+                                <mat-option value="female">Female</mat-option>
+                                <mat-option value="nottosay">Prefer not to say</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <p class="arjoform-title">Contact details</p>
+            <div fxLayout="row wrap" class="form-field" >
+                <div fxFlex.gt-md="30" fxFlex.gt-lg="30" class="m-r-15">
+                    <p class="arjoform-label">Contact of</p>
+                    <mat-form-field appearance="outline">
+                        <mat-select matInput required id="contactof" name="contactof" [(ngModel)]="profileDetails.contact_of">
+                            <mat-option value="myself">Self</mat-option>
+                            <mat-option value="relative">Relative</mat-option>
+                            <mat-option value="guardian">Guardian</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxFlex.gt-md="30" fxFlex.gt-lg="30" class="m-r-15">
+                    <p class="arjoform-label">Email</p>
+                    <mat-form-field appearance="outline">
+                        <input type="email" required matInput id="email" name="email" [(ngModel)]="profileDetails.email" placeholder="Email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" />
+                    </mat-form-field>
+                </div>
+                <div fxFlex.gt-md="30" fxFlex.gt-lg="30">
+                    <p class="arjoform-label">Phone number</p>
+                    <mat-form-field appearance="outline" class="unit-entry" [ngStyle]="{width: '30%'}" style="margin: 0!important">
+                        <mat-select matInput required name="ext" [(ngModel)]="profileDetails.ext">
+                            <mat-option value="+1">+1</mat-option>
+                            <mat-option value="+46">+46</mat-option>
+                            <mat-option value="+44">+44</mat-option>
+                            <mat-option value="+91">+91</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="unit-select" [ngStyle]="{width: '70%'}" style="margin: 0!important">
+                        <input type="text" required matInput id="phoneNumber" name="phoneNumber" [(ngModel)]="profileDetails.mobile" placeholder="Phone Number" pattern="^[0-9]*$" minlength="9" maxlength="15" />
+                    </mat-form-field>
+                </div>					
+            </div>
+            <p class="arjoform-title">Ward information</p>
+            <div fxLayout="row wrap" class="form-field">
+                <div fxFlex.gt-md="30" fxFlex.gt-lg="30" class="m-r-15">
+                    <p class="arjoform-label">Ward</p>
+                    <mat-form-field appearance="outline">
+                        <mat-select required matInput disabled (selectionChange)="getRoomDetails($event.value)" id="ward" name="ward" [(ngModel)]="profileDetails.wardId">
+                            <input matInput class="select-search" type="text" placeholder="Search ward" name="wardSearch" [(ngModel)]="wardSearch" />
+                            <mat-option disabled value="Select ward">Select Ward</mat-option>
+                            <mat-option  *ngFor="let ward of getWards()" [value]="ward.ward_id">{{ward.ward_name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxFlex.gt-md="30" fxFlex.gt-lg="30" class="m-r-15">
+                    <p class="arjoform-label">Room</p>
+                    <mat-form-field appearance="outline">
+                        <mat-select required matInput id="room" name="room" [(ngModel)]="profileDetails.roomId">
+                            <input matInput class="select-search" type="text" placeholder="Search room" name="roomSearch" [(ngModel)]="roomSearch" />
+                            <mat-option disabled value="Select room">Select room</mat-option>
+                            <mat-option *ngFor="let room of getRooms(); let i =index" [value]="room.details.room_id">{{room.details.room_name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxFlex.gt-md="30" fxFlex.gt-lg="30" class="m-r-15">
+                    <p class="arjoform-label">Admission date</p>
+                    <mat-form-field appearance="outline">
+                        <input matInput disabled [min]="profileDetails.admissionDate" required id="admissiondate" name="admissiondate" [(ngModel)]="profileDetails.admissionDate" [matDatepicker]="admissiondate" placeholder="Choose a date" readonly (click)="admissiondate.open()" />
+                        <mat-datepicker #admissiondate></mat-datepicker>
+                    </mat-form-field>
+                </div>
+            </div>
+           <!-- <p class="arjoform-title">Wearable</p>
+            <div class="form-field">
+                <div fxFlex.gt-md="30" fxFlex.gt-lg="30" class="m-r-15">
+                    <p class="arjoform-label">Wearable</p>
+                    <mat-form-field appearance="outline">
+                        <mat-select required disabled matInput id="device" name="device" [(ngModel)]="profileDetails.deviceId">
+                            <input matInput class="select-search" type="text" placeholder="Search devices" name="deviceSearch" [(ngModel)]="deviceSearch" />
+                            <mat-option disabled value="">Select device</mat-option>
+                            <mat-option  *ngFor="let device of getDevices()" [value]="device.details.wearable_sno">{{device.details.wearable_sno}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>-->
+        </div>
+    </mat-card-content>
+    <mat-card-actions fxLayoutAlign="start center">
+        <div fxFlex="100" class="form-actions" fxLayoutAlign="end center">
+            <button mat-button mat-dialog-close class="cancel">Cancel</button>
+            <button mat-raised-button (click)="editDetails()" color="accent" *ngIf="mode === 'edit'" class="add-button">Save</button>
+            <button mat-raised-button (click)="editMode()" color="accent" *ngIf="mode === 'view'" class="add-button">Edit details</button>
+        </div>
+    </mat-card-actions>
+</mat-card>

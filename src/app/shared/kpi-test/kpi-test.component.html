@@ -1,0 +1,41 @@
+<div class="m-r-10 m-l-10 m-t-10">
+    <div fxLayoutAlign="space-between center">
+        <p class="main-heading">KPI Summary test</p>
+    </div>
+    <div class="ward-view resident-view">
+        <mat-tab-group mat-align-tabs="left">
+            <mat-tab label="Inner ward">
+                <app-table
+                    [tableType]="''"
+                    [displayedColumns]="innerWDisplayedColumns"
+                    [tableData]="innerWardData"
+                    [actionEnable]="false"
+                ></app-table>
+            </mat-tab>
+            <mat-tab label="Inner Facility">
+                <app-table
+                [tableType]="''"
+                [displayedColumns]="innerWDisplayedColumns"
+                [tableData]="innerFacilityData"
+                [actionEnable]="false"
+            ></app-table>
+            </mat-tab>
+            <mat-tab label="Inner Customer">
+                <app-table
+                    [tableType]="''"
+                    [displayedColumns]="innerWDisplayedColumns"
+                    [tableData]="innerCustomerData"
+                    [actionEnable]="false"
+                ></app-table>
+            </mat-tab>
+            <mat-tab label="Dashboard">
+                <app-table
+                    [tableType]="''"
+                    [displayedColumns]="innerWDisplayedColumns"
+                    [tableData]="dashboardData"
+                    [actionEnable]="false"
+                ></app-table>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>    

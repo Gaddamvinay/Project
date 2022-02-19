@@ -1,0 +1,109 @@
+hi hello
+<mat-dialog-content class="mat-typography">
+    <mat-card>
+      <mat-card-content class="course-header {{data.courseType}}" style="font-size: 14px;padding: 1em!important;margin-bottom:0!important">
+        
+          <span class="course-name text-left block" fxFlex.gt-md="15" fxFlex.gt-lg="15" fxFlex="100">Risk : {{data.RiskScore}}
+            
+          </span>
+          <span class="course-name text-center block" fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex="100">Falls : {{data.RiskScore}}</span>
+          <span class="course-duration text-center" fxFlex.gt-md="30" fxFlex.gt-lg="25" fxFlex="100">{{data.WatchName}}</span>
+          <span class="trend-status text-right block" fxFlex.gt-md="15" fxFlex.gt-lg="15" fxFlex="100">
+            <mat-icon class="m-r-2 trend-icon cursor-pointer" [routerLink]="['/residentview']" style="transform: rotate(-45deg)">arrow_forward</mat-icon>
+          </span>
+          <span class="wearable-status text-right block" fxFlex.gt-md="15" fxFlex.gt-lg="15" fxFlex="100">
+            <mat-icon class="m-r-2">watch</mat-icon>
+          </span>
+        
+      </mat-card-content>
+      <mat-card-content class="text-center" style="margin-bottom:0!important;">
+        <div fxLayout="row wrap">
+          <div fxFlex.gt-md="75" fxFlex.gt-lg="75" fxFlex="100">
+            <img class="resident-image" alt="" src="assets/images/users/resident-img.jpg">
+            <p class="m-b-5 resident-name cursor-pointer" [routerLink]="['/residentview']">{{data.courseName}}</p>
+            <p class="text-left" style="line-height: 12px;margin-top: 2px;margin-bottom: 5px;">
+              <span class="last-status">Walking</span>
+              <span class="last-updated text-muted">Last updated: {{data.Update}}</span>
+            </p>
+            <div class="comm-icons">
+              <button mat-mini-fab class="{{data.courseType}}" aria-label="">
+                <mat-icon>email</mat-icon>
+              </button>
+              <button mat-mini-fab class="{{data.courseType}}" aria-label="">
+                <mat-icon>phone</mat-icon>
+              </button>
+              <button mat-mini-fab class="{{data.courseType}}" aria-label="">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-mini-fab class="{{data.courseType}}" aria-label="">
+                <mat-icon>delete</mat-icon>
+              </button>
+              <button mat-mini-fab [routerLink]="['/residentview']" class="{{data.courseType}}" aria-label="">
+                <mat-icon>help_outline</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex="100" class="bss-icons">
+            
+            <div class="balance">
+              <span class="">Balance</span><br>
+              <mat-icon class="low">directions_walk</mat-icon>
+            </div>
+            <div class="strength">
+              <span class="">Strength</span><br>
+              <mat-icon class="medium">airline_seat_recline_normal</mat-icon>
+            </div>
+            <div class="sleep">
+              <span class="">Sleep</span><br>
+              <mat-icon class="high">hotel</mat-icon>
+            </div>
+            <div class="battery">
+              <span class="">Battery</span><br>
+              <div fxLayoutAlign="center center">
+                <mat-icon class="low m-r-5" style="transform: rotate(90deg)">battery_full</mat-icon>
+                <span class=""> 90</span>
+              </div>
+            </div>
+            <div class="location">
+              <span class="">Location</span><br>
+              <mat-icon class="primary">home</mat-icon>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+      
+      <mat-card-actions class="text-center">
+        <div fxLayout="row wrap">
+          <div fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33" fxFlex="100" class="ward-info">
+            <span class="">Ward</span><br>
+            <span class="">A</span>
+          </div>
+          <div fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33" fxFlex="100" class="room-info">
+            <span class="">Room</span><br>
+            <span class="">1</span>
+          </div>
+          <div fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33" fxFlex="100" class="wearable-info">
+            <span class="">Wearable</span><br>
+            <span class="">UMA_001</span>
+          </div>
+        </div>
+      </mat-card-actions>
+  
+      <mat-card-actions class="text-center">
+        <div fxLayout="row wrap">
+          <div fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33" fxFlex="100" class="ward-info">
+            <span class="">Gender</span><br>
+            <span class="">Male</span>
+          </div>
+          <div fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33" fxFlex="100" class="wearable-info">
+            <span class="">Age</span><br>
+            <span class="">70</span>
+          </div>
+          <div fxFlex.gt-md="33.33" fxFlex.gt-lg="33.33" fxFlex="100" class="room-info">
+            <span class="">DOB</span><br>
+            <span class="">23-10-2010</span>
+          </div>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </mat-dialog-content>

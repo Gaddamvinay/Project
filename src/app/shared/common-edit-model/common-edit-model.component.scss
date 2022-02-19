@@ -1,0 +1,59 @@
+@import '../../../assets/styles/variable.scss';
+.add-text{
+    color: #87657d;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: 0.25px;
+}
+.add-icon{
+    font-size: 14px;
+    width: 16px;
+    height: 16px;
+    color: white;
+    border-radius: 50%;
+    background-color: #87657d;
+}
+.warning{
+	width: 100%;
+	background-color: #F7F4F3;
+	padding: 20px;
+	position: absolute;
+	bottom: 0;
+}
+
+.selected{
+    display: inline-block;
+    background-color: $arjoblue;
+    color: $white;
+    max-width: 110px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 5px 10px;
+    margin: 0 4px;
+    font-size: 12px;
+}
+
+.custom-file-input::-webkit-file-upload-button {
+    visibility: hidden;
+}
+.custom-file-input::before {
+content: 'Select files';
+    display: inline-block;
+    background: #fff;
+    border: 1px solid #b4aeae;
+    border-radius: 0;
+    color: #434342;
+    padding: 10px 90px;
+    outline: none;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    font-family: Whitney A, Whitney B, Helvetica, Arial, sans-serif;
+}
+.custom-file-input:hover::before {
+    border-color: #b4aeae;
+}
+.custom-file-input:active::before {
+    background: #fff;
+}

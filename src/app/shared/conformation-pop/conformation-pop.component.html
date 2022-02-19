@@ -1,0 +1,23 @@
+<mat-card class="model arjomodal relative">
+    <mat-card-header>
+        <div fxLayout="row wrap">
+            <div fxFlex.gt-lg="65" fxFlex.gt-md="65" fxFlex="100">
+                <mat-card-title>
+                    <span class="m-r-5 arjomodal-title">{{title}}</span>
+                </mat-card-title>
+            </div>
+            <div fxFlex.gt-lg="35" fxFlex.gt-md="35" fxFlex="100" class="text-right">
+                <mat-icon class="cursor-pointer" mat-dialog-close>close</mat-icon>
+            </div>
+        </div>
+    </mat-card-header>
+    <mat-card-content style="padding-top: 0 !important;">
+        <p class="message" [innerHTML]="message"></p>
+    </mat-card-content>
+    <mat-card-actions fxLayoutAlign="start center">
+        <div fxFlex="100" class="form-actions" fxLayoutAlign="end center">
+            <button mat-button mat-dialog-close="false" class="cancel m-r-10">Cancel</button>
+            <button mat-raised-button color="primary" type="submit" class="submit" mat-dialog-close="true">Delete</button>
+        </div>
+    </mat-card-actions>
+</mat-card>

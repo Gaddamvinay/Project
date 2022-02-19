@@ -1,0 +1,176 @@
+<div fxLayoutAlign="space-between start" class="m-t-10" fxLayout="row nowrap">
+    <div fxFlex="50">
+        <div class="popover__wrapper">
+            <span class="second-title m-l-15 m-r-5">Send User ID as command to Device </span> 
+            <mat-icon class="absolute help-text-hover-cont popover__title" (click)="titleShow = !titleShow" style="color: #D3CDC6;cursor: pointer;">help_outline</mat-icon>
+            <div class="popover__content">
+                <h4 class="second-title popover__heading">Send User ID as command to Device </h4>
+                <div class="popover__message">
+                    <p>You can Send User ID as command to Device here</p>
+                </div>
+            </div>
+        </div>
+            <mat-card class="setting-card-section">
+                    <mat-card-content>
+                            <form [formGroup]="sendUserIDForm">
+                                    <div class="form-fields" fxLayoutAlign="center center" fxLayout="row wrap">
+                                            <div fxFlex="100">
+                                                    <p class="m-b-0">Resident</p>
+                                                  
+
+                                                     <mat-form-field appearance="outline" class="m-0" style="width: 50%;">
+                                                            <mat-select formControlName="resident"  [(ngModel)]="customer"  (ngModelChange)="getFilterWearables()">
+                                                                    <mat-option disabled value="select resident">Select resident</mat-option>
+                                                                    <mat-option [value]="resident.id" *ngFor="let resident of residentNames">{{resident.value}}</mat-option>
+                                                            </mat-select>
+                                                    </mat-form-field>
+
+                                                   
+                                            </div>
+                                                 <div  fxFlex="100" *ngIf="!extraFields">
+                            <p class="m-b-0">Wearable ID</p>
+                            <mat-form-field appearance="outline" class="m-0" style="width: 50%;">
+                                    <input  placeholder="wearable id"  [disabled] value="{{selectedDeviceId}}"  matInput type="text" formControlName="wearableId" />
+                           
+                                 
+                                        </mat-form-field>           
+                                            </div>
+                            </div>        
+                            </form>
+                    </mat-card-content>
+                    <mat-card-actions fxLayoutAlign="start center">
+                            <div class="form-actions" fxLayoutAlign="end center">
+                                <button class="add-button" [disabled]="sendUserIDForm.get('resident').value === 'select resident' || dashboardLoading" mat-flat-button color="accent" (click)="sendUserID()">
+                                   Send User ID
+                                </button>
+                            </div>
+                    </mat-card-actions>
+            </mat-card>
+    </div>
+   <div fxFlex="50">
+        <div class="popover__wrapper">
+            <span class="second-title m-l-15 m-r-5">Send Raw data as command to Device </span> 
+            <mat-icon class="absolute help-text-hover-cont popover__title" (click)="titleShow = !titleShow" style="color: #D3CDC6;cursor: pointer;">help_outline</mat-icon>
+            <div class="popover__content">
+                <h4 class="second-title popover__heading">Send Raw data command to Device </h4>
+                <div class="popover__message">
+                    <p>You can Send Raw data as command to Device here</p>
+                </div>
+            </div>
+        </div>
+            <mat-card class="setting-card-section">
+                    <mat-card-content>
+                            <form [formGroup]="sendRawDataForm">
+                                    <div class="form-fields" fxLayoutAlign="center center" fxLayout="row wrap">
+                                            <div fxFlex="100">
+                                                    <p class="m-b-0">Resident</p>
+                                                  
+
+                                                     <mat-form-field appearance="outline" class="m-0" style="width: 50%;">
+                                                            <mat-select formControlName="residentid"  [(ngModel)]="residentR"  (ngModelChange)="getFilterWearablesIDRawData()">
+                                                                    <mat-option disabled value="select resident">Select resident</mat-option>
+                                                                    <mat-option [value]="resident.id" *ngFor="let resident of residentNames">{{resident.value}}</mat-option>
+                                                            </mat-select>
+                                                    </mat-form-field>
+
+                                                   
+                                            </div>
+                                                 <div  fxFlex="100" *ngIf="!extraFields">
+                            <p class="m-b-0">Wearable ID</p>
+                            <mat-form-field appearance="outline" class="m-0" style="width: 50%;">
+                                    <input   placeholder="wearable id"  [disabled] value="{{selectedRawDataDeviceId}}"  matInput type="text" formControlName="wearableId" />
+                           
+                                 
+                                        </mat-form-field>           
+                                            </div>
+                                
+                                                 <div  fxFlex="100" >
+                            <p class="m-b-0">Enter Raw data</p>
+                            <mat-form-field appearance="outline" class="m-0" style="width: 50%;">
+                                    <input  placeholder="raw data"  matInput type="text" formControlName="rawData" />
+                           
+                                 
+                                        </mat-form-field>           
+                                            </div>
+                            </div>      
+                            </form>
+                    </mat-card-content>
+                    <mat-card-actions fxLayoutAlign="start center">
+                            <div class="form-actions" fxLayoutAlign="end center">
+                                <button class="add-button" [disabled]="sendRawDataForm.get('residentid').value === 'select resident' || dashboardLoading" mat-flat-button color="accent" (click)="sendRawData()">
+                                   Send Raw Data
+                                </button>
+                            </div>
+                    </mat-card-actions>
+            </mat-card>
+    </div>
+     
+
+</div>
+<div fxLayoutAlign="space-between start" class="m-t-10" fxLayout="row nowrap">
+<div fxFlex="50">
+        <div class="popover__wrapper">
+            <span class="second-title m-l-15 m-r-5">Send Send date and time as command to Device </span> 
+            <mat-icon class="absolute help-text-hover-cont popover__title" (click)="titleShow = !titleShow" style="color: #D3CDC6;cursor: pointer;">help_outline</mat-icon>
+            <div class="popover__content">
+                <h4 class="second-title popover__heading">Send Send date and time command to Device </h4>
+                <div class="popover__message">
+                    <p>You can Send date and time as command to Device here</p>
+                </div>
+            </div>
+        </div>
+           <mat-card class="setting-card-section">
+                    <mat-card-content>
+                            <form [formGroup]="sendDateTimeForm">
+                                    <div class="form-fields" fxLayoutAlign="center center" fxLayout="row wrap">
+                                            <div fxFlex="100">
+                                                    <p class="m-b-0">Resident</p>
+                                                  
+
+                                                     <mat-form-field appearance="outline" class="m-0" style="width: 50%;">
+                                                            <mat-select formControlName="residentid"  [(ngModel)]="residentDateTime"  (ngModelChange)="getFilterWearablesDateTimeData()">
+                                                                    <mat-option disabled value="select resident">Select resident</mat-option>
+                                                                    <mat-option [value]="resident.id" *ngFor="let resident of residentNames">{{resident.value}}</mat-option>
+                                                            </mat-select>
+                                                    </mat-form-field>
+
+                                                   
+                                            </div>
+                                                 <div  fxFlex="100" *ngIf="!extraFields">
+                            <p class="m-b-0">Wearable ID</p>
+                            <mat-form-field appearance="outline" class="m-0" style="width: 50%;">
+                                    <input   placeholder="wearable id"  [disabled] value="{{selectedDateTimeDeviceId}}"  matInput type="text" formControlName="wearableId" />
+                           
+                                 
+                                        </mat-form-field>           
+                                            </div>
+                                
+                                               <div  fxFlex="100" >
+                            <p class="m-b-0">Date</p>
+                            <mat-form-field appearance="outline" class="m-0" style="width: 50%;">
+                                    <input  placeholder="Date"  [(ngModel)]="currentDate"   matInput type="text" formControlName="sendDate" />
+                           
+                                 
+                                        </mat-form-field>           
+                                            </div>
+                                            <div  fxFlex="100" >
+                            <p class="m-b-0">Time</p>
+                            <mat-form-field appearance="outline" class="m-0" style="width: 50%;">
+                                    <input  placeholder="Time" value="{{selectedTime}}"   matInput type="text" formControlName="sendTime" />
+                           
+                                 
+                                        </mat-form-field>           
+                                            </div>
+                            </div>      
+                            </form>
+                    </mat-card-content>
+                    <mat-card-actions fxLayoutAlign="start center">
+                            <div class="form-actions" fxLayoutAlign="end center">
+                                <button class="add-button" [disabled]="sendDateTimeForm.get('residentid').value === 'select resident' || dashboardLoading" mat-flat-button color="accent" (click)="sendDateTime()">
+                                   Send Date & Time
+                                </button>
+                            </div>
+                    </mat-card-actions>
+            </mat-card>
+    </div>
+</div>

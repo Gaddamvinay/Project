@@ -1,0 +1,253 @@
+//@import './variable.scss';
+/* top bar */
+mat-toolbar{
+    box-shadow: 0 1px 0 0 #d1d1d1;
+    &.topbar{
+        background-color: #f6f4f2;
+        padding: 0px 24px;
+        height: 70px;
+    }
+    .navbar-header {
+        text-align: center;
+        .navbar-brand {
+            display: flex;
+            line-height: 18px;
+            align-items: center;
+            .dark-logo {
+                display: none;
+            }
+            b {
+               margin-right: 5px;
+               display: none;
+            }
+        }
+    }
+    
+    .app-search{
+        display: none;
+        width: 100%;
+        top: 0px;
+        left: 0px;
+        z-index: 1;
+        position: absolute;
+        .form-control{
+            line-height: 42px;
+            
+        }
+        .cl-srh-btn{
+            position: absolute;
+            top: 12px;
+            right: 15px;
+            font-size: 15px;
+            color:$bodytext;
+            cursor: pointer
+        }
+    }
+	.app-search.show-search {
+		display: block;
+    }
+    .mat-drawer-side {
+        border-right: none;
+    }
+}
+.profile-pic{
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    color: white;
+    background-color: $primary;
+    text-transform: uppercase;
+}
+.input-container{
+    background-color: white;
+    border: 1px solid #e4dfda;
+    padding: 8px 16px;
+    width: 354px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    .search-input-field{
+        width: 100%;
+        border: none;
+        background-color: white;
+        padding: 0 10px;
+    }
+}
+/*******************
+ Topbar
+*******************/
+.topbar {
+  position: relative;
+  /* Make sure the toolbar will stay on top of the content as it scrolls past. */
+  z-index: 2;
+}
+
+.example-sidenav-container {
+  /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
+     causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
+  flex: 1;
+}
+
+.example-sidenav-container {
+  /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
+     `<body>` to be our scrolling element for mobile layouts. */
+  flex: 1 0 auto;
+}
+
+.notification-list-item{
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    position: relative;
+    &.info{
+        background-color: #2F96B4;
+        color: white;
+    }
+    &.critical{
+        background-color: #BD362F;
+        color: white;
+    }
+    &.warning{
+        background-color: #F89406;
+        color: white;
+    }
+    &.success{
+        background-color: #51A351;
+        color: white;
+    }
+    .notification-icon {
+        mat-icon {
+            font-size: 24px;
+            margin-right: 5px;
+        }
+    }
+    .notification-action {
+        .action-btn {
+            box-shadow: none;
+            border: none;
+            padding: 5px 15px;
+            margin-left: 10px;
+            /* margin-right: 10px; */
+            border-radius: 5px;
+        }
+    }
+    .close {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+        position: absolute;
+        top: 4px;
+        right: 4px;
+    }
+}
+.heading{
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+    padding: 10px;
+}
+.drop-down{
+	background-color: #f6f4f2;
+	border: solid 1px #e4dfda;
+	height: 40px;
+	padding: 8px 10px;
+	min-width: 135px;
+	position: relative;
+	mat-icon {
+		right: 6px;
+	}
+}
+
+.user-image{
+    margin: 30px 0;
+	.empty{
+		width: 170px;
+		height: 170px;
+		border-radius: 50%;
+		background-color: #99ABB4;
+		margin: 1em 0;
+		color: white;
+		mat-icon{
+			width: 50px;
+			height: 50px;
+			font-size: 50px;
+		}
+	}
+	.image{
+		width: 170px;
+		height: 170px;
+		border-radius: 50%;
+	}
+	.image-container{
+		width: fit-content;
+		position: relative;
+		.edit{
+			position: absolute;
+			top: 5px;
+			right: -10px;
+			left: unset;
+			width: 16px;
+			height: 16px;
+			font-size: 16px;
+			border-radius: 50%;
+			padding: 0.2em;
+			box-sizing: content-box;
+			background-color: #99ABB4;
+			color: white;
+		}
+	}
+}
+
+.login {
+    h1 {
+        font-family: Santral;
+        font-size: 34px;
+        font-weight: 500;
+        color: #434342;
+        margin-bottom: 18px;
+        margin-top: 0;
+    }
+    .title-desc {
+        font-family: $bodyfont;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0.25px;
+        color: #686262;
+        margin-bottom: 40px;
+    }
+    .form-label {
+        font-family: $bodyfont;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.33;
+        letter-spacing: 0.4px;
+        color: #686262;
+        margin-bottom: 9px;
+        margin-top: 0;
+    }
+    .rememberme {
+        font-family: $bodyfont;
+        font-size: 14px;
+        letter-spacing: 0.25px;
+    }
+    .login-btn {
+        height: 40px;
+        box-shadow: 0 1px 0 0 rgba(34, 32, 37, 0.15);
+        background-color: #025174;
+        line-height: 37px !important;
+        font-size: 14px;
+        font-weight: 600;
+        font-family: $bodyfont;
+        margin-top: 24px;
+        margin-bottom: 6px;
+    }
+    .forgotpassword {
+        font-family: $bodyfont;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0.25px;
+        color: #025174;
+    }
+    .brownish-grey {
+        color: #686262;
+    }
+}

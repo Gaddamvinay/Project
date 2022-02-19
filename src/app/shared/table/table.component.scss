@@ -1,0 +1,159 @@
+@import '../../../assets/styles/variable.scss';
+table {
+    width: 100%;
+    table-layout: fixed;
+    margin-top: 16px;
+}
+  
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+.text-left{
+ text-align: left; 
+}
+.text-right{
+  text-align: right;
+}
+.mat-row{
+    color: #434242;
+    font-weight: 500;
+    text-align: left;
+}
+td.mat-cell, .mat-header-cell{
+    padding: 0 8px !important;
+}
+.mat-row:nth-child(odd){
+    background-color: white;
+}
+.mat-header-cell{
+    background-color: #a6bcd2;
+    color: #434242;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.4px;
+}
+
+.mat-row:nth-child(4n+3){
+    background-color:#f6f4f2;
+}
+
+.increased{
+    color: $red;
+    font-size: 12px;
+}
+mat-icon.increased{
+    color: $red;
+    width: 11px;
+    height: 11px;
+    font-size: 11px;
+}
+mat-icon.decreased {
+    color: $green;
+    width: 11px;
+    height: 11px;
+    font-size: 11px;
+}
+
+.shine {
+    background: #f6f7f8;
+    background-image: linear-gradient(to right, #e8e8e8 0%, rgba(243, 243, 243, 0.5) 50%, #d8d8d8 100%);
+    background-repeat: no-repeat;
+    background-size: 800px 104px; 
+    display: inline-block;
+    position: relative; 
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-name: placeholderShimmer;
+    animation-timing-function: linear;
+    
+    -webkit-animation-duration: 1s;
+    -webkit-animation-fill-mode: forwards; 
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-name: placeholderShimmer;
+    -webkit-animation-timing-function: linear;
+    }
+  
+  .td-value {
+    height: 15px;
+    width: 84px;
+  }
+  .sub-title{
+    font-size: 10px;
+  }
+  @keyframes placeholderShimmer{
+    0% {
+        background-position: -468px 0;
+      }
+      
+      100% {
+        background-position: 468px 0; 
+      }
+  }
+  
+  @-webkit-keyframes placeholderShimmer {
+    0% {
+      background-position: -468px 0;
+    }
+    
+    100% {
+      background-position: 468px 0; 
+    }
+  }
+.link{
+  color: $arjoblue;
+  cursor: pointer;
+}
+
+.info-icon{
+  width: 16px;
+  height: 16px;
+  font-size: 12px;
+}
+.popover__content{
+  left: -24px !important;
+}
+tr.example-detail-row {
+  height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.example-element-diagram {
+  min-width: 80px;
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  height: 104px;
+}
+
+.example-element-symbol {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+}
+
+.example-element-description {
+  padding: 16px;
+}
+
+.example-element-description-attribution {
+  opacity: 0.5;
+}

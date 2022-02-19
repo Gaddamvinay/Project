@@ -1,0 +1,62 @@
+
+
+<div class="page-breadcrumb">
+	<div fxLayout="row wrap" fxLayoutAlign="space-between center">
+		<div fxFlex.gt-sm="60" fxFlex.gt-xs="60" fxFlex="100" class="align-self-center">
+			<div class="breadcrumb">
+				<ul class="list-style-none d-flex">
+					<li class="breadcrumb-item cursor-pointer" routerLink="/wa/dashboard">
+						<span class="text-muted">Dashboard</span>
+					</li>
+					<li class="breadcrumb-item active">Caregivers</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="main-section caregivers-pg p-24">
+  <div fxLayout="row nowrap">
+    <div class="popover__wrapper">
+      <span class="second-title font-24 m-r-5">Caregivers</span> 
+      <mat-icon class="absolute help-text-hover-cont popover__title" style="color: #D3CDC6;cursor: pointer;position: absolute;top: 3px;">help_outline</mat-icon>
+      <div class="popover__content lg_popover">
+          <h4 class="second-title popover__heading m-b-10">Caregivers</h4>
+          <div class="popover__message">
+              <p><strong>Screen time usage</strong><br/>Indicates the time spent in the dashboard by caregiver.</p>
+              <p><strong>Resident profiles viewed</strong><br/>Indicates the number of resident profiles viewed by caregiver.</p>
+          </div>
+      </div>
+    </div>
+  </div>
+  <ng-container *ngIf="isLoading">
+    <div class="preloader" *ngIf="isLoading" fxLayoutAlign="center center"
+            [ngStyle]="{'background-color': 'unset', position: 'unset', height: '350px'}">
+        <div class="spinner" [ngStyle]="{margin: 'unset', top: 'unset'}">
+            <img alt="loading.." src="assets/images/loading.gif" width="40px" height="40px" />
+        </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!isLoading">
+    <ng-container *ngIf="tableData.length > 0">
+      <app-table (actionEvent)="doOperation($event)"
+      [widths]="widths"
+      [displayedColumns]="displayedColumns"
+      [tableData]="tableData"
+      [textRemove]="true"
+      [actions]="['View']"
+      [isLoading]="isLoading"
+      [actionEnable]="false"
+      [tableType]="'caregiver'"
+      noDataMessage="Looks like you haven't added a Caregiver"
+    ></app-table>
+    </ng-container>
+    <ng-container *ngIf="tableData.length < 1">
+      <div fxLayoutAlign="center center" style="width: 100%; height: calc(100vh - 275px)">
+          <div class="display-card" fxLayoutAlign="center center">
+              <p class="text text-center m-0">There is no caregiver added yet.Please add <strong>caregiver</strong></p>
+          </div>
+      </div>
+    </ng-container>
+  </ng-container>
+</div>

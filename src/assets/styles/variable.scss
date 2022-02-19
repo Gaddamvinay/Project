@@ -1,0 +1,103 @@
+// font family, also paste this import into styles.css file.
+$bodyfont: Whitney A, Whitney B, Helvetica, Arial, sans-serif;
+$headingfont: "Santral", sans-serif;
+@import "~@angular/material/theming";
+
+$mat-arjo: (
+  // 100: #f7f4f3,
+  100: #f6f4f2,
+  200: #015174,
+  300: #87657d,
+  contrast: (
+    100: white,
+    200: white,
+    300: white,
+  )
+);
+
+$primary: mat-palette($mat-arjo, 100);
+$accent: mat-palette($mat-arjo, 200);
+$warn: mat-palette($mat-arjo, 300);
+$theme: mat-light-theme($primary, $accent, $warn);
+$background: map-get($theme, background);
+$foreground: map-get($theme, foreground);
+
+@include angular-material-theme($theme);
+
+/*Theme Colors*/
+$sidebar: #fff;
+$bodycolor: #f7f4f3;
+$headingtext: #434242;
+$bodytext: #434242;
+$sidebar-text: #434342;
+$sidebar-icons: #99abb4;
+$walking: #a6bcc9;
+$sleeping: #aaa093;
+$sitting: #434342;
+$active: #87657d;
+$accent: #ffb22b;
+$font-16: 16px;
+$brownish-grey: #686262;
+
+$light-text: #a6b7bf;
+$themecolor: #015174;
+$themecolor-alt: #015174;
+$themecolor-dark: #028ee1;
+
+/*bootstrap Color*/
+$danger: #d76969;
+$success: #26c6da;
+$warning: #ffb22b;
+$primary: #015174;
+$info: #1e88e5;
+$inverse: #2f3d4a;
+$muted: #99abb4;
+$dark: #263238;
+$light: #f2f4f8;
+$extra-light: #ebf3f5;
+$secondary: #727b84;
+
+/*Light colors*/
+$light-danger: #f9e7eb;
+$light-success: #e8fdf8;
+$light-warning: #fff8ec;
+$light-primary: #f1effd;
+$light-info: #e3f3fd;
+$light-inverse: #f6f6f6;
+$light-megna: #e0f2f4;
+
+/*Normal Color*/
+$white: #ffffff;
+$red: #fb3a3a;
+$yellow: #a0aec4;
+$purple: #7460ee;
+$blue: #02bec9;
+$megna: #00897b;
+
+/*Extra Variable*/
+$rgt: right;
+$lft: left;
+$border: rgba(120, 130, 140, 0.13);
+$table-border: #f3f1f1;
+$card-brd: #d7dfe3;
+$dark-text: #848a96;
+$radius: 4px;
+$form-brd: #d9d9d9;
+
+$arjoblue: #015174;
+$arjolightblue: #ccd6de;
+//$pearl: #f7f4f3;
+$pearl: #f6f4f2;
+$pebble: #e9e4e0;
+$sand: #d4ccc7;
+$stone: #bfb4ae;
+$rock: #aaa093;
+$lava: #434342;
+$wave: #a6bcc9;
+$flow: #87657d;
+$sway: #dfbec2;
+$beam: #f8c276;
+$white: #ffffff;
+$green: #91af91;
+$yellow: #ffe271;
+$red: #d76969;

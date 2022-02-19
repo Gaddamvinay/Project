@@ -1,0 +1,129 @@
+<mat-card class="model arjomodal">
+    <mat-card-header>
+        <div fxLayout="row wrap">
+            <div fxFlex.gt-lg="65" fxFlex.gt-md="65" fxFlex="100">
+                <mat-card-title>
+                    <span class="m-r-5 arjomodal-title">Perform TUG test</span>
+                </mat-card-title>
+            </div>
+            <div fxFlex.gt-lg="35" fxFlex.gt-md="35" fxFlex="100" class="text-right">
+                <mat-icon mat-dialog-close>close</mat-icon>
+            </div>
+        </div>
+    </mat-card-header>
+	<mat-card-content style="padding-top: 0 !important;">
+		<mat-horizontal-stepper (selectionChange)="event($event)" labelPosition="bottom" #stepper [linear]="false">
+			<mat-step [stepControl]="true" [state]="'view'">
+				<ng-template matStepLabel>Introduction</ng-template>
+				<div fxLayout="row wrap">
+					<div fxFlex.gt-md="50">
+						<p class="arjoform-label">Purpose</p>
+						<p class="arjoform-value">The Timed Up and Go Test (TUG) assesses mobility, balance, walking ability, and fall risk in older adults.</p>
+						<div class="field">
+							<p class="arjoform-label">Area of Assessment</p>
+							<span class="arjoform-value">Balance – Non-vestibular</span><br />
+							<span class="arjoform-value">Functional Mobility</span><br />
+							<span class="arjoform-value">Gait</span><br />
+							<span class="arjoform-value">Vestibular</span><br />
+						</div>
+					</div>
+					<div fxFlex.gt-md="50" fxLayoutAlign="end center">
+						<iframe width="423" height="270" src="https://www.youtube.com/embed/BA7Y_oLElGY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="m-t-10"></iframe>
+					</div>
+				</div>
+			</mat-step>
+			<mat-step [stepControl]="true" [state]="'view'">
+				<ng-template matStepLabel>Pre-requisites</ng-template>
+				<ul class="m-l-0 p-l-20">
+					<li class="item">Standard armchair (approximately 46 cm in height)</li>
+					<li class="item">Stopwatch</li>
+				</ul>
+			</mat-step>
+			<mat-step [stepControl]="true" [state]="'view'">
+				<ng-template matStepLabel>Instruction</ng-template>
+				<ul class="m-l-0 p-l-20">
+					<li class="item">The patient sits in the chair with his/her back against the chair back.</li>
+					<li class="item">On the command “go,” the patient rises from the chair, walks 3 meters at a comfortable and safe pace, turns, walks back to the chair and sits down.</li>
+					<li class="item">Timing begins at the instruction “go” and stops when the patient is seated.</li>
+					<li class="item">Podsiadlo & Richardson, 1991, quantified the test by recommending timing (sec) the time between the command to start, till the buttocks touch the chair.</li>
+					<li class="item">The patient should have one practice trial that is not included in the score (Podsiadlo & Richardson, 1991).</li>
+					<li class="item">Patient must use the same assistive device each time he/she is tested to be able to compare scores.</li>
+					<li class="item">In the vestibular population it is suggested to test with both right and left turning (Whitney and Herdman, chapter 19 in Herdman, 2007, p. 293).</li>
+					
+				</ul>
+			</mat-step>
+			<mat-step [stepControl]="true">
+				<ng-template matStepLabel>Results</ng-template>
+				<p class="arjoform-label">Time taken to perform the test (in seconds)</p>
+				<div fxLayout="row wrap" fxLayoutGap.gt-md="1em">
+					<div class="form-field" fxLayout.gt-md="50">
+						<mat-form-field appearance="outline" class="m-0">
+							<input matInput  [formControl]="distance_covered_in_6_minutes_in_meters" placeholder="Time taken" required ngDefaultControl/>
+						</mat-form-field>
+					</div>
+					<div fxLayout.gt-md="25"></div>
+					<div fxLayout.gt-md="25"></div>
+				</div>
+				<p class="arjoform-label">Did the elderly use an assistive device to perform the test?</p>
+				<div fxLayout="row wrap" class="m-b-30" fxLayoutGap.gt-md="1em">
+					<div fxLayout.gt-md="33.33" fxLayoutAlign="start center" fxLayoutGap="0.8em">
+						<mat-radio-group aria-label="device">
+							<mat-radio-button [formControl]="elderly_used_assistive_devise" value="yes" ngDefaultControl>Yes</mat-radio-button>
+							<mat-radio-button [formControl]="elderly_used_assistive_devise" value="no" ngDefaultControl>No</mat-radio-button>
+						</mat-radio-group>
+					</div>
+					<div fxLayout.gt-md="33.33"></div>
+					<div fxLayout.gt-md="33.33"></div>
+				</div>
+				<p class="arjoform-label">How does the elderly feel?</p>
+				<div fxLayout="row wrap" class="m-b-30" fxLayoutGap.gt-md="1em">
+					<div fxLayout.gt-md="33.33">
+						<span class="m-r-15">Completely Exhausted</span>
+						<mat-radio-group aria-label="feel" fxLayoutAlign="start center" fxLayoutGap="0.8em">
+							<mat-radio-button  [formControl]="how_did_the_elderly_feel_rating_scale_1_5" value="1" ngDefaultControl>1</mat-radio-button>
+							<mat-radio-button  [formControl]="how_did_the_elderly_feel_rating_scale_1_5" value="2" ngDefaultControl>2</mat-radio-button>
+							<mat-radio-button  [formControl]="how_did_the_elderly_feel_rating_scale_1_5" value="3" ngDefaultControl>3</mat-radio-button>
+							<mat-radio-button  [formControl]="how_did_the_elderly_feel_rating_scale_1_5"value="4" ngDefaultControl>4</mat-radio-button>
+							<mat-radio-button  [formControl]="how_did_the_elderly_feel_rating_scale_1_5"value="5" ngDefaultControl>5</mat-radio-button>
+						</mat-radio-group>
+						<span class="m-l-15">Very Good</span>
+					</div>
+					<div fxLayout.gt-md="33.33"></div>
+					<div fxLayout.gt-md="33.33"></div>
+				</div>
+				<p class="arjoform-label">How much effort did it take for the elderly to perform the test?</p>
+				<div fxLayout="row wrap" class="m-b-30" fxLayoutGap.gt-md="1em">
+					<div fxLayout.gt-md="100">
+						<span class="m-r-15">Completely Exhausted</span>
+						<mat-radio-group aria-label="effort" fxLayoutAlign="start center" fxLayoutGap="0.8em">
+							<mat-radio-button  [formControl]="effort_taken_scale_1_10" value="1" ngDefaultControl>1</mat-radio-button>
+							<mat-radio-button  [formControl]="effort_taken_scale_1_10" value="2" ngDefaultControl>2</mat-radio-button>
+							<mat-radio-button	[formControl]="effort_taken_scale_1_10"  value="3" ngDefaultControl>3</mat-radio-button>
+							<mat-radio-button [formControl]="effort_taken_scale_1_10"  value="4" ngDefaultControl>4</mat-radio-button>
+							<mat-radio-button [formControl]="effort_taken_scale_1_10" value="5"ngDefaultControl>5</mat-radio-button>
+						</mat-radio-group>
+						<span class="m-l-15">Very Good</span>
+					</div>
+				</div>
+				<p class="arjoform-label">Comments/Observations</p>
+				<div fxLayout="row wrap" class="m-b-30">
+					<div fxLayout.gt-md="100" class="w-100">
+						<mat-form-field appearance="outline" class="m-0">
+							<textarea  [formControl]="comments_observations"  matInput placeholder="About ex..." ngDefaultControl></textarea>
+						</mat-form-field>
+					</div>
+				</div>
+			</mat-step>
+			<ng-template matStepperIcon="view">
+				<mat-icon>visibility</mat-icon>
+			</ng-template>
+			</mat-horizontal-stepper>
+	</mat-card-content>
+    <mat-card-actions fxLayoutAlign="start center">
+        <div fxFlex="100" class="form-actions" fxLayoutAlign="end center">
+			<button mat-button mat-dialog-close class="cancel">Cancel</button>
+            <button mat-raised-button color="accent" *ngIf="selectedIndex < 3" (click)="stepper.next()" class="submit">Next</button>
+            <button mat-raised-button color="accent" [disabled]="validate()" *ngIf="selectedIndex === 3" (click)="postTUG()" type="submit" class="submit">Add</button>
+        </div>
+    </mat-card-actions>
+</mat-card>
